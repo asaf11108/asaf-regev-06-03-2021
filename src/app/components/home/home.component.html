@@ -1,5 +1,11 @@
-<mat-form-field [floatLabel]="'never'">
+<mat-form-field [floatLabel]="'never'" class="example-full-width">
     <mat-icon [inline]="true" matPrefix>search</mat-icon>
-    <input matInput type="search" placeholder="search location" [value]="searchInput">
+    <input type="search" placeholder="search location" matInput
+            [formControl]="myControl" [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+    </mat-option>
+    </mat-autocomplete>
 </mat-form-field>
 <mat-card></mat-card>

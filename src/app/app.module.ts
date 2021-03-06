@@ -9,6 +9,8 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './components/home/home.component';
 import { FavoritsComponent } from './components/favorits/favorits.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,8 +20,10 @@ import { FavoritsComponent } from './components/favorits/favorits.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MaterialModule,
     environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
