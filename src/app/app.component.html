@@ -1,13 +1,15 @@
-<mat-toolbar>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-flat-button class="example-icon" [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
-    Home
-  </button>
-  <button mat-flat-button class="example-icon" [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']">
-    Favorits
-  </button>
-</mat-toolbar>
-<div class="app-container">
-  <router-outlet></router-outlet>
+<div class="app__container">
+  <mat-toolbar>
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button mat-flat-button class="example-icon" [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
+      Home
+    </button>
+    <button mat-flat-button class="example-icon" [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']">
+      Favorits
+    </button>
+  </mat-toolbar>
+  <div class="app__content">
+    <router-outlet></router-outlet>
+  </div>
 </div>
