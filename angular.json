@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -91,6 +92,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -124,5 +126,9 @@
       }
     }
   },
-  "defaultProject": "herolo-weather"
+  "defaultProject": "herolo-weather",
+  "cli": {
+    "analytics": "c855bd6c-1e5b-44c3-aabf-91e60ec6d771",
+    "defaultCollection": "@datorama/akita"
+  }
 }
