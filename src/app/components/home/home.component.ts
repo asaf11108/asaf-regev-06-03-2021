@@ -1,9 +1,9 @@
 import { ApiService } from './../../services/api.service';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
-import { startWith, map, debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import { Location } from "../../model/location";
 
 @Component({
   selector: 'app-home',
@@ -12,8 +12,8 @@ import { startWith, map, debounceTime, distinctUntilChanged, tap, switchMap } fr
 })
 export class HomeComponent implements OnInit {
   readonly FILTER_INITIAL_VALUE = 'Tel Aviv';
-  myControl = new FormControl(this.FILTER_INITIAL_VALUE, [Validators.required, Validators.pattern(/[a-zA-Z]*/)]);
-  filteredOptions: Observable<string[]>;
+  myControl = new FormControl(this.FILTER_INITIAL_VALUE, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]);
+  filteredOptions: Observable<Location[]>;
 
   constructor(private apiService: ApiService) { }
 
@@ -23,10 +23,11 @@ export class HomeComponent implements OnInit {
       this.myControl.valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
+        filter(() => !this.myControl.invalid)
       )
     ).pipe(
       switchMap(query => this.apiService.getLocations(query)),
-      map(locations => locations.map(location => location.LocalizedName))
+      map(locations => locations.map(location => ({ Key: location.Key, LocalizedName: location.LocalizedName })))
     );
   }
 

@@ -3,9 +3,10 @@
     <input type="search" placeholder="search location" matInput
             [formControl]="myControl" [matAutocomplete]="auto">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.Key">
+        {{option.LocalizedName}}
     </mat-option>
     </mat-autocomplete>
+    <mat-error>Invalid Input</mat-error>
 </mat-form-field>
 <mat-card></mat-card>
