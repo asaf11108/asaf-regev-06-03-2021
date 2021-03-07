@@ -1,14 +1,29 @@
-<mat-form-field [floatLabel]="'never'" class="home__search-input">
-    <mat-icon [inline]="true" matPrefix>search</mat-icon>
-    <input type="search" placeholder="search location" matInput
-            [formControl]="myControl" [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.Key">
-        {{option.LocalizedName}}
-    </mat-option>
-    </mat-autocomplete>
-    <mat-error>Invalid Input</mat-error>
-</mat-form-field>
+<form [formGroup]='form' class="home__search-input">
+    <mat-form-field [floatLabel]="'never'">
+        <mat-icon [inline]="true" matPrefix>search</mat-icon>
+        <input type="text" placeholder="search location" matInput formControlName="LocalizedName"
+            [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
+            [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+                {{option.LocalizedName}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error>Invalid Input</mat-error>
+    </mat-form-field>
+</form>
 <mat-card class="home__card">
-    <mat-card-title></mat-card-title>
+    <div *ngIf="!optionContent; else contentAvailable">Unavailable</div>
+    <ng-template #contentAvailable>
+        <mat-card-title class="home__title">
+            <span>
+                <span>{{form.controls['LocalizedName'].value}}</span>
+                <span>{{optionContent.Temperature.Metric.Value}}&#176;C</span>
+            </span>
+            <button mat-flat-button [color]="'primary'">
+                Add To Favorites
+            </button>
+        </mat-card-title>
+
+    </ng-template>
 </mat-card>
