@@ -1,3 +1,4 @@
+import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
 import { Forecast } from './../../model/forecast';
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
@@ -15,20 +16,23 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  readonly FILTER_INITIAL_VALUE: Location = { Key: '215854', LocalizedName: 'Tel Aviv' };
+  selectedOption: Location = { Key: '215854', LocalizedName: 'Tel Aviv' };
   form = this.formBuilder.group({
-    Key: [this.FILTER_INITIAL_VALUE.Key],
-    LocalizedName: [this.FILTER_INITIAL_VALUE.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
+    Key: [this.selectedOption.Key],
+    LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
   });
   filteredOptions$: Observable<Location[]>;
   currentConditions: CurrentConditions;
   forecasts: Forecast[];
 
-  constructor(private formBuilder: FormBuilder, private apiService: ApiService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private apiService: ApiService,
+    private favoriteLocationsService: FavoriteLocationsService) { }
 
   ngOnInit(): void {
     this.filteredOptions$ = concat(
-      of(this.FILTER_INITIAL_VALUE.LocalizedName),
+      of(this.selectedOption.LocalizedName),
       this.form.controls['LocalizedName'].valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
@@ -38,13 +42,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ Key: location.Key, LocalizedName: location.LocalizedName })))
     );
-    this._buildCurrentConditions(this.FILTER_INITIAL_VALUE.Key);
+    this._buildCurrentConditions(this.selectedOption.Key);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent) {
+    this.selectedOption = event.option.value;
     this.form.setValue({
-      ...event.option.value
-    })
+      ...this.selectedOption
+    });
     this._buildCurrentConditions(event.option.value.Key);
   }
 
@@ -71,5 +76,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     
+  }
+
+  toggleFavorites() {
+    this.favoriteLocationsService.add({ id: this.selectedOption.Key, localizedName: this.selectedOption.LocalizedName, temperatureValue: 23, icon: 2})
   }
 }

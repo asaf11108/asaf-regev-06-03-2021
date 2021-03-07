@@ -12,13 +12,15 @@ import { FavoritsComponent } from './components/favorits/favorits.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastComponent } from './components/forecast/forecast.component';
+import { FavoritesToggleDirective } from './directives/favorites-toggle.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     FavoritsComponent,
-    ForecastComponent
+    ForecastComponent,
+    FavoritesToggleDirective
   ],
   imports: [
     BrowserModule,

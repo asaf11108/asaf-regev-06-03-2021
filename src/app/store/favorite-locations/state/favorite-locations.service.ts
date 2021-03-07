@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { tap } from 'rxjs/operators';
 import { FavoriteLocation } from './favorite-location.model';
 import { FavoriteLocationsStore } from './favorite-locations.store';
 
@@ -16,7 +14,7 @@ export class FavoriteLocationsService {
     this.favoriteLocationsStore.add(favoriteLocation);
   }
 
-  remove(id: ID) {
+  remove(id: string) {
     this.favoriteLocationsStore.remove(id);
   }
 

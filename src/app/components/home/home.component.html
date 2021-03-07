@@ -1,4 +1,4 @@
-<form [formGroup]='form' class="home__search-input">
+<form [formGroup]='form' class="home__search-form">
     <mat-form-field [floatLabel]="'never'">
         <mat-icon [inline]="true" matPrefix>search</mat-icon>
         <input type="text" placeholder="search location" matInput formControlName="LocalizedName"
@@ -17,12 +17,10 @@
     <ng-template #contentAvailable>
         <mat-card-title class="home__title">
             <span>
-                <span>{{form.controls['LocalizedName'].value}}</span>
+                <span>{{selectedOption.LocalizedName}}</span>
                 <span>{{currentConditions.Temperature.Metric.Value}}&#176;C</span>
             </span>
-            <button mat-flat-button [color]="'primary'">
-                Add To Favorites
-            </button>
+            <button mat-flat-button favoritesToggle [color]="'primary'" (click)="toggleFavorites()"></button>
         </mat-card-title>
         <mat-card-content class="home__content">
             <h1 class="home__content-header">{{currentConditions.WeatherText}}</h1>
