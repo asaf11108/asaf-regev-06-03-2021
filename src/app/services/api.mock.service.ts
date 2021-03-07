@@ -12,7 +12,7 @@ export class ApiService implements IapiService {
 
     constructor() { }
 
-    getLocations(query: string): Observable<any[]> {
+    getLocations(query: string): Observable<Partial<Location>[]> {
         if (query.toLowerCase().includes('tel aviv')) {
             return of([{"Version":1,"Key":"215854","Type":"City","Rank":31,"LocalizedName":"Tel Aviv","Country":{"ID":"IL","LocalizedName":"Israel"},"AdministrativeArea":{"ID":"TA","LocalizedName":"Tel Aviv"}}]).pipe(tap(() => console.log('test')));
         } else if (query.toLowerCase().includes('paris')) {

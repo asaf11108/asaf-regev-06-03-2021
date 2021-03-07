@@ -15,9 +15,10 @@ export class ApiService implements IapiService {
 
   constructor(private http: HttpClient) { }
 
-  getLocations(query: string): Observable<Location[]> {
+  getLocations(query: string): Observable<Partial<Location>[]> {
     return this.http.get<Location[]>(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${this.API_KEY}&q=${encodeURIComponent(query)}`).pipe(
       catchError(() => of([]))
     )
   }
+  
 }
