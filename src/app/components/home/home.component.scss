@@ -32,12 +32,18 @@
     }
     &__content {
         flex-grow: 1;
-        align-self: center;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
     }
     &__content-header {
         font-size: 80px;
+        align-self: center;
+    }
+    &__forecasts {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        align-content: space-around;
     }
 }

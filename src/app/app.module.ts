@@ -11,12 +11,14 @@ import { HomeComponent } from './components/home/home.component';
 import { FavoritsComponent } from './components/favorits/favorits.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ForecastComponent } from './components/forecast/forecast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    FavoritsComponent
+    FavoritsComponent,
+    ForecastComponent
   ],
   imports: [
     BrowserModule,

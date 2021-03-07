@@ -1,3 +1,4 @@
+import { Forecast } from './../../model/forecast';
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     LocalizedName: [this.FILTER_INITIAL_VALUE.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
   });
   filteredOptions$: Observable<Location[]>;
-  optionContent: CurrentConditions;
+  currentConditions: CurrentConditions;
+  forecasts: Forecast[];
 
   constructor(private formBuilder: FormBuilder, private apiService: ApiService) { }
 
@@ -57,8 +59,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private _buildCurrentConditions(key: string): void {
     forkJoin([
       this.apiService.getCurrentConditions(key),
+      this.apiService.getForecasts(key)
     ]).pipe(untilDestroyed(this)).subscribe(res => {
-      this.optionContent = res[0][0];
+      this.currentConditions = res[0][0];
+      this.forecasts = res[1];
       console.log(res);
     })
   }
