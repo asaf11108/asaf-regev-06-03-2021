@@ -27,7 +27,9 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
-  providers: [],
+  providers: [
+    ...environment.providers
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

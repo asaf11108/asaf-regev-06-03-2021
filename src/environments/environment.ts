@@ -1,9 +1,14 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import { ApiService } from './../app/services/api.service';
+import { ApiService as ApiMockService } from "../app/services/api.mock.service";
 
 export const environment = {
-  production: false
+  production: false,
+  providers: [
+    // { provide: ApiMockService, use: ApiService }
+  ]
 };
 
 /*
