@@ -23,9 +23,9 @@ export class FavoritesToggleDirective implements OnInit {
   @HostListener('click')
   toggleFavorites() {
     this.renderer.removeChild(this.toggleSpan, this.toggle ? this.ADD_FAVORITES_TEXT : this.REMOVE_FAVORITES_TEXT);
+    this.toggle ? this.addFavorites.emit() : this.removeFavorites.emit();
     this.toggle = !this.toggle;
     this.renderer.appendChild(this.toggleSpan, this.toggle ? this.ADD_FAVORITES_TEXT : this.REMOVE_FAVORITES_TEXT);
-    this.toggle ? this.addFavorites.emit() : this.removeFavorites.emit();
   }
 
 }

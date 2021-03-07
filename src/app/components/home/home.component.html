@@ -20,7 +20,7 @@
                 <span>{{selectedOption.LocalizedName}}</span>
                 <span>{{currentConditions.Temperature.Metric.Value}}&#176;C</span>
             </span>
-            <button mat-flat-button favoritesToggle [color]="'primary'" (click)="toggleFavorites()"></button>
+            <button mat-flat-button favoritesToggle [color]="'primary'" (addFavorites)="addToFavorites()" (removeFavorites)="removeFromFavorites()"></button>
         </mat-card-title>
         <mat-card-content class="home__content">
             <h1 class="home__content-header">{{currentConditions.WeatherText}}</h1>

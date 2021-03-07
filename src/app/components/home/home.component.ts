@@ -78,7 +78,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     
   }
 
-  toggleFavorites() {
-    this.favoriteLocationsService.add({ id: this.selectedOption.Key, localizedName: this.selectedOption.LocalizedName, temperatureValue: 23, icon: 2})
+  addToFavorites() {
+    this.favoriteLocationsService.add({ id: this.selectedOption.Key, localizedName: this.selectedOption.LocalizedName, temperatureValue: 23, icon: 2});
+  }
+
+  removeFromFavorites() {
+    this.favoriteLocationsService.remove(this.selectedOption.Key);
   }
 }
