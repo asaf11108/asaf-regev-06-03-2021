@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from "../model/location";
 import { CurrentConditions } from "../model/current-conditions";
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { ForcastHttpResponse, Forecast } from '../model/forecast';
 
 
 @Injectable({
@@ -21,7 +22,14 @@ export class ApiService implements IapiService {
   }
 
   getCurrentConditions(key: string): Observable<CurrentConditions[]> {
-    return this.http.get<CurrentConditions[]>(`http://dataservice.accuweather.com/currentconditions/v1/${key}`).pipe(
+    return this.http.get<CurrentConditions[]>(`http://dataservice.accuweather.com/currentconditions/v1/${key}?apikey=${API_KEY}`).pipe(
+      catchError(() => of([]))
+    )
+  }
+
+  getForecasts(key: string): Observable<Forecast[]> {
+    return this.http.get<ForcastHttpResponse>(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${key}?apikey=${API_KEY}&metric=true`).pipe(
+      map(res => res.DailyForecasts),
       catchError(() => of([]))
     )
   }
