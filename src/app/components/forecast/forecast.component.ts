@@ -8,7 +8,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ForecastComponent implements OnInit {
   @Input() forecast: Forecast;
-  @Input() showIcon = false;
 
   constructor() { }
 
