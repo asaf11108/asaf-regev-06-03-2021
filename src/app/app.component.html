@@ -1,13 +1,31 @@
 <div class="app__container">
-  <mat-toolbar>
+  <mat-toolbar class="app__toolbar">
     <span>Herolo Weather Task</span>
-    <span class="example-spacer"></span>
-    <button mat-flat-button class="example-icon" [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
-      Home
-    </button>
-    <button mat-flat-button class="example-icon" [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']">
-      Favorites
-    </button>
+
+    <span fxHide.lt-sm="true">
+      <ng-container *ngTemplateOutlet="menuActions"></ng-container>
+    </span>
+
+    <span fxHide.gt-xs="true">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <div fxLayout="column">
+          <ng-container *ngTemplateOutlet="menuActions"></ng-container>
+        </div>
+      </mat-menu>
+    </span>
+
+    <ng-template #menuActions>
+      <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
+        Home
+      </button>
+      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']">
+        Favorites
+      </button>
+    </ng-template>
+    
   </mat-toolbar>
   <div class="app__content-wrapper">
     <div class="app__content">

@@ -7,6 +7,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatMenuModule} from '@angular/material/menu';
 
 const components = [
     MatToolbarModule,
@@ -15,7 +16,8 @@ const components = [
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatMenuModule
 ];
 
 @NgModule({

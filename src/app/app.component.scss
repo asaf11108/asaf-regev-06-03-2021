@@ -8,6 +8,9 @@
         height: 100%;
         align-items: center;
     }
+    &__toolbar {
+        justify-content: space-between;
+    }
     &__content {
         flex-grow: 1;
         margin: 50px 0;
@@ -16,7 +19,9 @@
     &__content-wrapper {
         flex-grow: 1;
         align-self: stretch;
-        background: url('/assets/weather.jpeg') no-repeat center/100%, url('/asaf-regev-06-03-2021/assets/weather.jpeg') no-repeat center/100%;
+        background-image: url('/assets/weather.jpeg'), url('/asaf-regev-06-03-2021/assets/weather.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
         display: flex;
         flex-direction: column;
         align-items: center;
