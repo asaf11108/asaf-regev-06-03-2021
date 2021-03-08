@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { FavoritesToggleDirective } from './directives/favorites-toggle.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FavoritesToggleDirective } from './directives/favorites-toggle.directiv
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MaterialModule,
+    FlexLayoutModule,
     environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
   providers: [
