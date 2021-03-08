@@ -1,4 +1,7 @@
 .favorites {
     display: flex;
     flex-wrap: wrap;
+    &__forecast {
+        cursor: pointer;
+    }
 }
