@@ -1,20 +1,17 @@
-.example-spacer {
-    flex: 1 1 auto;
-}
+@use 'vendors';
+$toolbar-height: 64px;
+$toolbar-height-mobile: 56px;
+
 .app {
     &__container {
-        display: flex;
-        flex-direction: column;
         height: 100%;
-        align-items: center;
     }
     &__toolbar {
         justify-content: space-between;
     }
     &__content {
-        flex-grow: 1;
-        margin: 50px 0;
-        width: 50vw;
+        @include vendors.spread(margin, 10px, 50px);
+        @include vendors.spread(width, 90vw, 50vw);
     }
     &__content-wrapper {
         flex-grow: 1;
@@ -23,7 +20,12 @@
         background-repeat: no-repeat;
         background-size: cover;
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
+        height: calc(100vh - #{$toolbar-height});
+        @include vendors.media('<=xs') {
+            height: calc(100vh - #{$toolbar-height-mobile});
+        }
+        
     }
 }
