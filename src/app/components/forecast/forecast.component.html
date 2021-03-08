@@ -2,7 +2,6 @@
     <mat-card-title>
         <p>{{ forecast.title }}</p>
         <p>{{forecast.temperature}}&#176;C</p>
-        <img *ngIf="forecast.icon" [src]="'/assets/weather-icons/' + forecast.icon + '.png'"
-                (error)="this.src = '/asaf-regev-06-03-2021/assets/weather-icons/' + forecast.icon + '.png'"/>
+        <img *ngIf="forecast.icon" [src]="forecast.icon" (error)="onImgError($event)"/>
     </mat-card-title>
 </mat-card>

@@ -15,7 +15,7 @@ export class FavoritsComponent implements OnInit {
   constructor(private favoriteLocationsQuery: FavoriteLocationsQuery) { }
 
   ngOnInit(): void {
-    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll().pipe(tap(console.log));
+    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll();
   }
 
 }

@@ -88,7 +88,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addToFavorites(): void {
-    this.favoriteLocationsService.add({ id: this.selectedOption.Key, title: this.selectedOption.LocalizedName, temperature: 23, icon: 2});
+    this.favoriteLocationsService.add({
+      id: this.selectedOption.Key,
+      title: this.selectedOption.LocalizedName,
+      temperature: this.currentConditions.Temperature.Metric.Value,
+      icon: this.currentConditions.WeatherIcon.toString()
+    });
   }
 
   removeFromFavorites(): void {

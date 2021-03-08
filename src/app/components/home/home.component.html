@@ -25,7 +25,7 @@
         <mat-card-content class="home__content">
             <h1 class="home__content-header">{{currentConditions.WeatherText}}</h1>
             <div class="home__forecasts">
-                <app-forecast *ngFor="let forecast of forecasts" [forecast]="forecast"></app-forecast>
+                <app-forecast *ngFor="let forecast of forecasts" [forecastData]="forecast"></app-forecast>
             </div>
         </mat-card-content>
     </ng-template>
