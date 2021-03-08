@@ -26,6 +26,6 @@ $toolbar-height-mobile: 56px;
         @include vendors.media('<=xs') {
             height: calc(100vh - #{$toolbar-height-mobile});
         }
-        
+        overflow: auto;
     }
 }
