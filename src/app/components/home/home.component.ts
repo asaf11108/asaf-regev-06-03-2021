@@ -4,8 +4,8 @@ import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, concat, of, forkJoin } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { Location } from "../../model/location";
@@ -18,7 +18,7 @@ import { format } from 'date-fns';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedOption: Location = { Key: '215854', LocalizedName: 'Tel Aviv' };
   form = this.formBuilder.group({
     Key: [this.selectedOption.Key],
@@ -47,7 +47,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ Key: location.Key, LocalizedName: location.LocalizedName })))
     );
-    this._buildCurrentConditions(this.selectedOption.Key);
+    this._setLocationWeather(this.selectedOption.Key);
+  }
+
+  ngAfterViewInit(): void {
+    this.setToggle();
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent) {
@@ -55,9 +59,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.form.setValue({
       ...this.selectedOption
     });
-    this._buildCurrentConditions(event.option.value.Key);
-    const exist = this.favoriteLocationsQuery.getAll().some(favoriteLocation => favoriteLocation.id === this.selectedOption.Key);
-    this.directive.changeToggle(exist);
+    this._setLocationWeather(event.option.value.Key);
+    this.setToggle();
   }
 
   displayFn(location: Location | string): string {
@@ -68,14 +71,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _buildCurrentConditions(key: string): void {
+  private _setLocationWeather(key: string): void {
     forkJoin([
       this.apiService.getCurrentConditions(key),
       this.apiService.getForecasts(key)
     ]).pipe(untilDestroyed(this)).subscribe(res => {
       this.currentConditions = res[0][0];
       this.forecasts = res[1].map(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -84,11 +87,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     
   }
 
-  addToFavorites() {
+  addToFavorites(): void {
     this.favoriteLocationsService.add({ id: this.selectedOption.Key, title: this.selectedOption.LocalizedName, temperature: 23, icon: 2});
   }
 
-  removeFromFavorites() {
+  removeFromFavorites(): void {
     this.favoriteLocationsService.remove(this.selectedOption.Key);
+  }
+
+  setToggle(): void {
+    const exist = this.favoriteLocationsQuery.hasEntity(this.selectedOption.Key);
+    this.directive.changeToggle(exist);
   }
 }
