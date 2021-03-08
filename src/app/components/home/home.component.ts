@@ -1,3 +1,5 @@
+import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
+import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
 import { FavoritesToggleDirective } from './../../directives/favorites-toggle.directive';
 import { ForecastData } from './../forecast/forecast.data';
@@ -5,7 +7,7 @@ import { FavoriteLocationsService } from './../../store/favorite-locations/state
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of, forkJoin } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { Location } from "../../model/location";
@@ -19,11 +21,8 @@ import { format } from 'date-fns';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  selectedOption: Location = { Key: '215854', LocalizedName: 'Tel Aviv' };
-  form = this.formBuilder.group({
-    Key: [this.selectedOption.Key],
-    LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
-  });
+  selectedOption: Location;
+  form: FormGroup;
   filteredOptions$: Observable<Location[]>;
   currentConditions: CurrentConditions;
   forecasts: ForecastData[];
@@ -33,9 +32,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private favoriteLocationsService: FavoriteLocationsService,
-    private favoriteLocationsQuery: FavoriteLocationsQuery) { }
+    private favoriteLocationsQuery: FavoriteLocationsQuery,
+    ) { }
 
   ngOnInit(): void {
+    const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
+    this.selectedOption = {
+      Key: activeFavoriteLocation?.id || '215854',
+      LocalizedName: activeFavoriteLocation?.title ||'Tel Aviv'
+    };
+    this.form = this.formBuilder.group({
+      Key: [this.selectedOption.Key],
+      LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
+    })
     this.filteredOptions$ = concat(
       of(this.selectedOption.LocalizedName),
       this.form.controls['LocalizedName'].valueChanges.pipe(
