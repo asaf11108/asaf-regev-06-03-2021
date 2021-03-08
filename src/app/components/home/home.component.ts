@@ -1,11 +1,13 @@
+import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
+import { FavoritesToggleDirective } from './../../directives/favorites-toggle.directive';
 import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, concat, of, forkJoin } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { Location } from "../../model/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -25,11 +27,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   filteredOptions$: Observable<Location[]>;
   currentConditions: CurrentConditions;
   forecasts: ForecastData[];
+  @ViewChild(FavoritesToggleDirective) directive: FavoritesToggleDirective;
 
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
-    private favoriteLocationsService: FavoriteLocationsService) { }
+    private favoriteLocationsService: FavoriteLocationsService,
+    private favoriteLocationsQuery: FavoriteLocationsQuery) { }
 
   ngOnInit(): void {
     this.filteredOptions$ = concat(
@@ -52,6 +56,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       ...this.selectedOption
     });
     this._buildCurrentConditions(event.option.value.Key);
+    const exist = this.favoriteLocationsQuery.getAll().some(favoriteLocation => favoriteLocation.id === this.selectedOption.Key);
+    this.directive.changeToggle(exist);
   }
 
   displayFn(location: Location | string): string {

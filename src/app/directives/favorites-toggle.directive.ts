@@ -6,7 +6,7 @@ import { Directive, ElementRef, EventEmitter, Output, OnInit, Renderer2, HostLis
 export class FavoritesToggleDirective implements OnInit {
   @Output() addFavorites = new EventEmitter<void>();
   @Output() removeFavorites = new EventEmitter<void>();
-  toggle: boolean;
+  exist: boolean;
   ADD_FAVORITES_TEXT = this.renderer.createText('Add to favorites');
   REMOVE_FAVORITES_TEXT = this.renderer.createText('Remove from favorites');
   toggleSpan: any;
@@ -14,7 +14,7 @@ export class FavoritesToggleDirective implements OnInit {
   constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit(): void {
-    this.toggle = true;
+    this.exist = false;
     this.toggleSpan = this.renderer.createElement('span');
     this.renderer.appendChild(this.toggleSpan, this.ADD_FAVORITES_TEXT);
     this.renderer.appendChild(this.elementRef.nativeElement, this.toggleSpan);
@@ -22,10 +22,14 @@ export class FavoritesToggleDirective implements OnInit {
 
   @HostListener('click')
   toggleFavorites() {
-    this.renderer.removeChild(this.toggleSpan, this.toggle ? this.ADD_FAVORITES_TEXT : this.REMOVE_FAVORITES_TEXT);
-    this.toggle ? this.addFavorites.emit() : this.removeFavorites.emit();
-    this.toggle = !this.toggle;
-    this.renderer.appendChild(this.toggleSpan, this.toggle ? this.ADD_FAVORITES_TEXT : this.REMOVE_FAVORITES_TEXT);
+    this.exist ? this.removeFavorites.emit() : this.addFavorites.emit();
+    this.changeToggle(!this.exist);
+  }
+
+  changeToggle(exist: boolean): void {
+    this.renderer.removeChild(this.toggleSpan, this.exist ? this.REMOVE_FAVORITES_TEXT : this.ADD_FAVORITES_TEXT);
+    this.exist = exist;
+    this.renderer.appendChild(this.toggleSpan, this.exist ? this.REMOVE_FAVORITES_TEXT : this.ADD_FAVORITES_TEXT);
   }
 
 }
