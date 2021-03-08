@@ -1,5 +1,4 @@
 import { Directive, ElementRef, EventEmitter, Output, OnInit, Renderer2, HostListener, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { timingSafeEqual } from 'crypto';
 
 @Directive({
   selector: '[favoritesToggle]'

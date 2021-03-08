@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const components = [
     MatToolbarModule,
@@ -17,7 +18,8 @@ const components = [
     MatInputModule,
     MatCardModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule
 ];
 
 @NgModule({
