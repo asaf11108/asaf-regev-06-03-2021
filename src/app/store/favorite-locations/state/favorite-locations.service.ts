@@ -1,5 +1,5 @@
 import { Forecast } from './../../../model/forecast';
-import { ApiService } from './../../../services/api.service';
+import { ApiService } from './../../../services/api.mock.service';
 import { Injectable } from '@angular/core';
 import { FavoriteLocation } from './favorite-location.model';
 import { FavoriteLocationsStore } from './favorite-locations.store';
@@ -27,7 +27,7 @@ export class FavoriteLocationsService {
     forkJoin([
       this.apiService.getCurrentConditions(key),
       this.apiService.getForecasts(key)
-    ]).pipe(untilDestroyed(this)).subscribe(res => {
+    ]).subscribe(res => {
       const currentConditions = res[0][0];
       const forecasts: Forecast[] = res[1].map(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
 
@@ -35,7 +35,8 @@ export class FavoriteLocationsService {
         id: key,
         title,
         temperature: currentConditions.Temperature.Metric.Value,
-        icon: currentConditions.WeatherText,
+        weatherText: currentConditions.WeatherText,
+        icon: currentConditions.WeatherIcon.toString(),
         forecasts,
         favorite: false
       });

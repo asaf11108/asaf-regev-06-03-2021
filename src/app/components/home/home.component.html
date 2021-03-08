@@ -13,20 +13,23 @@
     </mat-form-field>
 </form>
 <mat-card class="home__card">
-    <h1 *ngIf="!currentConditions; else contentAvailable" class="home__unavailable">Unavailable</h1>
-    <ng-template #contentAvailable>
-        <mat-card-title class="home__title">
-            <span>
-                <span>{{selectedOption.LocalizedName}}</span>
-                <span>{{currentConditions.Temperature.Metric.Value}}&#176;C</span>
-            </span>
-            <button mat-flat-button favoritesToggle [color]="'primary'" (addFavorites)="addToFavorites()" (removeFavorites)="removeFromFavorites()"></button>
-        </mat-card-title>
-        <mat-card-content class="home__content">
-            <h1 class="home__content-header">{{currentConditions.WeatherText}}</h1>
-            <div class="home__forecasts">
-                <app-forecast *ngFor="let forecast of forecasts" [forecastData]="forecast"></app-forecast>
-            </div>
-        </mat-card-content>
-    </ng-template>
+    <ng-container *ngIf="favoriteLocation$ | async as favoriteLocation">
+        <h1 *ngIf="!favoriteLocation; else contentAvailable" class="home__unavailable">Unavailable</h1>
+        <ng-template #contentAvailable>
+            <mat-card-title class="home__title">
+                <span>
+                    <span>{{favoriteLocation.title}}</span>
+                    <span>{{favoriteLocation.temperature}}&#176;C</span>
+                </span>
+                <button mat-flat-button [favoritesToggle]="isFavorite$ | async" [color]="'primary'"
+                    (addFavorites)="addToFavorites()" (removeFavorites)="removeFromFavorites()"></button>
+            </mat-card-title>
+            <mat-card-content class="home__content">
+                <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
+                <div class="home__forecasts">
+                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecastData]="forecast"></app-forecast>
+                </div>
+            </mat-card-content>
+        </ng-template>
+    </ng-container>
 </mat-card>

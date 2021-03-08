@@ -24,9 +24,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedOption: Location;
   form: FormGroup;
   filteredOptions$: Observable<Location[]>;
-  currentConditions: CurrentConditions;
-  forecasts: ForecastData[];
   @ViewChild(FavoritesToggleDirective) directive: FavoritesToggleDirective;
+  favoriteLocation$: Observable<FavoriteLocation>;
+  isFavorite$: Observable<boolean>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,10 +42,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       Key: activeFavoriteLocation?.id || '215854',
       LocalizedName: activeFavoriteLocation?.title ||'Tel Aviv'
     };
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
     this.form = this.formBuilder.group({
       Key: [this.selectedOption.Key],
       LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
-    })
+    });
     this.filteredOptions$ = concat(
       of(this.selectedOption.LocalizedName),
       this.form.controls['LocalizedName'].valueChanges.pipe(
@@ -61,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.setToggle();
+    // this.setToggle();
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent) {
@@ -70,7 +71,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       ...this.selectedOption
     });
     this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
-    this.setToggle();
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
+    // this.setToggle();
   }
 
   displayFn(location: Location | string): string {
