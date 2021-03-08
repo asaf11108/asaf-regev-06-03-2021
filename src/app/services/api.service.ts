@@ -1,4 +1,3 @@
-import { environment } from './../../environments/environment.prod';
 import { API_KEY, IapiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -6,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Location } from "../model/location";
 import { CurrentConditions } from "../model/current-conditions";
 import { catchError, map } from 'rxjs/operators';
-import { ForcastHttpResponse, Forecast } from '../model/forecast';
+import { ForecastHttpResponse, ForecastsHttpResponse } from '../model/forecast';
 
 
 @Injectable({
@@ -30,8 +29,8 @@ export class ApiService implements IapiService {
     )
   }
 
-  getForecasts(key: string): Observable<Forecast[]> {
-    return this.http.get<ForcastHttpResponse>(`${this.HTTP_PREFIX}http://dataservice.accuweather.com/forecasts/v1/daily/5day/${key}?apikey=${API_KEY}&metric=true`).pipe(
+  getForecasts(key: string): Observable<ForecastHttpResponse[]> {
+    return this.http.get<ForecastsHttpResponse>(`${this.HTTP_PREFIX}http://dataservice.accuweather.com/forecasts/v1/daily/5day/${key}?apikey=${API_KEY}&metric=true`).pipe(
       map(res => res.DailyForecasts),
       catchError(() => of([]))
     )

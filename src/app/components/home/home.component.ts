@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private apiService: ApiService,
     private favoriteLocationsService: FavoriteLocationsService,
     private favoriteLocationsQuery: FavoriteLocationsQuery,
+    private favoriteLocationsStore: FavoriteLocationsStore
     ) { }
 
   ngOnInit(): void {
@@ -56,7 +57,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ Key: location.Key, LocalizedName: location.LocalizedName })))
     );
-    this._setLocationWeather(this.selectedOption.Key);
+    this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
   }
 
   ngAfterViewInit(): void {
@@ -68,7 +69,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.form.setValue({
       ...this.selectedOption
     });
-    this._setLocationWeather(event.option.value.Key);
+    this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
     this.setToggle();
   }
 
@@ -80,16 +81,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private _setLocationWeather(key: string): void {
-    forkJoin([
-      this.apiService.getCurrentConditions(key),
-      this.apiService.getForecasts(key)
-    ]).pipe(untilDestroyed(this)).subscribe(res => {
-      this.currentConditions = res[0][0];
-      this.forecasts = res[1].map(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
-    });
-  }
-
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
@@ -97,16 +88,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addToFavorites(): void {
-    this.favoriteLocationsService.add({
-      id: this.selectedOption.Key,
-      title: this.selectedOption.LocalizedName,
-      temperature: this.currentConditions.Temperature.Metric.Value,
-      icon: this.currentConditions.WeatherIcon.toString()
-    });
+    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: true}));
   }
-
+  
   removeFromFavorites(): void {
-    this.favoriteLocationsService.remove(this.selectedOption.Key);
+    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: false}));
   }
 
   setToggle(): void {

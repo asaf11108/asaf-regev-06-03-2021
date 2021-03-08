@@ -1,11 +1,10 @@
-import { ForcastHttpResponse } from './../model/forecast';
+import { ForecastHttpResponse } from './../model/forecast';
 import { IapiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Location } from "../model/location";
 import { tap } from 'rxjs/operators';
 import { CurrentConditions } from '../model/current-conditions';
-import { Forecast } from '../model/forecast';
 
 
 @Injectable({
@@ -53,7 +52,7 @@ export class ApiService implements IapiService {
           ]);
     }
 
-    getForecasts(key: string): Observable<Forecast[]> {
+    getForecasts(key: string): Observable<ForecastHttpResponse[]> {
         const forcastHttpResponse = {
             "Headline": {
               "EffectiveDate": "2021-03-11T07:00:00+02:00",

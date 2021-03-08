@@ -1,8 +1,8 @@
-export interface ForcastHttpResponse {
-    DailyForecasts: Forecast[];
+export interface ForecastsHttpResponse {
+    DailyForecasts: ForecastHttpResponse[];
 }
 
-export interface Forecast {
+export interface ForecastHttpResponse {
     Date: string;
     Temperature: {
         Minimum: {
@@ -12,4 +12,9 @@ export interface Forecast {
     Day: {
         Icon: number;
     }
+}
+
+export interface Forecast {
+    title: string;
+    temperature: number
 }
