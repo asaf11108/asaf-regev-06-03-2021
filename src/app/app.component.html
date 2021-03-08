@@ -18,10 +18,10 @@
     </span>
 
     <ng-template #menuActions>
-      <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
+      <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']" [disabled]="isLoading$ | async">
         Home
       </button>
-      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']">
+      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']" [disabled]="isLoading$ | async">
         Favorites
       </button>
     </ng-template>
