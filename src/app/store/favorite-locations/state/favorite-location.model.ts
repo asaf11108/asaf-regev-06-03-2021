@@ -1,6 +1,6 @@
 export interface FavoriteLocation {
   id: string;
-  localizedName: string;
-  temperatureValue: number;
+  title: string;
+  temperature: number;
   icon: number;
 }

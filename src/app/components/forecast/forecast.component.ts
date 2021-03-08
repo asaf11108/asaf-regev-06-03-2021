@@ -1,13 +1,14 @@
-import { Forecast } from './../../model/forecast';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ForecastData } from './forecast.data';
 
 @Component({
   selector: 'app-forecast',
   templateUrl: './forecast.component.html',
-  styleUrls: ['./forecast.component.scss']
+  styleUrls: ['./forecast.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForecastComponent implements OnInit {
-  @Input() forecast: Forecast;
+  @Input() forecast: ForecastData;
 
   constructor() { }
 

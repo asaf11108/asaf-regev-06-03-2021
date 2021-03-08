@@ -1,10 +1,3 @@
 <div class="favorites">
-    <mat-card *ngFor="let favoriteLocation of favoriteLocations$ | async" class="favorites__card">
-        <mat-card-title>
-            <p>{{ favoriteLocation.localizedName }}</p>
-            <p>{{ favoriteLocation.temperatureValue }}&#176;C</p>
-            <img [src]="'/assets/weather-icons/' + favoriteLocation.icon + '.png'"
-                (error)="this.src = '/asaf-regev-06-03-2021/assets/weather-icons/' + favoriteLocation.icon + '.png'"/>
-        </mat-card-title>
-    </mat-card>
+    <app-forecast *ngFor="let favoriteLocation of favoriteLocations$ | async" [forecast]="favoriteLocation"></app-forecast>
 </div>

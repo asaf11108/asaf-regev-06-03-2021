@@ -1,5 +1,5 @@
+import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
-import { Forecast } from './../../model/forecast';
 import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -9,6 +9,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, tap, filter } from 
 import { Location } from "../../model/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   });
   filteredOptions$: Observable<Location[]>;
   currentConditions: CurrentConditions;
-  forecasts: Forecast[];
+  forecasts: ForecastData[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,8 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.apiService.getForecasts(key)
     ]).pipe(untilDestroyed(this)).subscribe(res => {
       this.currentConditions = res[0][0];
-      this.forecasts = res[1];
-      console.log(res);
+      this.forecasts = res[1].map(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
     })
   }
 
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites() {
-    this.favoriteLocationsService.add({ id: this.selectedOption.Key, localizedName: this.selectedOption.LocalizedName, temperatureValue: 23, icon: 2});
+    this.favoriteLocationsService.add({ id: this.selectedOption.Key, title: this.selectedOption.LocalizedName, temperature: 23, icon: 2});
   }
 
   removeFromFavorites() {

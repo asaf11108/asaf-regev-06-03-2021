@@ -1,6 +1,8 @@
 <mat-card>
     <mat-card-title>
-        <p>{{ forecast.Date | date:'EEE' }}</p>
-        <p>{{forecast.Temperature.Minimum.Value}}&#176;C</p>
+        <p>{{ forecast.title }}</p>
+        <p>{{forecast.temperature}}&#176;C</p>
+        <img *ngIf="forecast.icon" [src]="'/assets/weather-icons/' + forecast.icon + '.png'"
+                (error)="this.src = '/asaf-regev-06-03-2021/assets/weather-icons/' + forecast.icon + '.png'"/>
     </mat-card-title>
 </mat-card>
