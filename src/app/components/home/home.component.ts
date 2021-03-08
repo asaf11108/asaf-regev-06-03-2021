@@ -28,13 +28,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private favoriteLocationsService: FavoriteLocationsService,
     private favoriteLocationsQuery: FavoriteLocationsQuery,
     private favoriteLocationsStore: FavoriteLocationsStore
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
     this.selectedOption = {
       Key: activeFavoriteLocation?.id || '215854',
-      LocalizedName: activeFavoriteLocation?.title ||'Tel Aviv'
+      LocalizedName: activeFavoriteLocation?.title || 'Tel Aviv'
     };
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
@@ -76,15 +76,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    
   }
 
   addToFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: true}));
+    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: true }));
   }
-  
+
   removeFromFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: false}));
+    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: false }));
   }
 
 }
