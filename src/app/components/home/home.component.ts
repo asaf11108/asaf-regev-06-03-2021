@@ -1,32 +1,26 @@
 import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
 import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
-import { FavoritesToggleDirective } from './../../directives/favorites-toggle.directive';
-import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
-import { CurrentConditions } from './../../model/current-conditions';
 import { ApiService } from './../../services/api.mock.service';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, concat, of, forkJoin } from 'rxjs';
+import { Observable, concat, of } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { Location } from "../../model/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { format } from 'date-fns';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   selectedOption: Location;
   form: FormGroup;
   filteredOptions$: Observable<Location[]>;
-  @ViewChild(FavoritesToggleDirective) directive: FavoritesToggleDirective;
   favoriteLocation$: Observable<FavoriteLocation>;
-  isFavorite$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       LocalizedName: activeFavoriteLocation?.title ||'Tel Aviv'
     };
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
+    this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.form = this.formBuilder.group({
       Key: [this.selectedOption.Key],
       LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
@@ -61,10 +56,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
   }
 
-  ngAfterViewInit(): void {
-    // this.setToggle();
-  }
-
   onSelectionChange(event: MatAutocompleteSelectedEvent) {
     this.selectedOption = event.option.value;
     this.form.setValue({
@@ -72,7 +63,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
-    // this.setToggle();
   }
 
   displayFn(location: Location | string): string {
@@ -97,8 +87,4 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: false}));
   }
 
-  setToggle(): void {
-    const exist = this.favoriteLocationsQuery.hasEntity(this.selectedOption.Key);
-    this.directive.changeToggle(exist);
-  }
 }

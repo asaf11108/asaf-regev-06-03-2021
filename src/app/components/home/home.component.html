@@ -21,7 +21,7 @@
                     <span>{{favoriteLocation.title}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [favoritesToggle]="isFavorite$ | async" [color]="'primary'"
+                <button mat-flat-button [favoritesToggle]="favoriteLocation.favorite" [color]="'primary'" [disabled]="isLoading$ | async"
                     (addFavorites)="addToFavorites()" (removeFavorites)="removeFromFavorites()"></button>
             </mat-card-title>
             <mat-card-content class="home__content">
