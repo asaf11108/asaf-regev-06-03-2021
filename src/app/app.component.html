@@ -2,16 +2,16 @@
   <mat-toolbar class="app__toolbar">
     <span>Herolo Weather Task</span>
 
-    <span fxHide.lt-sm="true">
+    <span class="app__toolbar-actions">
       <ng-container *ngTemplateOutlet="menuActions"></ng-container>
     </span>
 
-    <span fxHide.gt-xs="true">
+    <span class="app__toolbar-actions--mobile">
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <div fxLayout="column">
+        <div class="app__menu">
           <ng-container *ngTemplateOutlet="menuActions"></ng-container>
         </div>
       </mat-menu>
@@ -25,7 +25,7 @@
         Favorites
       </button>
     </ng-template>
-    
+
   </mat-toolbar>
   <div class="app__content-wrapper">
     <div class="app__content">

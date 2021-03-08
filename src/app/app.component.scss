@@ -28,4 +28,18 @@ $toolbar-height-mobile: 56px;
         }
         overflow: auto;
     }
+    &__toolbar-actions {
+        @include vendors.media('<=xs') {
+            display: none;
+        }
+        &--mobile {
+            @include vendors.media('>xs') {
+                display: none;
+            }
+        }
+    }
+    &__menu {
+        display: flex;
+        flex-direction: column;
+    }
 }
