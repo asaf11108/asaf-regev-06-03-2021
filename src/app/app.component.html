@@ -1,4 +1,5 @@
 <div class="app__container">
+
   <mat-toolbar class="app__toolbar">
     <span>Herolo Weather Task</span>
 
@@ -16,20 +17,23 @@
         </div>
       </mat-menu>
     </span>
-
+    
     <ng-template #menuActions>
       <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
         Home
       </button>
-      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']" [disabled]="isLoading$ | async">
+      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']"
+        [disabled]="isLoading$ | async">
         Favorites
       </button>
     </ng-template>
 
   </mat-toolbar>
+
   <div class="app__content-wrapper">
     <div class="app__content">
       <router-outlet></router-outlet>
     </div>
   </div>
+
 </div>

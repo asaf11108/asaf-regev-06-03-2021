@@ -12,10 +12,13 @@
         <mat-error>Invalid Input</mat-error>
     </mat-form-field>
 </form>
+
 <mat-card class="home__card">
     <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
+
     <ng-template #contentAvailable>
         <ng-container *ngIf="favoriteLocation$ | async as favoriteLocation">
+
             <mat-card-title class="home__title">
                 <span>
                     <span>{{favoriteLocation.title}}</span>
@@ -25,6 +28,7 @@
                     {{favoriteLocation.favorite ? 'Remove from favorites' : 'Add to favorites' }}
                 </button>
             </mat-card-title>
+
             <mat-card-content class="home__content">
                 <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
                 <div class="home__forecasts">
@@ -32,6 +36,8 @@
                     </app-forecast>
                 </div>
             </mat-card-content>
+
         </ng-container>
     </ng-template>
+    
 </mat-card>

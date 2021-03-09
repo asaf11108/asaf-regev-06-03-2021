@@ -6,14 +6,17 @@ $toolbar-height-mobile: 56px;
     &__container {
         height: 100%;
     }
+
     &__toolbar {
         justify-content: space-between;
     }
+
     &__content {
         @include vendors.spread(margin, 10px 0, 50px 0);
         @include vendors.spread(width, 90vw, 50vw);
         box-sizing: border-box;
     }
+
     &__content-wrapper {
         flex-grow: 1;
         align-self: stretch;
@@ -29,16 +32,19 @@ $toolbar-height-mobile: 56px;
         }
         overflow: auto;
     }
+
     &__toolbar-actions {
         @include vendors.media('<=xs') {
             display: none;
         }
+
         &--mobile {
             @include vendors.media('>xs') {
                 display: none;
             }
         }
     }
+    
     &__menu {
         display: flex;
         flex-direction: column;
