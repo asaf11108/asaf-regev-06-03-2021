@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,7 +20,7 @@ export class FavoritsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll();
+    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll().pipe(map(favoriteLocations => favoriteLocations.filter(favoriteLocation => favoriteLocation.favorite)));
   }
 
   forecastClick(favoriteLocation: FavoriteLocation): void {
