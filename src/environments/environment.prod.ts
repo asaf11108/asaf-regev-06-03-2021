@@ -5,6 +5,6 @@ import { Provider } from '@angular/core';
 export const environment = {
   production: true,
   providers: [
-    { provide: ApiMockService, useExisting: ApiService }
+    { provide: ApiMockService, useClass: ApiService }
   ] as Provider[]
 };

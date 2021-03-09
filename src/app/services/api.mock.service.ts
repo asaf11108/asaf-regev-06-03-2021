@@ -7,9 +7,7 @@ import { tap } from 'rxjs/operators';
 import { CurrentConditions } from '../model/current-conditions';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ApiService implements IApiService {
 
   constructor() { }
