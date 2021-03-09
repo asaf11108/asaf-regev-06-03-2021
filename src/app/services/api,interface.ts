@@ -5,7 +5,7 @@ import { LocationHttpResponse } from "../model/location";
 
 export const API_KEY = 'GMSAk66lGdBPAHG1KvknsFrpTRFwGXyG';
 
-export interface IapiService {
+export interface IApiService {
     getLocations(query: string): Observable<LocationHttpResponse[]>;
     getCurrentConditions(key: string) : Observable<CurrentConditions[]>;
     getForecasts(key: string): Observable<ForecastHttpResponse[]>;

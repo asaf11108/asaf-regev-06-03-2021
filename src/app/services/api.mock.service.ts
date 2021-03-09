@@ -1,5 +1,5 @@
 import { ForecastHttpResponse } from './../model/forecast';
-import { IapiService } from './api,interface';
+import { IApiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { LocationHttpResponse } from "../model/location";
@@ -10,7 +10,7 @@ import { CurrentConditions } from '../model/current-conditions';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService implements IapiService {
+export class ApiService implements IApiService {
 
   constructor() { }
 

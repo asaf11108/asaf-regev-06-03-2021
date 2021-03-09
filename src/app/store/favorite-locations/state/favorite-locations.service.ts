@@ -13,7 +13,7 @@ export class FavoriteLocationsService {
   constructor(private favoriteLocationsStore: FavoriteLocationsStore, private apiService: ApiService) {
   }
 
-  getfavoriteData(key: string, title: string) {
+  getFavoriteData(key: string, title: string) {
     this.favoriteLocationsStore.setLoading(true);
     forkJoin([
       this.apiService.getCurrentConditions(key),

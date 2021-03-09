@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './components/home/home.component';
-import { FavoritsComponent } from './components/favorits/favorits.component';
+import { FavoritsComponent } from './components/favorites/favorites.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastComponent } from './components/forecast/forecast.component';

@@ -1,6 +1,6 @@
 import { ApiService as ApiMockService } from './api.mock.service';
 import { FavoriteLocationsStore } from './../store/favorite-locations/state/favorite-locations.store';
-import { API_KEY, IapiService } from './api,interface';
+import { API_KEY, IApiService } from './api,interface';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -14,11 +14,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService implements IapiService {
+export class ApiService implements IApiService {
 
   HTTP_PREFIX = 'https://cors-anywhere.herokuapp.com/';
-  readonly BAD_REQUEST = 'Bad request. Switched to mock.';
-  readonly apiMockService: IapiService;
+  readonly BAD_REQUEST = ' Unable to retrieve data. Switched to mock data.';
+  readonly apiMockService: IApiService;
 
   constructor(
     private http: HttpClient,

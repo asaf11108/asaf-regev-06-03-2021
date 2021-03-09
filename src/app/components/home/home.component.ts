@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
-    this.favoriteLocationsService.getfavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
+    this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent): void {
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
     this.form.setValue({
       ...this.selectedOption
     });
-    this.favoriteLocationsService.getfavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
+    this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
   }
 
