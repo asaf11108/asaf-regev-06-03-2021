@@ -41,15 +41,15 @@ export class HomeComponent implements OnInit {
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
     this.form = this.formBuilder.group({
-      Key: [this.selectedOption.key],
-      LocalizedName: [this.selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
+      key: [this.selectedOption.key],
+      localizedName: [this.selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
     });
     this.filteredOptions$ = concat(
       of(this.selectedOption.localizedName),
-      this.form.controls['LocalizedName'].valueChanges.pipe(
+      this.form.controls['localizedName'].valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        filter(() => !this.form.controls['LocalizedName'].invalid)
+        filter(() => !this.form.controls['localizedName'].invalid)
       )
     ).pipe(
       switchMap(query => this.apiService.getLocations(query)),
@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     this.favoriteLocationsService.getfavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
   }
 
-  onSelectionChange(event: MatAutocompleteSelectedEvent) {
+  onSelectionChange(event: MatAutocompleteSelectedEvent): void {
     this.selectedOption = event.option.value;
     this.form.setValue({
       ...this.selectedOption
@@ -75,12 +75,15 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  addToFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: true }));
+  favoriteClick(favorite: boolean): void {
+    if (favorite) {
+      this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: false }));
+    } else {
+      this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: true }));
+    }
   }
 
   removeFromFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: false }));
   }
 
 }

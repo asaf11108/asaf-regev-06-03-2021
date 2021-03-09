@@ -12,7 +12,6 @@ import { FavoritsComponent } from './components/favorits/favorits.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastComponent } from './components/forecast/forecast.component';
-import { FavoritesToggleDirective } from './directives/favorites-toggle.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { FavoritesToggleDirective } from './directives/favorites-toggle.directiv
     HomeComponent,
     FavoritsComponent,
     ForecastComponent,
-    FavoritesToggleDirective
   ],
   imports: [
     BrowserModule,

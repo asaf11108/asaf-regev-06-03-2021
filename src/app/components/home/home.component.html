@@ -1,7 +1,7 @@
 <form [formGroup]='form' class="home__search-form">
     <mat-form-field [floatLabel]="'never'">
         <mat-icon [inline]="true" matPrefix>search</mat-icon>
-        <input type="text" placeholder="search location" matInput formControlName="LocalizedName"
+        <input type="text" placeholder="search location" matInput formControlName="localizedName"
             [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
             [displayWith]="displayFn">
@@ -21,9 +21,9 @@
                     <span>{{favoriteLocation.title}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [favoritesToggle]="favoriteLocation.favorite" [color]="'primary'"
-                    [disabled]="isLoading$ | async" (addFavorites)="addToFavorites()"
-                    (removeFavorites)="removeFromFavorites()"></button>
+                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="favoriteClick(favoriteLocation.favorite)">
+                    {{favoriteLocation.favorite ? 'Remove from favorites' : 'Add to favorites' }}
+                </button>
             </mat-card-title>
             <mat-card-content class="home__content">
                 <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
