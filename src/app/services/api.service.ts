@@ -4,7 +4,7 @@ import { API_KEY, IapiService } from './api,interface';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Location } from "../model/location";
+import { LocationHttpResponse } from "../model/location";
 import { CurrentConditions } from "../model/current-conditions";
 import { catchError, map } from 'rxjs/operators';
 import { ForecastHttpResponse, ForecastsHttpResponse } from '../model/forecast';
@@ -28,8 +28,8 @@ export class ApiService implements IapiService {
     this.apiMockService = new ApiMockService();
   }
 
-  getLocations(query: string): Observable<Location[]> {
-    return this.http.get<Location[]>(`${this.HTTP_PREFIX}http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${encodeURIComponent(query)}`).pipe(
+  getLocations(query: string): Observable<LocationHttpResponse[]> {
+    return this.http.get<LocationHttpResponse[]>(`${this.HTTP_PREFIX}http://dataservice.testaccuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${encodeURIComponent(query)}`).pipe(
       catchError(() => {
         this.handleError();
         return this.apiMockService.getLocations(query);

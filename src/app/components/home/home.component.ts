@@ -3,7 +3,7 @@ import { FavoriteLocationsStore } from './../../store/favorite-locations/state/f
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
 import { ApiService } from './../../services/api.mock.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   selectedOption: Location;
   form: FormGroup;
   filteredOptions$: Observable<Location[]>;
@@ -34,18 +34,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
     this.selectedOption = {
-      Key: activeFavoriteLocation?.id || '215854',
-      LocalizedName: activeFavoriteLocation?.title || 'Tel Aviv'
+      key: activeFavoriteLocation?.id ?? '215854',
+      localizedName: activeFavoriteLocation?.title ?? 'Tel Aviv'
     };
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
     this.form = this.formBuilder.group({
-      Key: [this.selectedOption.Key],
-      LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
+      Key: [this.selectedOption.key],
+      LocalizedName: [this.selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
     });
     this.filteredOptions$ = concat(
-      of(this.selectedOption.LocalizedName),
+      of(this.selectedOption.localizedName),
       this.form.controls['LocalizedName'].valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
@@ -53,9 +53,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
     ).pipe(
       switchMap(query => this.apiService.getLocations(query)),
-      map(locations => locations.map(location => ({ Key: location.Key, LocalizedName: location.LocalizedName })))
+      map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
-    this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
+    this.favoriteLocationsService.getfavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent) {
@@ -63,29 +63,24 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.form.setValue({
       ...this.selectedOption
     });
-    this.favoriteLocationsService.getfavoriteData(this.selectedOption.Key, this.selectedOption.LocalizedName);
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
+    this.favoriteLocationsService.getfavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
   }
 
   displayFn(location: Location | string): string {
-    if (typeof location == 'object') {
-      return location.LocalizedName;
+    if (typeof location === 'object') {
+      return location.localizedName;
     } else {
       return location;
     }
   }
 
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-  }
-
   addToFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: true }));
+    this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: true }));
   }
 
   removeFromFavorites(): void {
-    this.favoriteLocationsStore.update(this.selectedOption.Key, entity => ({ ...entity, favorite: false }));
+    this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: false }));
   }
 
 }

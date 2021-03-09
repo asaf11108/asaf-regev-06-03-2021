@@ -6,7 +6,7 @@
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
             [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-                {{option.LocalizedName}}
+                {{option.localizedName}}
             </mat-option>
         </mat-autocomplete>
         <mat-error>Invalid Input</mat-error>

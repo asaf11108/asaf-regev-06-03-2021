@@ -13,15 +13,6 @@ export class FavoriteLocationsService {
   constructor(private favoriteLocationsStore: FavoriteLocationsStore, private apiService: ApiService) {
   }
 
-
-  add(favoriteLocation: FavoriteLocation) {
-    this.favoriteLocationsStore.add(favoriteLocation);
-  }
-
-  remove(id: string) {
-    this.favoriteLocationsStore.remove(id);
-  }
-
   getfavoriteData(key: string, title: string) {
     this.favoriteLocationsStore.setLoading(true);
     forkJoin([
