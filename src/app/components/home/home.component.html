@@ -13,23 +13,25 @@
     </mat-form-field>
 </form>
 <mat-card class="home__card">
-    <ng-container *ngIf="favoriteLocation$ | async as favoriteLocation">
-        <h1 *ngIf="!favoriteLocation; else contentAvailable" class="home__unavailable">Unavailable</h1>
-        <ng-template #contentAvailable>
+    <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
+    <ng-template #contentAvailable>
+        <ng-container *ngIf="favoriteLocation$ | async as favoriteLocation">
             <mat-card-title class="home__title">
                 <span>
                     <span>{{favoriteLocation.title}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [favoritesToggle]="favoriteLocation.favorite" [color]="'primary'" [disabled]="isLoading$ | async"
-                    (addFavorites)="addToFavorites()" (removeFavorites)="removeFromFavorites()"></button>
+                <button mat-flat-button [favoritesToggle]="favoriteLocation.favorite" [color]="'primary'"
+                    [disabled]="isLoading$ | async" (addFavorites)="addToFavorites()"
+                    (removeFavorites)="removeFromFavorites()"></button>
             </mat-card-title>
             <mat-card-content class="home__content">
                 <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
                 <div class="home__forecasts">
-                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecastData]="forecast"></app-forecast>
+                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecastData]="forecast">
+                    </app-forecast>
                 </div>
             </mat-card-content>
-        </ng-template>
-    </ng-container>
+        </ng-container>
+    </ng-template>
 </mat-card>

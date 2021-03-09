@@ -1,3 +1,4 @@
+import { FavoriteLocationsStore } from './../store/favorite-locations/state/favorite-locations.store';
 import { AppComponent } from './../app.component';
 import { API_KEY, IapiService } from './api,interface';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -16,8 +17,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ApiService implements IapiService {
 
   HTTP_PREFIX = 'https://cors-anywhere.herokuapp.com/';
+  readonly BAD_REQUEST = 'Bad request';
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar, private favoriteLocationsStore: FavoriteLocationsStore) {}
 
   getLocations(query: string): Observable<Location[]> {
     return this.http.get<Location[]>(`${this.HTTP_PREFIX}http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${encodeURIComponent(query)}`).pipe(
@@ -39,7 +41,8 @@ export class ApiService implements IapiService {
   }
 
   handleError(): Observable<any[]> {
-    this._snackBar.open('Bad request', '', { duration: 2000 });
+    this._snackBar.open(this.BAD_REQUEST, '', { duration: 2000 });
+    this.favoriteLocationsStore.setError(this.BAD_REQUEST);
     return EMPTY;
   }
 }

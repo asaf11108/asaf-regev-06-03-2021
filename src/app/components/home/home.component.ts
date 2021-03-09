@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   filteredOptions$: Observable<Location[]>;
   favoriteLocation$: Observable<FavoriteLocation>;
   isLoading$: Observable<boolean>;
+  error$: Observable<string>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.Key);
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
+    this.error$ = this.favoriteLocationsQuery.selectError();
     this.form = this.formBuilder.group({
       Key: [this.selectedOption.Key],
       LocalizedName: [this.selectedOption.LocalizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]

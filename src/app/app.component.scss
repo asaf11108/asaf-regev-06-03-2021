@@ -10,8 +10,9 @@ $toolbar-height-mobile: 56px;
         justify-content: space-between;
     }
     &__content {
-        @include vendors.spread(margin, 10px, 50px);
+        @include vendors.spread(margin, 10px 0, 50px 0);
         @include vendors.spread(width, 90vw, 50vw);
+        box-sizing: border-box;
     }
     &__content-wrapper {
         flex-grow: 1;
