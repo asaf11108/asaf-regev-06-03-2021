@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { FavoriteLocationsQuery } from './store/favorite-locations/state/favorite-locations.query';
 import { Component, OnInit } from '@angular/core';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private favoriteLocationsQuery: FavoriteLocationsQuery) {}
 
   ngOnInit(): void {
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
+    this.isLoading$ = this.favoriteLocationsQuery.selectLoading().pipe(delay(0));
   }
 
 
