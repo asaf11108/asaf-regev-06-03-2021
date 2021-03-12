@@ -6,7 +6,7 @@ import { ApiService } from './../../services/api.mock.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 import { Location } from "../../model/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -16,8 +16,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  selectedOption: Location;
   form: FormGroup;
+
   filteredOptions$: Observable<Location[]>;
   favoriteLocation$: Observable<FavoriteLocation>;
   isLoading$: Observable<boolean>;
@@ -33,38 +33,38 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
-    this.selectedOption = {
+    const selectedOption: Location = {
       key: activeFavoriteLocation?.id ?? '215854',
       localizedName: activeFavoriteLocation?.title ?? 'Tel Aviv'
     };
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
+
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
+    
     this.form = this.formBuilder.group({
-      key: [this.selectedOption.key],
-      localizedName: [this.selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
+      key: [selectedOption.key],
+      localizedName: [selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
     });
     this.filteredOptions$ = concat(
-      of(this.selectedOption.localizedName),
-      this.form.controls['localizedName'].valueChanges.pipe(
+      of(selectedOption.localizedName),
+      this.form.get('localizedName').valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        filter(() => !this.form.controls['localizedName'].invalid)
+        filter(() => !this.form.get('localizedName').invalid)
       )
     ).pipe(
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
-    this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
+    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent): void {
-    this.selectedOption = event.option.value;
-    this.form.setValue({
-      ...this.selectedOption
-    });
-    this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
+    const selectedOption = event.option.value;
+    this.form.setValue({ ...selectedOption });
+    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
   }
 
   displayFn(location: Location | string): string {
@@ -77,13 +77,10 @@ export class HomeComponent implements OnInit {
 
   favoriteClick(favorite: boolean): void {
     if (favorite) {
-      this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: false }));
+      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, favorite: false }));
     } else {
-      this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, favorite: true }));
+      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, favorite: true }));
     }
-  }
-
-  removeFromFavorites(): void {
   }
 
 }
