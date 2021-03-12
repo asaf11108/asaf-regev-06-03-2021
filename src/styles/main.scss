@@ -2,5 +2,11 @@
 
 @use './vendors/vendors';
 
-html, body { height: 100vh; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    min-height: 100%;
+}

@@ -1,39 +1,35 @@
-<div class="app__container">
+<mat-toolbar class="app__toolbar">
+  <span>Herolo Weather Task</span>
 
-  <mat-toolbar class="app__toolbar">
-    <span>Herolo Weather Task</span>
+  <span class="app__toolbar-actions">
+    <ng-container *ngTemplateOutlet="menuActions"></ng-container>
+  </span>
 
-    <span class="app__toolbar-actions">
-      <ng-container *ngTemplateOutlet="menuActions"></ng-container>
-    </span>
+  <span class="app__toolbar-actions--mobile">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="app__menu">
+        <ng-container *ngTemplateOutlet="menuActions"></ng-container>
+      </div>
+    </mat-menu>
+  </span>
 
-    <span class="app__toolbar-actions--mobile">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <div class="app__menu">
-          <ng-container *ngTemplateOutlet="menuActions"></ng-container>
-        </div>
-      </mat-menu>
-    </span>
-    
-    <ng-template #menuActions>
-      <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
-        Home
-      </button>
-      <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']"
-        [disabled]="isLoading$ | async">
-        Favorites
-      </button>
-    </ng-template>
+  <ng-template #menuActions>
+    <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
+      Home
+    </button>
+    <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']"
+      [disabled]="isLoading$ | async">
+      Favorites
+    </button>
+  </ng-template>
 
-  </mat-toolbar>
+</mat-toolbar>
 
-  <div class="app__content-wrapper">
-    <div class="app__content">
-      <router-outlet></router-outlet>
-    </div>
+<div class="app__content-wrapper">
+  <div class="app__content">
+    <router-outlet></router-outlet>
   </div>
-
 </div>
