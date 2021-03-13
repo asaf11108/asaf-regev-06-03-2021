@@ -1,3 +1,4 @@
+import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsStore } from '../../store/favorite-locations/state/favorite-locations.store';
 import { Observable } from 'rxjs';
 import { FavoriteLocation } from '../../store/favorite-locations/state/favorite-location.model';
@@ -26,5 +27,9 @@ export class FavoritsComponent implements OnInit {
   forecastClick(favoriteLocation: FavoriteLocation): void {
     this.favoriteLocationsStore.setActive(favoriteLocation.id);
     this.router.navigate(['/home']);
+  }
+
+  mapToForecastComponent(favoriteLocation: FavoriteLocation): ForecastData {
+    return ({ title: favoriteLocation.locationName, temperature: favoriteLocation.temperature, icon: favoriteLocation.icon })
   }
 }
