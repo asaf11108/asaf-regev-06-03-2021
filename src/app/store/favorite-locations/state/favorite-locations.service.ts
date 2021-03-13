@@ -24,12 +24,12 @@ export class FavoriteLocationsService {
 
       this.favoriteLocationsStore.add({
         id: key,
-        title,
+        locationName: title,
         temperature: currentConditions.Temperature.Metric.Value,
         weatherText: currentConditions.WeatherText,
         icon: currentConditions.WeatherIcon.toString(),
         forecasts,
-        favorite: false
+        isFavorite: false
       });
       this.favoriteLocationsStore.setLoading(false);
     });

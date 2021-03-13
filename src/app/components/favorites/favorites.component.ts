@@ -20,7 +20,7 @@ export class FavoritsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll().pipe(map(favoriteLocations => favoriteLocations.filter(favoriteLocation => favoriteLocation.favorite)));
+    this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll().pipe(map(favoriteLocations => favoriteLocations.filter(favoriteLocation => favoriteLocation.isFavorite)));
   }
 
   forecastClick(favoriteLocation: FavoriteLocation): void {

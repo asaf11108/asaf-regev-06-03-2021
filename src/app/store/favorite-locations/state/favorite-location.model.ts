@@ -1,10 +1,10 @@
 import { Forecast } from './../../../model/forecast';
 export interface FavoriteLocation {
   id: string;
-  title: string;
+  locationName: string;
   weatherText: string;
   temperature: number;
   icon: string;
   forecasts: Forecast[];
-  favorite: boolean;
+  isFavorite: boolean;
 }

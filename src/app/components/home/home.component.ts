@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
     const selectedOption: Location = {
       key: activeFavoriteLocation?.id ?? '215854',
-      localizedName: activeFavoriteLocation?.title ?? 'Tel Aviv'
+      localizedName: activeFavoriteLocation?.locationName ?? 'Tel Aviv'
     };
 
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
@@ -77,9 +77,9 @@ export class HomeComponent implements OnInit {
 
   favoriteClick(favorite: boolean): void {
     if (favorite) {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, favorite: false }));
+      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: false }));
     } else {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, favorite: true }));
+      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: true }));
     }
   }
 

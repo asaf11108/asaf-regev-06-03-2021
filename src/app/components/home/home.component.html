@@ -21,11 +21,11 @@
 
             <mat-card-title class="home__title">
                 <span>
-                    <span>{{favoriteLocation.title}}</span>
+                    <span>{{favoriteLocation.locationName}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="favoriteClick(favoriteLocation.favorite)">
-                    {{favoriteLocation.favorite ? 'Remove from favorites' : 'Add to favorites' }}
+                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="favoriteClick(favoriteLocation.isFavorite)">
+                    {{favoriteLocation.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
                 </button>
             </mat-card-title>
 
