@@ -1,36 +1,4 @@
-<mat-toolbar class="app__toolbar">
-  <span class="app__toolbar-title">
-    <span>Herolo Weather Task</span>
-    <a href="https://cors-anywhere.herokuapp.com/corsdemo">CORS</a>
-    <a href="https://github.com/asaf11108/asaf-regev-06-03-2021/">GitHub</a>
-  </span>
-
-  <span class="app__toolbar-actions">
-    <ng-container *ngTemplateOutlet="menuActions"></ng-container>
-  </span>
-
-  <span class="app__toolbar-actions--mobile">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <div class="app__menu">
-        <ng-container *ngTemplateOutlet="menuActions"></ng-container>
-      </div>
-    </mat-menu>
-  </span>
-
-  <ng-template #menuActions>
-    <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
-      Home
-    </button>
-    <button mat-flat-button [routerLink]="['favorits']" [routerLinkActive]="['mat-primary']"
-      [disabled]="isLoading$ | async">
-      Favorites
-    </button>
-  </ng-template>
-
-</mat-toolbar>
+<app-toolbar></app-toolbar>
 
 <div class="app__content-wrapper">
   <div class="app__content">

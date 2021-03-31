@@ -1,3 +1,4 @@
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialModule } from './material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -19,6 +20,7 @@ import { ForecastComponent } from './components/forecast/forecast.component';
     HomeComponent,
     FavoritsComponent,
     ForecastComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,

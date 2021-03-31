@@ -10,12 +10,10 @@ import { delay } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'herolo-weather';
-  isLoading$: Observable<boolean>;
 
-  constructor(private favoriteLocationsQuery: FavoriteLocationsQuery) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading().pipe(delay(0));
   }
 
 
