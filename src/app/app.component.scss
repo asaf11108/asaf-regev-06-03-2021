@@ -13,6 +13,18 @@ $toolbar-height-mobile: 56px;
         }
     }
 
+    &__toolbar-title {
+        display: inline-flex;
+        gap: 10px;
+        align-items: baseline;
+        a {
+            font-size: 0.7em;
+            @include vendors.media('<=xs') {
+                display: none;
+            }
+        }
+    }
+
     &__content {
         @include vendors.spread(margin, 10px 0, 50px 0);
         @include vendors.spread(width, 90vw, 50vw);
