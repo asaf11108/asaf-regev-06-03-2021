@@ -23,7 +23,7 @@ export class WeatherService {
       const currentConditions = res[0][0];
       const forecasts: Forecast[] = res[1].map(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
 
-      this.favoriteLocationService.add({
+      this.favoriteLocationService.addOneToCache({
         id: key,
         locationName: title,
         temperature: currentConditions.Temperature.Metric.Value,
