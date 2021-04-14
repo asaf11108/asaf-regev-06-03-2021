@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let activeFavoriteLocation;
-    this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === this.favoriteLocationService.activeEntityId))).pipe(untilDestroyed(this)).subscribe(entity => {
+    this.favoriteLocationService.selectActiveEntityFromCatch().pipe(untilDestroyed(this)).subscribe(entity => {
       activeFavoriteLocation = entity;
     });
     const selectedOption: Location = {
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       localizedName: activeFavoriteLocation?.locationName ?? 'Tel Aviv'
     };
 
-    this.favoriteLocation$ = this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === selectedOption.key)));
+    this.favoriteLocation$ = this.favoriteLocationService.selectEntityFromCatch(selectedOption.key);
     this.isLoading$ = this.favoriteLocationService.loading$;
     this.error$ = this.favoriteLocationService.errors$;
     
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const selectedOption = event.option.value;
     this.form.setValue({ ...selectedOption });
     this.favoriteLocationService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
-    this.favoriteLocation$ = this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === selectedOption.key)));
+    this.favoriteLocation$ = this.favoriteLocationService.selectEntityFromCatch(selectedOption.key);
   }
 
   displayFn(location: Location | string): string {

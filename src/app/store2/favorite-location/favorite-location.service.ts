@@ -7,7 +7,8 @@ import {
 } from '@ngrx/data';
 import { FavoriteLocation } from './favorite-location';
 import { format } from 'date-fns';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class FavoriteLocationService extends EntityCollectionServiceBase<FavoriteLocation> {
@@ -15,6 +16,14 @@ export class FavoriteLocationService extends EntityCollectionServiceBase<Favorit
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory, private apiService: ApiService) {
     super('FavoriteLocation', serviceElementsFactory);
+  }
+
+  selectEntityFromCatch(selectedOptionId: string): Observable<FavoriteLocation> {
+    return this.entityMap$.pipe(map(entities => entities[selectedOptionId]));
+  }
+
+  selectActiveEntityFromCatch() {
+    return this.entityMap$.pipe(map(entities => entities[this.activeEntityId]));
   }
   
   getFavoriteData(key: string, title: string) {
