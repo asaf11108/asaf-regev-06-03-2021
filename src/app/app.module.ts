@@ -15,6 +15,8 @@ import { ForecastComponent } from './components/forecast/forecast.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EntityDataModule } from '@ngrx/data';
+import { EffectsModule } from '@ngrx/effects';
+import { entityConfig } from './entity-metadata';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { EntityDataModule } from '@ngrx/data';
     MaterialModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EntityDataModule.forRoot({})
+    EffectsModule.forRoot(),
+    EntityDataModule.forRoot(entityConfig)
   ],
   providers: [
     ...environment.providers

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 import { forkJoin } from 'rxjs';
 import { Forecast } from '../model/forecast';
+import { FavoriteLocation } from '../store2/favorite-location/favorite-location';
 import { FavoriteLocationService } from '../store2/favorite-location/favorite-location.service';
 import { ApiService } from './api.mock.service';
 
@@ -9,6 +10,7 @@ import { ApiService } from './api.mock.service';
   providedIn: 'root'
 })
 export class WeatherService {
+  activeEntityId: FavoriteLocation['id'] = '';
 
   constructor(private favoriteLocationService: FavoriteLocationService, private apiService: ApiService) { }
 

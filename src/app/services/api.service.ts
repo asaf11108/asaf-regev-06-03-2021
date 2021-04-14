@@ -1,5 +1,4 @@
 import { ApiService as ApiMockService } from './api.mock.service';
-import { FavoriteLocationsStore } from './../store/favorite-locations/state/favorite-locations.store';
 import { IApiService } from './api,interface';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -23,7 +22,6 @@ export class ApiService implements IApiService {
   constructor(
     private http: HttpClient,
     private _snackBar: MatSnackBar,
-    private favoriteLocationsStore: FavoriteLocationsStore
   ) {
     this.apiMockService = new ApiMockService();
   }

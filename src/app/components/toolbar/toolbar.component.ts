@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { FavoriteLocationsQuery } from '../../store/favorite-locations/state/favorite-locations.query';
+import { FavoriteLocationService } from '../../store2/favorite-location/favorite-location.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,10 +11,10 @@ import { FavoriteLocationsQuery } from '../../store/favorite-locations/state/fav
 export class ToolbarComponent implements OnInit {
   isLoading$: Observable<boolean>;
 
-  constructor(private favoriteLocationsQuery: FavoriteLocationsQuery) { }
+  constructor(private favoriteLocationService: FavoriteLocationService) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading().pipe(delay(0));
+    this.isLoading$ = this.favoriteLocationService.loading$.pipe(delay(0));
   }
 
 }

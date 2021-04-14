@@ -1,46 +1,48 @@
-import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
-import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
-import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
-import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { WeatherService } from './../../services/weather.service';
 import { ApiService } from './../../services/api.mock.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 import { Location } from "../../model/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FavoriteLocation } from '../../store2/favorite-location/favorite-location';
+import { FavoriteLocationService } from '../../store2/favorite-location/favorite-location.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   filteredOptions$: Observable<Location[]>;
   favoriteLocation$: Observable<FavoriteLocation>;
   isLoading$: Observable<boolean>;
-  error$: Observable<string>;
+  error$: Observable<any>;
 
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
-    private favoriteLocationsService: FavoriteLocationsService,
-    private favoriteLocationsQuery: FavoriteLocationsQuery,
-    private favoriteLocationsStore: FavoriteLocationsStore
+    private favoriteLocationService: FavoriteLocationService,
+    private weatherService: WeatherService
   ) { }
 
   ngOnInit(): void {
-    const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
+    let activeFavoriteLocation;
+    this.favoriteLocationService.getByKey(this.weatherService.activeEntityId).pipe(untilDestroyed(this)).subscribe(entity => {
+      activeFavoriteLocation = entity;
+    });
     const selectedOption: Location = {
       key: activeFavoriteLocation?.id ?? '215854',
       localizedName: activeFavoriteLocation?.locationName ?? 'Tel Aviv'
     };
 
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
-    this.error$ = this.favoriteLocationsQuery.selectError();
+    this.favoriteLocation$ = this.favoriteLocationService.getByKey(selectedOption.key);
+    this.isLoading$ = this.favoriteLocationService.loading$;
+    this.error$ = this.favoriteLocationService.errors$;
     
     this.form = this.formBuilder.group({
       key: [selectedOption.key],
@@ -57,14 +59,14 @@ export class HomeComponent implements OnInit {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
-    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.weatherService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent): void {
     const selectedOption = event.option.value;
     this.form.setValue({ ...selectedOption });
-    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
+    this.weatherService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.favoriteLocation$ = this.favoriteLocationService.getByKey(selectedOption.key);
   }
 
   displayFn(location: Location | string): string {
@@ -77,10 +79,12 @@ export class HomeComponent implements OnInit {
 
   favoriteClick(favorite: boolean): void {
     if (favorite) {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: false }));
+      this.favoriteLocationService.updateOneInCache({ id: this.form.get('key').value, isFavorite: false });
     } else {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: true }));
+      this.favoriteLocationService.updateOneInCache({ id: this.form.get('key').value, isFavorite: true });
     }
   }
 
+  ngOnDestroy(): void {
+  }
 }
