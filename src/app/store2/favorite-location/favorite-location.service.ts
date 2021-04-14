@@ -10,4 +10,5 @@ export class FavoriteLocationService extends EntityCollectionServiceBase<Favorit
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('FavoriteLocation', serviceElementsFactory);
   }
+  
 }
