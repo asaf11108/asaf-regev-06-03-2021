@@ -1,5 +1,4 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { WeatherService } from './../../services/weather.service';
 import { ApiService } from './../../services/api.mock.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,12 +26,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private favoriteLocationService: FavoriteLocationService,
-    private weatherService: WeatherService
   ) { }
 
   ngOnInit(): void {
     let activeFavoriteLocation;
-    this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === this.weatherService.activeEntityId))).pipe(untilDestroyed(this)).subscribe(entity => {
+    this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === this.favoriteLocationService.activeEntityId))).pipe(untilDestroyed(this)).subscribe(entity => {
       activeFavoriteLocation = entity;
     });
     const selectedOption: Location = {
@@ -59,13 +57,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       switchMap(query => this.apiService.getLocations(query)),
       map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
-    this.weatherService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.favoriteLocationService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
   }
 
   onSelectionChange(event: MatAutocompleteSelectedEvent): void {
     const selectedOption = event.option.value;
     this.form.setValue({ ...selectedOption });
-    this.weatherService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.favoriteLocationService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
     this.favoriteLocation$ = this.favoriteLocationService.entities$.pipe(map(entities => entities.find(entity => entity.id === selectedOption.key)));
   }
 

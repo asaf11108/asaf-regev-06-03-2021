@@ -1,4 +1,3 @@
-import { WeatherService } from './../../services/weather.service';
 import { ForecastData } from './../forecast/forecast.data';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
@@ -17,15 +16,15 @@ export class FavoritsComponent implements OnInit {
 
   constructor(
     private favoriteLocationService: FavoriteLocationService,
-    private weatherService: WeatherService,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.favoriteLocations$ = this.favoriteLocationService.entities$.pipe(map(favoriteLocations => favoriteLocations.filter(favoriteLocation => favoriteLocation.isFavorite)));
   }
 
   forecastClick(favoriteLocation: FavoriteLocation): void {
-    this.weatherService.activeEntityId = favoriteLocation.id;
+    this.favoriteLocationService.activeEntityId = favoriteLocation.id;
     this.router.navigate(['/home']);
   }
 
