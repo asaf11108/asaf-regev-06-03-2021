@@ -1,4 +1,4 @@
-import { Forecast } from './../../../model/forecast';
+import { Forecast } from './../../../interfaces/forecast';
 import { ApiService } from './../../../services/api.mock.service';
 import { Injectable } from '@angular/core';
 import { FavoriteLocation } from './favorite-location.model';

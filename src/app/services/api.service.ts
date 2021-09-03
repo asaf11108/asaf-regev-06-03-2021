@@ -4,10 +4,10 @@ import { IApiService } from './api,interface';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocationHttpResponse } from "../model/location";
-import { CurrentConditions } from "../model/current-conditions";
+import { LocationHttpResponse } from "../interfaces/location";
+import { CurrentConditions } from "../interfaces/current-conditions";
 import { catchError, map } from 'rxjs/operators';
-import { ForecastHttpResponse, ForecastsHttpResponse } from '../model/forecast';
+import { ForecastHttpResponse, ForecastsHttpResponse } from '../interfaces/forecast';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

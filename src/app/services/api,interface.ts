@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
-import { CurrentConditions } from "../model/current-conditions";
-import { Forecast, ForecastHttpResponse } from "../model/forecast";
-import { LocationHttpResponse } from "../model/location";
+import { CurrentConditions } from "../interfaces/current-conditions";
+import { ForecastHttpResponse } from "../interfaces/forecast";
+import { LocationHttpResponse } from "../interfaces/location";
 
 export interface IApiService {
     getLocations(query: string): Observable<LocationHttpResponse[]>;

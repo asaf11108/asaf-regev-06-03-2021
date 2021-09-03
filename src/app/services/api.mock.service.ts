@@ -1,10 +1,10 @@
-import { ForecastHttpResponse } from './../model/forecast';
+import { ForecastHttpResponse } from './../interfaces/forecast';
 import { IApiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { LocationHttpResponse } from "../model/location";
+import { LocationHttpResponse } from "../interfaces/location";
 import { tap } from 'rxjs/operators';
-import { CurrentConditions } from '../model/current-conditions';
+import { CurrentConditions } from '../interfaces/current-conditions';
 
 
 @Injectable()

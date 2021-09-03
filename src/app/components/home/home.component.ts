@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
-import { Location } from "../../model/location";
+import { Location } from "../../interfaces/location";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
