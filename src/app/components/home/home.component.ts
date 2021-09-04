@@ -27,14 +27,15 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
+    const activeFavoriteLocation = this.favoriteLocationsQuery.getActive();
     this.selectedOption = {
       key: activeFavoriteLocation?.id ?? DEFAULT_LOCATION.key,
       localizedName: activeFavoriteLocation?.locationName ?? DEFAULT_LOCATION.localizedName
     };
+    this.favoriteLocationsStore.setActive(this.selectedOption.key);
     this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
 
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectActive();
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
   }
@@ -42,7 +43,7 @@ export class HomeComponent implements OnInit {
   onSelectionChange(selectedOption: Location): void {
     this.selectedOption = selectedOption;
     this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
+    this.favoriteLocationsStore.setActive(selectedOption.key);
   }
 
   onFavoriteClick(favorite: boolean): void {
