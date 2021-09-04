@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { concat, Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap, map, tap } from 'rxjs/operators';
 import { ApiService } from './../../services/api.mock.service';
@@ -13,7 +13,14 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AutocompleteComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    key: new FormControl(''),
+    localizedName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)])
+  });
+  controls = {
+    key: this.form.get('key'),
+    localizedName: this.form.get('localizedName')
+  };
 
   filteredOptions$: Observable<Location[]>;
 
@@ -21,22 +28,18 @@ export class AutocompleteComponent implements OnInit {
   @Output() select = new EventEmitter<Location>();
 
   constructor(
-    private formBuilder: FormBuilder,
     private apiService: ApiService,
   ) { }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      key: [this.selectedOption.key],
-      localizedName: [this.selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
-    });
+    this.form.setValue(this.selectedOption);
 
     this.filteredOptions$ = concat(
       of(this.selectedOption.localizedName),
-      this.form.get('localizedName').valueChanges.pipe(
+      this.controls.localizedName.valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        filter(() => !this.form.get('localizedName').invalid)
+        filter(() => !this.controls.localizedName.invalid)
       )
     ).pipe(
       switchMap(query => this.apiService.getLocations(query)),
