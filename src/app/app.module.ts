@@ -13,6 +13,7 @@ import { FavoritsComponent } from './components/favorites/favorites.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastComponent } from './components/forecast/forecast.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ForecastComponent } from './components/forecast/forecast.component';
     HomeComponent,
     FavoritsComponent,
     ForecastComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AutocompleteComponent
   ],
   imports: [
     BrowserModule,

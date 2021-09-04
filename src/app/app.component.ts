@@ -1,12 +1,10 @@
-import { Observable } from 'rxjs';
-import { FavoriteLocationsQuery } from './store/favorite-locations/state/favorite-locations.query';
-import { Component, OnInit } from '@angular/core';
-import { delay } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   title = 'herolo-weather';

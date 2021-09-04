@@ -3,7 +3,7 @@ import { FavoriteLocationsStore } from './../../store/favorite-locations/state/f
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
 import { ApiService } from './../../services/api.mock.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, concat, of } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
@@ -13,7 +13,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   form: FormGroup;
