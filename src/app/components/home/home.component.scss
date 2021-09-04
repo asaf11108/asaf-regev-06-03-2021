@@ -1,20 +1,7 @@
 
 @use 'vendors';
 
-::ng-deep .mat-form-field-prefix .mat-icon {
-    vertical-align: bottom;
-}
-
 .home {
-    &__search-form {
-        @include vendors.spread(margin-bottom, 10px, 20px);
-        text-align: center;
-        .mat-form-field {
-            background-color: rgba(255, 255, 255, 0.6);
-            padding: 0 10px;
-        }
-    }
-
     &__card {
         background-color: rgba(255, 255, 255, 0.6);
         width: 100%;

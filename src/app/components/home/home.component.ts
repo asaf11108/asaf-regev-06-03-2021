@@ -2,13 +2,10 @@ import { FavoriteLocation } from './../../store/favorite-locations/state/favorit
 import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
 import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
-import { ApiService } from './../../services/api.mock.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, concat, of } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Location } from "../../interfaces/location";
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { DEFAULT_LOCATION } from './home.config';
 
 @Component({
   selector: 'app-home',
@@ -17,67 +14,39 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  form: FormGroup;
+  selectedOption: Location;
 
-  filteredOptions$: Observable<Location[]>;
   favoriteLocation$: Observable<FavoriteLocation>;
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private apiService: ApiService,
-    private favoriteLocationsService: FavoriteLocationsService,
     private favoriteLocationsQuery: FavoriteLocationsQuery,
+    private favoriteLocationsService: FavoriteLocationsService,
     private favoriteLocationsStore: FavoriteLocationsStore
   ) { }
 
   ngOnInit(): void {
     const activeFavoriteLocation = this.favoriteLocationsQuery.getActive() as FavoriteLocation;
-    const selectedOption: Location = {
-      key: activeFavoriteLocation?.id ?? '215854',
-      localizedName: activeFavoriteLocation?.locationName ?? 'Tel Aviv'
+    this.selectedOption = {
+      key: activeFavoriteLocation?.id ?? DEFAULT_LOCATION.key,
+      localizedName: activeFavoriteLocation?.locationName ?? DEFAULT_LOCATION.localizedName
     };
+    this.favoriteLocationsService.getFavoriteData(this.selectedOption.key, this.selectedOption.localizedName);
 
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(this.selectedOption.key);
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
-    
-    this.form = this.formBuilder.group({
-      key: [selectedOption.key],
-      localizedName: [selectedOption.localizedName, [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]]
-    });
-    this.filteredOptions$ = concat(
-      of(selectedOption.localizedName),
-      this.form.get('localizedName').valueChanges.pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
-        filter(() => !this.form.get('localizedName').invalid)
-      )
-    ).pipe(
-      switchMap(query => this.apiService.getLocations(query)),
-      map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
-    );
-    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
   }
 
-  onSelectionChange(event: MatAutocompleteSelectedEvent): void {
-    const selectedOption = event.option.value;
-    this.form.setValue({ ...selectedOption });
+  onSelectionChange(selectedOption: Location): void {
+    this.selectedOption = selectedOption;
     this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
     this.favoriteLocation$ = this.favoriteLocationsQuery.selectEntity(selectedOption.key);
   }
 
-  displayFn(location: Location | string): string {
-    if (typeof location === 'object') {
-      return location.localizedName;
-    } else {
-      return location;
-    }
-  }
-
-  favoriteClick(favorite: boolean): void {
-    this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: !favorite }));
+  onFavoriteClick(favorite: boolean): void {
+    this.favoriteLocationsStore.update(this.selectedOption.key, entity => ({ ...entity, isFavorite: !favorite }));
   }
 
 }

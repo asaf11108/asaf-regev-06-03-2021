@@ -1,17 +1,4 @@
-<form [formGroup]='form' class="home__search-form">
-    <mat-form-field [floatLabel]="'never'">
-        <mat-icon [inline]="true" matPrefix>search</mat-icon>
-        <input type="text" placeholder="search location" matInput formControlName="localizedName"
-            [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
-            [displayWith]="displayFn">
-            <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-                {{option.localizedName}}
-            </mat-option>
-        </mat-autocomplete>
-        <mat-error>Invalid Input</mat-error>
-    </mat-form-field>
-</form>
+<app-autocomplete [selectedOption]="selectedOption" (select)="onSelectionChange($event)"></app-autocomplete>
 
 <mat-card class="home__card">
     <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
@@ -24,7 +11,7 @@
                     <span>{{favoriteLocation.locationName}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="favoriteClick(favoriteLocation.isFavorite)">
+                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="onFavoriteClick(favoriteLocation.isFavorite)">
                     {{favoriteLocation.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
                 </button>
             </mat-card-title>

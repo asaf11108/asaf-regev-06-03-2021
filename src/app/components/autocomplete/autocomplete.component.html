@@ -1,1 +1,14 @@
-<p>autocomplete works!</p>
+<form [formGroup]='form' class="search-form">
+    <mat-form-field [floatLabel]="'never'">
+        <mat-icon [inline]="true" matPrefix>search</mat-icon>
+        <input type="text" placeholder="search location" matInput formControlName="localizedName"
+            [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
+            [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+                {{option.localizedName}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error>Invalid Input</mat-error>
+    </mat-form-field>
+</form>
