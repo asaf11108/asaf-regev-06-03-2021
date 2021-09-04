@@ -34,7 +34,7 @@
                     <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
                 </div>
                 <div class="home__forecasts">
-                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecastData]="forecast">
+                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecast]="forecast">
                     </app-forecast>
                 </div>
             </mat-card-content>

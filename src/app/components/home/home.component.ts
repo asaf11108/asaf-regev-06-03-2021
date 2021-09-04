@@ -77,11 +77,7 @@ export class HomeComponent implements OnInit {
   }
 
   favoriteClick(favorite: boolean): void {
-    if (favorite) {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: false }));
-    } else {
-      this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: true }));
-    }
+    this.favoriteLocationsStore.update(this.form.get('key').value, entity => ({ ...entity, isFavorite: !favorite }));
   }
 
 }

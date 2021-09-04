@@ -16,5 +16,6 @@ export interface ForecastHttpResponse {
 
 export interface Forecast {
     title: string;
-    temperature: number
+    temperature: number,
+    icon?: string;
 }

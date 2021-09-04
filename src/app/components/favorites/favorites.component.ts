@@ -1,4 +1,3 @@
-import { ForecastData } from './../forecast/forecast.data';
 import { FavoriteLocationsStore } from '../../store/favorite-locations/state/favorite-locations.store';
 import { Observable } from 'rxjs';
 import { FavoriteLocation } from '../../store/favorite-locations/state/favorite-location.model';
@@ -6,6 +5,7 @@ import { FavoriteLocationsQuery } from '../../store/favorite-locations/state/fav
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Forecast } from '../../interfaces/forecast';
 
 @Component({
   selector: 'app-favorits',
@@ -19,7 +19,8 @@ export class FavoritsComponent implements OnInit {
   constructor(
     private favoriteLocationsQuery: FavoriteLocationsQuery,
     private favoriteLocationsStore: FavoriteLocationsStore,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.favoriteLocations$ = this.favoriteLocationsQuery.selectAll().pipe(map(favoriteLocations => favoriteLocations.filter(favoriteLocation => favoriteLocation.isFavorite)));
@@ -30,7 +31,7 @@ export class FavoritsComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  mapToForecastComponent(favoriteLocation: FavoriteLocation): ForecastData {
+  mapToForecastComponent(favoriteLocation: FavoriteLocation): Forecast {
     return ({ title: favoriteLocation.locationName, temperature: favoriteLocation.temperature, icon: favoriteLocation.icon })
   }
 }

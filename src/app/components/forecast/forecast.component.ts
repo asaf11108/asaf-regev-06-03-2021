@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ForecastData } from './forecast.data';
+import { Forecast } from 'src/app/interfaces/forecast';
 
 @Component({
   selector: 'app-forecast',
@@ -8,8 +8,8 @@ import { ForecastData } from './forecast.data';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForecastComponent implements OnInit {
-  forecast: ForecastData;
-  @Input() set forecastData(val: ForecastData) {
+  forecast: Forecast;
+  @Input('forecast') set _forecast(val: Forecast) {
     this.forecast = { ...val, icon: this._buildIconUrl(val.icon) };
   }
 
