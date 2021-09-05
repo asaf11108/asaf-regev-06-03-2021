@@ -1,4 +1,4 @@
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
 import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
 import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
@@ -26,23 +26,23 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
-    this.selectedOption$ = this.favoriteLocationsQuery.selectActive().pipe(map(entity => ({key: entity.key, localizedName: entity.localizedName})));
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectActive().pipe(
-      distinctUntilChanged((x, y) => x.key === y.key),
-      switchMap(activeEntity => this.favoriteLocationsService.getFavoriteData(activeEntity.key, activeEntity.localizedName))
-    );
+    this.selectedOption$ = this.favoriteLocationsQuery.selectActive().pipe(map(this.mapEntityToLocation));
+    this.favoriteLocation$ = this.favoriteLocationsQuery.selectActive();
+    this.favoriteLocationsService.getFavoriteData(this.mapEntityToLocation(this.favoriteLocationsQuery.getActive()));
     this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
     this.error$ = this.favoriteLocationsQuery.selectError();
   }
-
+  
   onSelectionChange(selectedOption: Location): void {
-    this.favoriteLocationsService.getFavoriteData(selectedOption.key, selectedOption.localizedName);
+    this.favoriteLocationsService.getFavoriteData(selectedOption);
     this.favoriteLocationsStore.setActive(selectedOption.key);
   }
-
+  
   onFavoriteClick(activeEntity: FavoriteLocation): void {
     this.favoriteLocationsStore.update(activeEntity.key, { isFavorite: !activeEntity.isFavorite });
   }
 
+  private mapEntityToLocation(entity: FavoriteLocation): Location {
+    return {key: entity.key, localizedName: entity.localizedName};
+  }
 }

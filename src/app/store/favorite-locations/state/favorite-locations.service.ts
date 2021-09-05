@@ -1,9 +1,10 @@
+import { Location } from './../../../interfaces/location';
 import { FavoriteLocation } from './favorite-location.model';
 import { Forecast } from './../../../interfaces/forecast';
 import { ApiService } from './../../../services/api.mock.service';
 import { Injectable } from '@angular/core';
 import { FavoriteLocationsStore } from './favorite-locations.store';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { format } from 'date-fns';
 import { withTransaction } from '@datorama/akita';
 import { map } from 'rxjs/operators';
@@ -14,9 +15,9 @@ export class FavoriteLocationsService {
   constructor(private favoriteLocationsStore: FavoriteLocationsStore, private apiService: ApiService) {
   }
 
-  getFavoriteData(key: string, title: string): Observable<any> {
+  getFavoriteData({key, localizedName}: Location): void {
     this.favoriteLocationsStore.setLoading(true);
-    return forkJoin([
+    forkJoin([
       this.apiService.getCurrentConditions(key),
       this.apiService.getForecasts(key)
     ]).pipe(
@@ -25,18 +26,17 @@ export class FavoriteLocationsService {
         const forecasts = res[1].map<Forecast>(forecast => ({ title: format(new Date(forecast.Date), 'EEE'), temperature: forecast.Temperature.Minimum.Value }));
         return {
           key,
-          localizedName: title,
+          localizedName,
           temperature: currentConditions.Temperature.Metric.Value,
           weatherText: currentConditions.WeatherText,
           icon: currentConditions.WeatherIcon.toString(),
-          forecasts,
-          isFavorite: false
+          forecasts
         };
       }),
       withTransaction<FavoriteLocation>(favoriteLocation => {
         this.favoriteLocationsStore.upsert(favoriteLocation.key, favoriteLocation);
         this.favoriteLocationsStore.setLoading(false);
       })
-    );
+    ).subscribe();
   }
 }
