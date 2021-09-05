@@ -1,7 +1,7 @@
 import { Forecast } from './../../../interfaces/forecast';
-export interface FavoriteLocation {
-  id: string;
-  locationName: string;
+import { Location } from "../../../interfaces/location";
+
+export interface FavoriteLocation extends Location {
   weatherText: string;
   temperature: number;
   icon: string;

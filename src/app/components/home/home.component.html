@@ -1,4 +1,4 @@
-<app-autocomplete [selectedOption]="selectedOption" (select)="onSelectionChange($event)"></app-autocomplete>
+<app-autocomplete *ngIf="selectedOption$ | async as selectedOption" [selectedOption]="selectedOption" (select)="onSelectionChange($event)"></app-autocomplete>
 
 <mat-card class="home__card">
     <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
@@ -8,10 +8,10 @@
 
             <mat-card-title class="home__title">
                 <span>
-                    <span>{{favoriteLocation.locationName}}</span>
+                    <span>{{favoriteLocation.localizedName}}</span>
                     <span>{{favoriteLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="onFavoriteClick(favoriteLocation.isFavorite)">
+                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="onFavoriteClick(favoriteLocation)">
                     {{favoriteLocation.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
                 </button>
             </mat-card-title>

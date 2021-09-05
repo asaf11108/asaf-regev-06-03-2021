@@ -27,11 +27,11 @@ export class FavoritsComponent implements OnInit {
   }
 
   forecastClick(favoriteLocation: FavoriteLocation): void {
-    this.favoriteLocationsStore.setActive(favoriteLocation.id);
+    this.favoriteLocationsStore.setActive(favoriteLocation.key);
     this.router.navigate(['/home']);
   }
 
   mapToForecastComponent(favoriteLocation: FavoriteLocation): Forecast {
-    return ({ title: favoriteLocation.locationName, temperature: favoriteLocation.temperature, icon: favoriteLocation.icon })
+    return ({ title: favoriteLocation.localizedName, temperature: favoriteLocation.temperature, icon: favoriteLocation.icon })
   }
 }
