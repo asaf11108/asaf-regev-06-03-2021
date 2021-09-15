@@ -3,5 +3,4 @@ export interface LocationHttpResponse {
     LocalizedName: string;
 }
 
-//@ts-ignore
 export type Location = Record<Uncapitalize<keyof LocationHttpResponse>, string>;
