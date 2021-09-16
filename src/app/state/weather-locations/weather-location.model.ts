@@ -1,5 +1,5 @@
 import { ISOString } from "../../interfaces/general";
-import { LocationHttpResponse } from "../../interfaces/location";
+import { LocationHttpResponse } from "../../interfaces/autocomplete";
 
 export interface Coordinates {
   latitude: number;

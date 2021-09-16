@@ -3,11 +3,12 @@ import { IApiService } from './api,interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocationHttpResponse } from "../interfaces/location";
+import { LocationHttpResponse } from "../interfaces/autocomplete";
 import { CurrentConditions } from "../interfaces/current-conditions";
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpResponse } from '../interfaces/geoposition-search';
+import { SearchByLocationKey } from '../interfaces/search-by-location-key';
 
 
 @Injectable()
@@ -26,7 +27,7 @@ export class ApiService implements IApiService {
     this.apiMockService = new ApiMockService();
   }
 
-  getLocations(query: string): Observable<LocationHttpResponse[]> {
+  getAutoComplete(query: string): Observable<LocationHttpResponse[]> {
     return this.http.get<LocationHttpResponse[]>(
       `${this.HTTP_PREFIX}${this.ENDPOINT}locations/v1/cities/autocomplete`, {
         params: {
@@ -36,7 +37,7 @@ export class ApiService implements IApiService {
       }).pipe(
       catchError(() => {
         this.handleError();
-        return this.apiMockService.getLocations(query);
+        return this.apiMockService.getAutoComplete(query);
       })
     )
   }
@@ -65,6 +66,19 @@ export class ApiService implements IApiService {
       catchError(() => {
         this.handleError();
         return this.apiMockService.getGeopositionSearch(latitude, longitude);
+      })
+    )
+  }
+  
+  getSearchByLocationKey(key: string): Observable<SearchByLocationKey> {
+    return this.http.get<HttpResponse.GeopositionSearch>(`${this.HTTP_PREFIX}${this.ENDPOINT}/locations/v1/${key}`, {
+      params: {
+        apikey: this.API_KEY
+      }
+    }).pipe(
+      catchError(() => {
+        this.handleError();
+        return this.apiMockService.getSearchByLocationKey(key);
       })
     )
   }

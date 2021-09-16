@@ -2,7 +2,7 @@
     <mat-form-field [floatLabel]="'never'">
         <mat-icon [inline]="true" matPrefix>search</mat-icon>
         <input type="text" placeholder="search location" matInput [formControl]="controls.localizedName"
-            [matAutocomplete]="auto">
+            [matAutocomplete]="auto" type="search">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
             [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">

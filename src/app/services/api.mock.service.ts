@@ -2,17 +2,16 @@ import { HttpResponse } from '../interfaces/geoposition-search';
 import { IApiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { LocationHttpResponse } from "../interfaces/location";
+import { LocationHttpResponse } from "../interfaces/autocomplete";
 import { tap } from 'rxjs/operators';
 import { CurrentConditions } from '../interfaces/current-conditions';
+import { SearchByLocationKey } from '../interfaces/search-by-location-key';
 
 
 @Injectable()
 export class ApiService implements IApiService {
 
-  constructor() { }
-
-  getLocations(query: string): Observable<LocationHttpResponse[]> {
+  getAutoComplete(query: string): Observable<LocationHttpResponse[]> {
     if ('tel aviv'.toLowerCase().includes(query.toLowerCase())) {
       return of([{ "Version": 1, "Key": "215854", "Type": "City", "Rank": 31, "LocalizedName": "Tel Aviv", "Country": { "ID": "IL", "LocalizedName": "Israel" }, "AdministrativeArea": { "ID": "TA", "LocalizedName": "Tel Aviv" } }]);
     } else if ('paris'.toLowerCase().includes(query.toLowerCase())) {
@@ -23,7 +22,7 @@ export class ApiService implements IApiService {
   }
 
   getCurrentConditions(key: string): Observable<CurrentConditions> {
-    const currentConditions: CurrentConditions = [
+    const res: CurrentConditions = [
       {
         "LocalObservationDateTime": "2021-09-15T17:21:00+03:00",
         "EpochTime": 1631715660,
@@ -48,11 +47,11 @@ export class ApiService implements IApiService {
         "Link": "http://www.accuweather.com/en/il/yanuh/214356/current-weather/214356?lang=en-us"
       }
     ];
-    return of(currentConditions);
+    return of(res);
   }
 
   getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
-    const ans: HttpResponse.GeopositionSearch = {
+    const res: HttpResponse.GeopositionSearch = {
       "Version": 1,
       "Key": "214356",
       "Type": "City",
@@ -111,6 +110,69 @@ export class ApiService implements IApiService {
         "ForecastConfidence"
       ]
     };
-    return of(ans);
+    return of(res);
+  }
+
+  getSearchByLocationKey(key: string): Observable<SearchByLocationKey> {
+    const res = {
+      "Version": 1,
+      "Key": "215854",
+      "Type": "City",
+      "Rank": 31,
+      "LocalizedName": "Tel Aviv",
+      "EnglishName": "Tel Aviv",
+      "PrimaryPostalCode": "",
+      "Region": {
+        "ID": "MEA",
+        "LocalizedName": "Middle East",
+        "EnglishName": "Middle East"
+      },
+      "Country": {
+        "ID": "IL",
+        "LocalizedName": "Israel",
+        "EnglishName": "Israel"
+      },
+      "AdministrativeArea": {
+        "ID": "TA",
+        "LocalizedName": "Tel Aviv",
+        "EnglishName": "Tel Aviv",
+        "Level": 1,
+        "LocalizedType": "District",
+        "EnglishType": "District",
+        "CountryID": "IL"
+      },
+      "TimeZone": {
+        "Code": "IDT",
+        "Name": "Asia/Jerusalem",
+        "GmtOffset": 3,
+        "IsDaylightSaving": true,
+        "NextOffsetChange": "2021-10-30T23:00:00Z"
+      },
+      "GeoPosition": {
+        "Latitude": 32.045,
+        "Longitude": 34.77,
+        "Elevation": {
+          "Metric": {
+            "Value": 34,
+            "Unit": "m",
+            "UnitType": 5
+          },
+          "Imperial": {
+            "Value": 111,
+            "Unit": "ft",
+            "UnitType": 0
+          }
+        }
+      },
+      "IsAlias": false,
+      "SupplementalAdminAreas": [],
+      "DataSets": [
+        "AirQualityCurrentConditions",
+        "AirQualityForecasts",
+        "Alerts",
+        "ForecastConfidence"
+      ]
+    }
+    return of(res);
   }
 }

@@ -1,12 +1,12 @@
 import { CurrentConditions } from './../../interfaces/current-conditions';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { WeatherLocation, Coordinates } from './weather-location.model';
+import { WeatherLocation } from './weather-location.model';
 import { WeatherLocationsStore } from './weather-locations.store';
 import { ApiService } from './../../services/api.mock.service';
 import { Location } from './weather-location.model';
 import { withTransaction } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherLocationsService {
@@ -17,9 +17,12 @@ export class WeatherLocationsService {
 
   getWeather({ key, localizedName, coordinates }: Location): Observable<WeatherLocation> {
     this.weatherLocationsStore.setLoading(true);
-    return this.apiService.getCurrentConditions(key).pipe(
-      map<CurrentConditions, WeatherLocation>((res) => {
-        const currentConditions = res[0];
+    return forkJoin([
+      this.apiService.getCurrentConditions(key),
+      coordinates ? undefined : this.apiService.getSearchByLocationKey(key)
+    ].filter(Boolean)).pipe(
+      map<[CurrentConditions], WeatherLocation>((res) => {
+        const currentConditions = res[0][0];
         return {
           key,
           localizedName,

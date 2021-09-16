@@ -20,6 +20,7 @@ import { ApiService } from './../../services/api.mock.service';
 import { Location } from '../../state/weather-locations/weather-location.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { OnChange } from 'property-watch-decorator';
+import { omit } from "lodash-es";
 
 @Component({
   selector: 'app-autocomplete',
@@ -42,11 +43,7 @@ export class AutocompleteComponent implements OnInit {
 
   filteredOptions$: Observable<Location[]>;
 
-  @OnChange<Location>(function (selectedOption) {
-    if (selectedOption) {
-      this.form.setValue(selectedOption);
-    }
-  })
+  @OnChange<Location>('onChangeSelectedOption')
   @Input()
   selectedOption: Location;
   @Output() select = new EventEmitter<Location>();
@@ -58,7 +55,7 @@ export class AutocompleteComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged(),
       filter(() => this.controls.localizedName.valid),
-      switchMap((query) => this.apiService.getLocations(query)),
+      switchMap((query) => this.apiService.getAutoComplete(query)),
       map((locations) =>
         locations.map((location) => ({
           key: location.Key,
@@ -80,5 +77,11 @@ export class AutocompleteComponent implements OnInit {
     const selectedOption = event.option.value;
     this.form.setValue(selectedOption);
     this.select.emit(selectedOption);
+  }
+
+  private onChangeSelectedOption(selectedOption: Location) {
+    if (selectedOption) {
+      this.form.setValue(omit(selectedOption, 'coordinates'));
+    }
   }
 }

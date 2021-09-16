@@ -10,8 +10,9 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { InterceptorService } from './services/interceptor.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
   providers: [
-    ...environment.providers
+    ...environment.providers,
+    { provide: HTTP_INTERCEPTORS, useExisting: InterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })
