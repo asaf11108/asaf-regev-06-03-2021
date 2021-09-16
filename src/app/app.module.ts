@@ -32,7 +32,7 @@ import { InterceptorService } from './services/interceptor.service';
   ],
   providers: [
     ...environment.providers,
-    { provide: HTTP_INTERCEPTORS, useExisting: InterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })
