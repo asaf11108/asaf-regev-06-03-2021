@@ -7,16 +7,20 @@
         <ng-container *ngIf="weatherLocation$ | async as weatherLocation">
 
             <mat-card-title class="home__title">
-                <span>
+                <span class="left">
                     <span>{{weatherLocation.localizedName}}</span>
                     <span>{{weatherLocation.temperature}}&#176;C</span>
+                </span>
+                <span class="right">
+                    <span *ngFor="let coordinate of weatherLocation.coordinates | keyvalue">
+                        {{ coordinate.key }}: {{coordinate.value}}
+                    </span>
                 </span>
             </mat-card-title>
 
             <mat-card-content class="home__content">
-                <div>
-                    <!-- <h1 class="home__content-header">{{weatherLocation.weatherText}}</h1> -->
-                </div>
+                <img [src]="'/assets/weather-icons/' + weatherLocation.weatherIcon + '.png'">
+                <h2 class="home__content-header">{{weatherLocation.weatherText}}</h2>
             </mat-card-content>
 
         </ng-container>

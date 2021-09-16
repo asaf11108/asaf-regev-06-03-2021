@@ -17,27 +17,32 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+        }
+        .left {
             align-items: center;
         }
     }
 
-    &__content-header, &__unavailable {
-        @include vendors.spread(font-size, 50px, 80px);
-    }
-
     &__content-header {
-        text-align: center;
+        @include vendors.spread(font-size, 30px, 60px);
+        margin: 0;
     }
-
+    
     &__unavailable {
+        @include vendors.spread(font-size, 50px, 80px);
         text-align: center;
     }
 
     &__content {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-around;
+        align-items: center;
         @include vendors.spread(min-height, 400px, 500px);
+
+        img {
+            @include vendors.spread(width, 400px, 600px);
+        }
     }
     
 }
