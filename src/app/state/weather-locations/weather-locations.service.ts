@@ -7,6 +7,7 @@ import { ApiService } from './../../services/api.mock.service';
 import { Location } from './weather-location.model';
 import { withTransaction } from '@datorama/akita';
 import { forkJoin, Observable } from 'rxjs';
+import { SearchByLocationKey } from 'src/app/interfaces/search-by-location-key';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherLocationsService {
@@ -21,16 +22,20 @@ export class WeatherLocationsService {
       this.apiService.getCurrentConditions(key),
       coordinates ? undefined : this.apiService.getSearchByLocationKey(key)
     ].filter(Boolean)).pipe(
-      map<[CurrentConditions], WeatherLocation>((res) => {
-        const currentConditions = res[0][0];
+      map<[CurrentConditions, SearchByLocationKey], WeatherLocation>(([currentConditions, searchByLocationKey]) => {
+        const currentCondition = currentConditions[0];
+        if (!coordinates) {
+          const {Latitude: latitude, Longitude: longitude} = searchByLocationKey?.GeoPosition;
+          coordinates = { latitude, longitude };
+        }
         return {
           key,
           localizedName,
           coordinates,
-          localObservationDateTime: currentConditions.LocalObservationDateTime,
-          temperature: currentConditions.Temperature.Metric.Value,
-          weatherText: currentConditions.WeatherText,
-          weatherIcon: currentConditions.WeatherIcon,
+          localObservationDateTime: currentCondition.LocalObservationDateTime,
+          temperature: currentCondition.Temperature.Metric.Value,
+          weatherText: currentCondition.WeatherText,
+          weatherIcon: currentCondition.WeatherIcon,
         };
       }),
       withTransaction<WeatherLocation>((favoriteLocation) => {

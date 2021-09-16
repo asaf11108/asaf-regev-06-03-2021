@@ -4,10 +4,9 @@ import { WeatherLocationsService } from './../../state/weather-locations/weather
 import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
 import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { EMPTY, from, MonoTypeOperatorFunction, Observable, OperatorFunction, pipe, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
-import { HttpResponse } from 'src/app/interfaces/geoposition-search';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +38,7 @@ export class HomeComponent implements OnInit {
   }
   
   onSelectionChange(selectedOption: Location): void {
-    // this.weatherLocationsService.getWeather(selectedOption);
+    of(selectedOption).pipe(this.updateWeatherLocation()).subscribe();
   }
   
   private getCoordinates(options?: PositionOptions): Observable<GeolocationCoordinates> {

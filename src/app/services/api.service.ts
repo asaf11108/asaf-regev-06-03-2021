@@ -43,7 +43,7 @@ export class ApiService implements IApiService {
   getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
     return this.http.get<HttpResponse.GeopositionSearch>(`locations/v1/cities/geoposition/search`, {
       params: {
-        q: encodeURIComponent([latitude, longitude].join(','))
+        q: [latitude, longitude].join(',')
       }
     }).pipe(
       catchError(() => {
