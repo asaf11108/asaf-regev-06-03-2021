@@ -15,7 +15,7 @@ export class WeatherLocationsService {
     private apiService: ApiService
   ) {}
 
-  getWeather({ key, localizedName }: Location, coordinates: Coordinates): Observable<WeatherLocation> {
+  getWeather({ key, localizedName, coordinates }: Location): Observable<WeatherLocation> {
     this.weatherLocationsStore.setLoading(true);
     return this.apiService.getCurrentConditions(key).pipe(
       map<CurrentConditions, WeatherLocation>((res) => {

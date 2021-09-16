@@ -6,10 +6,9 @@ export interface Coordinates {
   longitude: number;
 }
 
-export type Location = Record<Uncapitalize<keyof LocationHttpResponse>, string>;
+export type Location = Record<Uncapitalize<keyof LocationHttpResponse>, string> & { coordinates?: Coordinates };
 
 export interface WeatherLocation extends Location {
-  coordinates: Coordinates;
   localObservationDateTime: ISOString;
   weatherText: string;
   weatherIcon: number;

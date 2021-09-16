@@ -59,20 +59,21 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  private updateSelectedOption(): OperatorFunction<Coordinates, {location: Location, coordinates: Coordinates}> {
+  private updateSelectedOption(): OperatorFunction<Coordinates, Location> {
     return pipe(
       switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
       map(({ Key, LocalizedName, GeoPosition }) => ({
-        location: { key: Key, localizedName: LocalizedName },
+        key: Key,
+        localizedName: LocalizedName,
         coordinates: { latitude: GeoPosition.Latitude, longitude: GeoPosition.Longitude }
       })),
-      tap(({ location }) => this.selectedOption$.next(location))
+      tap((location) => this.selectedOption$.next(location))
     );
   }
 
-  private updateWeatherLocation(): OperatorFunction<{location: Location, coordinates: Coordinates}, WeatherLocation> {
+  private updateWeatherLocation(): OperatorFunction<Location, WeatherLocation> {
     return pipe(
-      switchMap(({ location, coordinates }) => this.weatherLocationsService.getWeather(location, coordinates)),
+      switchMap((location) => this.weatherLocationsService.getWeather(location)),
       tap(weather => this.weatherLocation$.next(weather))
     );
   }
