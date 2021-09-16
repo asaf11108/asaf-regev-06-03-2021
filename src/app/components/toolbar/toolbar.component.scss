@@ -28,11 +28,11 @@
         @include vendors.media('<=xs') {
             display: none;
         }
+    }
 
-        &--mobile {
-            @include vendors.media('>xs') {
-                display: none;
-            }
+    &__actions-mobile {
+        @include vendors.media('>xs') {
+            display: none;
         }
     }
 
@@ -41,7 +41,7 @@
         @include vendors.spread(height, 20px, 40px);
     }
     
-    &__menu {
+    &__menu-wrapper {
         display: flex;
         flex-direction: column;
     }
@@ -49,5 +49,18 @@
     &__temprature {
         display: flex;
         justify-content: center;
+    }
+
+    &__menu {
+        display: contents;
+        >:nth-child(1) { order: 0; }
+        >:nth-child(2) { order: 1; }
+        >:nth-child(3) { order: 2; }
+        >:nth-child(4) { order: 3; }
+
+        @include vendors.media('>xs') {
+            >:nth-child(1) { order: 1; }
+            >:nth-child(2) { order: 0; }
+        }
     }
 }

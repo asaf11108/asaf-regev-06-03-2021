@@ -21,8 +21,7 @@ export class InterceptorService implements HttpInterceptor {
     });
     return next.handle(reqClone).pipe(
       catchError(error => {
-        this.snackBar.open(this.BAD_REQUEST, '', { duration: 2000 });
-         // this.favoriteLocationsStore.setError(this.BAD_REQUEST);
+        this.snackBar.open(this.BAD_REQUEST, '', { duration: 5000 });
         return throwError(error);
       })
     );

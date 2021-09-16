@@ -9,13 +9,6 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToolbarComponent implements OnInit {
-  isLoading$: Observable<boolean>;
-
-  constructor(private weatherLocationsQuery: WeatherLocationsQuery) { }
-
-  ngOnInit(): void {
-    this.isLoading$ = this.weatherLocationsQuery.selectLoading();
-  }
+export class ToolbarComponent {
 
 }

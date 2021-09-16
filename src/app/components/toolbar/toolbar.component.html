@@ -9,32 +9,34 @@
       <ng-container *ngTemplateOutlet="menuActions"></ng-container>
     </span>
   
-    <span class="toolbar__actions--mobile">
+    <span class="toolbar__actions-mobile">
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <div class="toolbar__menu">
+        <div class="toolbar__menu-wrapper">
           <ng-container *ngTemplateOutlet="menuActions"></ng-container>
         </div>
       </mat-menu>
     </span>
   
     <ng-template #menuActions>
-      <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
-        Home
-      </button>
-      <button mat-flat-button [routerLink]="['history']" [routerLinkActive]="['mat-primary']" [disabled]="isLoading$ | async">
-        History
-      </button>
-      <span class="toolbar__menu-spacer"></span>
-      <div class="toolbar__temprature">
-        <button mat-mini-fab [color]="'primary'">
-          &#176;F
+      <div class="toolbar__menu">
+        <button mat-flat-button [routerLink]="['home']" [routerLinkActive]="['mat-primary']">
+          Home
         </button>
-        <button mat-mini-fab [color]="''">
-          &#176;C
+        <button mat-flat-button [routerLink]="['history']" [routerLinkActive]="['mat-primary']">
+          History
         </button>
+        <span class="toolbar__menu-spacer"></span>
+        <div class="toolbar__temprature">
+          <button mat-mini-fab [color]="'primary'">
+            &#176;C
+          </button>
+          <button mat-mini-fab [color]="''">
+            &#176;F
+          </button>
+        </div>
       </div>
     </ng-template>
   
