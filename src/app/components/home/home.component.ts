@@ -5,7 +5,7 @@ import { WeatherLocationsQuery } from './../../state/weather-locations/weather-l
 import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { EMPTY, from, Observable } from 'rxjs';
+import { EMPTY, from, MonoTypeOperatorFunction, Observable, OperatorFunction, pipe, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
 import { HttpResponse } from 'src/app/interfaces/geoposition-search';
 
@@ -16,8 +16,8 @@ import { HttpResponse } from 'src/app/interfaces/geoposition-search';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  selectedOption: Location;
-  weatherLocation$: Observable<WeatherLocation>;
+  selectedOption$ = new Subject<Location>();
+  weatherLocation$ = new Subject<WeatherLocation>();
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
 
@@ -26,26 +26,14 @@ export class HomeComponent implements OnInit {
     private weatherLocationsService: WeatherLocationsService,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    from(this.getGeolocation()).pipe(map(
-      geolocationPosition => geolocationPosition.coords),
-      catchError(() => {
-        this.snackBar.open('Geolocation is not supported by this browser.', '', { duration: 2000 });
-        return EMPTY;
-      }),
-      switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
-      map<HttpResponse.GeopositionSearch, {location: Location, coordinates: Coordinates}>(({ Key, LocalizedName, GeoPosition }) => ({
-        location: { key: Key, localizedName: LocalizedName },
-        coordinates: { latitude: GeoPosition.Latitude, longitude: GeoPosition.Longitude }
-      })),
-      tap(({ location }) => this.selectedOption = location),
-      switchMap(({ location, coordinates }) => this.weatherLocationsService.getWeather(location, coordinates)),
-      tap(console.log),
-      tap(() => this.cdr.markForCheck())
+    this.getCoordinates().pipe(
+      this.updateSelectedOption(),
+      this.updateWeatherLocation()
     ).subscribe();
+
     this.isLoading$ = this.weatherLocationsQuery.selectLoading();
     this.error$ = this.weatherLocationsQuery.selectError();
   }
@@ -54,13 +42,38 @@ export class HomeComponent implements OnInit {
     // this.weatherLocationsService.getWeather(selectedOption);
   }
   
-  private getGeolocation(options?: PositionOptions): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(resolve, reject, options)
-      } else { 
-        reject();
-      }
-    });
+  private getCoordinates(options?: PositionOptions): Observable<GeolocationCoordinates> {
+    return from(
+      new Promise<GeolocationPosition>((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(resolve, reject, options)
+        } else { 
+          reject();
+        }
+    })).pipe(
+      map(geolocationPosition => geolocationPosition.coords),
+      catchError(() => {
+        this.snackBar.open('Geolocation is not supported by this browser.', '', { duration: 5000 });
+        return EMPTY;
+      })
+    );
+  }
+
+  private updateSelectedOption(): OperatorFunction<Coordinates, {location: Location, coordinates: Coordinates}> {
+    return pipe(
+      switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
+      map(({ Key, LocalizedName, GeoPosition }) => ({
+        location: { key: Key, localizedName: LocalizedName },
+        coordinates: { latitude: GeoPosition.Latitude, longitude: GeoPosition.Longitude }
+      })),
+      tap(({ location }) => this.selectedOption$.next(location))
+    );
+  }
+
+  private updateWeatherLocation(): OperatorFunction<{location: Location, coordinates: Coordinates}, WeatherLocation> {
+    return pipe(
+      switchMap(({ location, coordinates }) => this.weatherLocationsService.getWeather(location, coordinates)),
+      tap(weather => this.weatherLocation$.next(weather))
+    );
   }
 }

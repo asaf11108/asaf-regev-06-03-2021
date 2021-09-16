@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
   constructor(private weatherLocationsQuery: WeatherLocationsQuery) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.weatherLocationsQuery.selectLoading().pipe(delay(0));
+    this.isLoading$ = this.weatherLocationsQuery.selectLoading();
   }
 
 }
