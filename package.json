@@ -24,7 +24,9 @@
     "@datorama/akita": "^6.0.1",
     "date-fns": "^2.19.0",
     "include-media": "^1.4.9",
+    "lodash-es": "^4.17.21",
     "ngx-take-until-destroy": "^5.4.0",
+    "property-watch-decorator": "^1.2.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
@@ -35,6 +37,7 @@
     "@angular/compiler-cli": "~12.2.4",
     "@datorama/akita-ngdevtools": "^6.0.0",
     "@types/jasmine": "~3.6.0",
+    "@types/lodash-es": "^4.17.5",
     "@types/node": "^12.11.1",
     "angular-cli-ghpages": "^1.0.0-rc.1",
     "codelyzer": "^6.0.0",

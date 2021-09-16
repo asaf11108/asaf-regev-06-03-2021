@@ -1,49 +1,67 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { concat, Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  map,
+  tap,
+} from 'rxjs/operators';
 import { ApiService } from './../../services/api.mock.service';
-import { Location } from "../../interfaces/location";
+import { Location } from '../../state/weather-locations/weather-location.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { OnChange } from 'property-watch-decorator';
+import { omit } from "lodash-es";
 
 @Component({
   selector: 'app-autocomplete',
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteComponent implements OnInit {
   form: FormGroup = new FormGroup({
     key: new FormControl(''),
-    localizedName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)])
+    localizedName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z ]+$/),
+    ]),
   });
   controls = {
     key: this.form.get('key'),
-    localizedName: this.form.get('localizedName')
+    localizedName: this.form.get('localizedName'),
   };
 
   filteredOptions$: Observable<Location[]>;
 
-  @Input() selectedOption: Location;
+  @OnChange<Location>('onChangeSelectedOption')
+  @Input()
+  selectedOption: Location;
   @Output() select = new EventEmitter<Location>();
 
-  constructor(
-    private apiService: ApiService,
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.form.setValue(this.selectedOption);
-
-    this.filteredOptions$ = concat(
-      of(this.selectedOption.localizedName),
-      this.controls.localizedName.valueChanges.pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
-        filter(() => !this.controls.localizedName.invalid)
+    this.filteredOptions$ = this.controls.localizedName.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      filter(() => this.controls.localizedName.valid),
+      switchMap((query) => this.apiService.getAutoComplete(query)),
+      map((locations) =>
+        locations.map((location) => ({
+          key: location.Key,
+          localizedName: location.LocalizedName,
+        }))
       )
-    ).pipe(
-      switchMap(query => this.apiService.getLocations(query)),
-      map(locations => locations.map(location => ({ key: location.Key, localizedName: location.LocalizedName })))
     );
   }
 
@@ -61,4 +79,9 @@ export class AutocompleteComponent implements OnInit {
     this.select.emit(selectedOption);
   }
 
+  private onChangeSelectedOption(selectedOption: Location) {
+    if (selectedOption) {
+      this.form.setValue(omit(selectedOption, 'coordinates'));
+    }
+  }
 }

@@ -1,7 +1,0 @@
-@use 'vendors';
-
-:host {
-    @include vendors.spread(width, 110px, 150px);
-    @include vendors.spread(margin, 5px, 15px);
-    text-align: center;
-}

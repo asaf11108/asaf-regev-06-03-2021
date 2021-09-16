@@ -1,11 +1,12 @@
-import { map } from 'rxjs/operators';
-import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
-import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
-import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
-import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
+import { ApiService } from './../../services/api.mock.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
+import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
+import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
+import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Location } from "../../interfaces/location";
+import { EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
+import { Location } from "../../state/weather-locations/weather-location.model";
 
 @Component({
   selector: 'app-home',
@@ -14,35 +15,65 @@ import { Location } from "../../interfaces/location";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  selectedOption$: Observable<Location>;
-  favoriteLocation$: Observable<FavoriteLocation>;
+  selectedOption$ = new Subject<Location>();
+  weatherLocation$ = new Subject<WeatherLocation>();
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
 
   constructor(
-    private favoriteLocationsQuery: FavoriteLocationsQuery,
-    private favoriteLocationsService: FavoriteLocationsService,
-    private favoriteLocationsStore: FavoriteLocationsStore
+    private weatherLocationsQuery: WeatherLocationsQuery,
+    private weatherLocationsService: WeatherLocationsService,
+    private apiService: ApiService,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
-    this.selectedOption$ = this.favoriteLocationsQuery.selectActive().pipe(map(this.mapEntityToLocation));
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectActive();
-    this.favoriteLocationsService.getFavoriteData(this.mapEntityToLocation(this.favoriteLocationsQuery.getActive()));
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
-    this.error$ = this.favoriteLocationsQuery.selectError();
+    this.getCoordinates().pipe(
+      this.updateSelectedOption(),
+      this.updateWeatherLocation()
+    ).subscribe();
+
+    this.isLoading$ = this.weatherLocationsQuery.selectLoading();
+    this.error$ = this.weatherLocationsQuery.selectError();
   }
   
   onSelectionChange(selectedOption: Location): void {
-    this.favoriteLocationsService.getFavoriteData(selectedOption);
-    this.favoriteLocationsStore.setActive(selectedOption.key);
+    of(selectedOption).pipe(this.updateWeatherLocation()).subscribe();
   }
   
-  onFavoriteClick(activeEntity: FavoriteLocation): void {
-    this.favoriteLocationsStore.update(activeEntity.key, { isFavorite: !activeEntity.isFavorite });
+  private getCoordinates(options?: PositionOptions): Observable<GeolocationCoordinates> {
+    return from(
+      new Promise<GeolocationPosition>((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(resolve, reject, options)
+        } else { 
+          reject();
+        }
+    })).pipe(
+      map(geolocationPosition => geolocationPosition.coords),
+      catchError(() => {
+        this.snackBar.open('Geolocation is not supported by this browser.', '', { duration: 5000 });
+        return EMPTY;
+      })
+    );
   }
 
-  private mapEntityToLocation(entity: FavoriteLocation): Location {
-    return {key: entity.key, localizedName: entity.localizedName};
+  private updateSelectedOption(): OperatorFunction<Coordinates, Location> {
+    return pipe(
+      switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
+      map(({ Key, LocalizedName, GeoPosition }) => ({
+        key: Key,
+        localizedName: LocalizedName,
+        coordinates: { latitude: GeoPosition.Latitude, longitude: GeoPosition.Longitude }
+      })),
+      tap((location) => this.selectedOption$.next(location))
+    );
+  }
+
+  private updateWeatherLocation(): OperatorFunction<Location, WeatherLocation> {
+    return pipe(
+      switchMap((location) => this.weatherLocationsService.getWeather(location)),
+      tap(weather => this.weatherLocation$.next(weather))
+    );
   }
 }

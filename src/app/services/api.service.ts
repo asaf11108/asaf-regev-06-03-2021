@@ -1,63 +1,62 @@
 import { ApiService as ApiMockService } from './api.mock.service';
-import { FavoriteLocationsStore } from './../store/favorite-locations/state/favorite-locations.store';
 import { IApiService } from './api,interface';
-import { EMPTY, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocationHttpResponse } from "../interfaces/location";
+import { LocationHttpResponse } from "../interfaces/autocomplete";
 import { CurrentConditions } from "../interfaces/current-conditions";
-import { catchError, map } from 'rxjs/operators';
-import { ForecastHttpResponse, ForecastsHttpResponse } from '../interfaces/forecast';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError } from 'rxjs/operators';
+import { HttpResponse } from '../interfaces/geoposition-search';
+import { SearchByLocationKey } from '../interfaces/search-by-location-key';
 
 
 @Injectable()
 export class ApiService implements IApiService {
 
-  readonly API_KEY = 'gRf4KNnswLuVm8mG3puAI1GUOGeJTu1v';
-  readonly HTTP_PREFIX = 'https://cors-anywhere.herokuapp.com/';
-  readonly ENDPOINT = 'http://dataservice.accuweather.com/';
-  readonly BAD_REQUEST = ' Unable to retrieve data. Switched to mock data.';
   readonly apiMockService: IApiService;
 
-  constructor(
-    private http: HttpClient,
-    private _snackBar: MatSnackBar,
-    private favoriteLocationsStore: FavoriteLocationsStore
-  ) {
+  constructor(private http: HttpClient) {
     this.apiMockService = new ApiMockService();
   }
 
-  getLocations(query: string): Observable<LocationHttpResponse[]> {
-    return this.http.get<LocationHttpResponse[]>(`${this.HTTP_PREFIX}${this.ENDPOINT}locations/v1/cities/autocomplete?apikey=${this.API_KEY}&q=${encodeURIComponent(query)}`).pipe(
+  getAutoComplete(query: string): Observable<LocationHttpResponse[]> {
+    return this.http.get<LocationHttpResponse[]>(
+      `locations/v1/cities/autocomplete`, {
+        params: {
+          q: encodeURIComponent(query)
+        }
+      }).pipe(
       catchError(() => {
-        this.handleError();
-        return this.apiMockService.getLocations(query);
+        return this.apiMockService.getAutoComplete(query);
       })
     )
   }
 
-  getCurrentConditions(key: string): Observable<CurrentConditions[]> {
-    return this.http.get<CurrentConditions[]>(`${this.HTTP_PREFIX}${this.ENDPOINT}currentconditions/v1/${key}?apikey=${this.API_KEY}`).pipe(
+  getCurrentConditions(key: string): Observable<CurrentConditions> {
+    return this.http.get<CurrentConditions>(`currentconditions/v1/${key}`).pipe(
       catchError(() => {
-        this.handleError();
         return this.apiMockService.getCurrentConditions(key);
       })
     )
   }
 
-  getForecasts(key: string): Observable<ForecastHttpResponse[]> {
-    return this.http.get<ForecastsHttpResponse>(`${this.HTTP_PREFIX}${this.ENDPOINT}forecasts/v1/daily/5day/${key}?apikey=${this.API_KEY}&metric=true`).pipe(
-      map(res => res.DailyForecasts),
+  getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
+    return this.http.get<HttpResponse.GeopositionSearch>(`locations/v1/cities/geoposition/search`, {
+      params: {
+        q: [latitude, longitude].join(',')
+      }
+    }).pipe(
       catchError(() => {
-        this.handleError();
-        return this.apiMockService.getForecasts(key);
+        return this.apiMockService.getGeopositionSearch(latitude, longitude);
       })
     )
   }
-
-  handleError(): void {
-    this._snackBar.open(this.BAD_REQUEST, '', { duration: 2000 });
-    // this.favoriteLocationsStore.setError(this.BAD_REQUEST);
+  
+  getSearchByLocationKey(key: string): Observable<SearchByLocationKey> {
+    return this.http.get<HttpResponse.GeopositionSearch>(`locations/v1/${key}`).pipe(
+      catchError(() => {
+        return this.apiMockService.getSearchByLocationKey(key);
+      })
+    )
   }
 }

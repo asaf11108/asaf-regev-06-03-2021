@@ -1,7 +1,0 @@
-<mat-card>
-    <mat-card-title>
-        <p>{{ forecast.title }}</p>
-        <p>{{forecast.temperature}}&#176;C</p>
-        <img *ngIf="forecast.icon" [src]="forecast.icon" (error)="onImgError($event)"/>
-    </mat-card-title>
-</mat-card>
