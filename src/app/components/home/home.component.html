@@ -1,28 +1,21 @@
-<app-autocomplete *ngIf="selectedOption$ | async as selectedOption" [selectedOption]="selectedOption" (select)="onSelectionChange($event)"></app-autocomplete>
+<app-autocomplete [selectedOption]="selectedOption" (select)="onSelectionChange($event)"></app-autocomplete>
 
 <mat-card class="home__card">
     <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
 
     <ng-template #contentAvailable>
-        <ng-container *ngIf="favoriteLocation$ | async as favoriteLocation">
+        <ng-container *ngIf="weatherLocation$ | async as weatherLocation">
 
             <mat-card-title class="home__title">
                 <span>
-                    <span>{{favoriteLocation.localizedName}}</span>
-                    <span>{{favoriteLocation.temperature}}&#176;C</span>
+                    <span>{{weatherLocation.localizedName}}</span>
+                    <span>{{weatherLocation.temperature}}&#176;C</span>
                 </span>
-                <button mat-flat-button [color]="'primary'" [disabled]="isLoading$ | async" (click)="onFavoriteClick(favoriteLocation)">
-                    {{favoriteLocation.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
-                </button>
             </mat-card-title>
 
             <mat-card-content class="home__content">
                 <div>
-                    <h1 class="home__content-header">{{favoriteLocation.weatherText}}</h1>
-                </div>
-                <div class="home__forecasts">
-                    <app-forecast *ngFor="let forecast of favoriteLocation.forecasts" [forecast]="forecast">
-                    </app-forecast>
+                    <!-- <h1 class="home__content-header">{{weatherLocation.weatherText}}</h1> -->
                 </div>
             </mat-card-content>
 

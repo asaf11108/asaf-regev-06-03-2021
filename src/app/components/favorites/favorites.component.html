@@ -1,8 +1,0 @@
-<div class="favorites">
-    <app-forecast
-        class="favorites__forecast"
-        *ngFor="let favoriteLocation of favoriteLocations$ | async"
-        [forecast]="mapToForecastComponent(favoriteLocation)"
-        (click)="forecastClick(favoriteLocation)"
-    ></app-forecast>
-</div>

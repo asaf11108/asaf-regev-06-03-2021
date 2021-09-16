@@ -40,9 +40,4 @@
         @include vendors.spread(min-height, 400px, 500px);
     }
     
-    &__forecasts {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 }

@@ -1,11 +1,13 @@
-import { map } from 'rxjs/operators';
-import { FavoriteLocation } from './../../store/favorite-locations/state/favorite-location.model';
-import { FavoriteLocationsStore } from './../../store/favorite-locations/state/favorite-locations.store';
-import { FavoriteLocationsQuery } from './../../store/favorite-locations/state/favorite-locations.query';
-import { FavoriteLocationsService } from './../../store/favorite-locations/state/favorite-locations.service';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Location } from "../../interfaces/location";
+import { ApiService } from './../../services/api.mock.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
+import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
+import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
+import { map, switchMap, catchError, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { EMPTY, from, Observable } from 'rxjs';
+import { Location } from "../../state/weather-locations/weather-location.model";
+import { HttpResponse } from 'src/app/interfaces/geoposition-search';
 
 @Component({
   selector: 'app-home',
@@ -14,35 +16,51 @@ import { Location } from "../../interfaces/location";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  selectedOption$: Observable<Location>;
-  favoriteLocation$: Observable<FavoriteLocation>;
+  selectedOption: Location;
+  weatherLocation$: Observable<WeatherLocation>;
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
 
   constructor(
-    private favoriteLocationsQuery: FavoriteLocationsQuery,
-    private favoriteLocationsService: FavoriteLocationsService,
-    private favoriteLocationsStore: FavoriteLocationsStore
+    private weatherLocationsQuery: WeatherLocationsQuery,
+    private weatherLocationsService: WeatherLocationsService,
+    private apiService: ApiService,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.selectedOption$ = this.favoriteLocationsQuery.selectActive().pipe(map(this.mapEntityToLocation));
-    this.favoriteLocation$ = this.favoriteLocationsQuery.selectActive();
-    this.favoriteLocationsService.getFavoriteData(this.mapEntityToLocation(this.favoriteLocationsQuery.getActive()));
-    this.isLoading$ = this.favoriteLocationsQuery.selectLoading();
-    this.error$ = this.favoriteLocationsQuery.selectError();
+    from(this.getGeolocation()).pipe(map(
+      geolocationPosition => geolocationPosition.coords),
+      catchError(() => {
+        this.snackBar.open('Geolocation is not supported by this browser.', '', { duration: 2000 });
+        return EMPTY;
+      }),
+      switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
+      map<HttpResponse.GeopositionSearch, {location: Location, coordinates: Coordinates}>(({ Key, LocalizedName, GeoPosition }) => ({
+        location: { key: Key, localizedName: LocalizedName },
+        coordinates: { latitude: GeoPosition.Latitude, longitude: GeoPosition.Longitude }
+      })),
+      tap(({ location }) => this.selectedOption = location),
+      switchMap(({ location, coordinates }) => this.weatherLocationsService.getWeather(location, coordinates)),
+      tap(console.log),
+      tap(() => this.cdr.markForCheck())
+    ).subscribe();
+    this.isLoading$ = this.weatherLocationsQuery.selectLoading();
+    this.error$ = this.weatherLocationsQuery.selectError();
   }
   
   onSelectionChange(selectedOption: Location): void {
-    this.favoriteLocationsService.getFavoriteData(selectedOption);
-    this.favoriteLocationsStore.setActive(selectedOption.key);
+    // this.weatherLocationsService.getWeather(selectedOption);
   }
   
-  onFavoriteClick(activeEntity: FavoriteLocation): void {
-    this.favoriteLocationsStore.update(activeEntity.key, { isFavorite: !activeEntity.isFavorite });
-  }
-
-  private mapEntityToLocation(entity: FavoriteLocation): Location {
-    return {key: entity.key, localizedName: entity.localizedName};
+  private getGeolocation(options?: PositionOptions): Promise<GeolocationPosition> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, options)
+      } else { 
+        reject();
+      }
+    });
   }
 }

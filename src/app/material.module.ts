@@ -9,6 +9,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
 
 const components = [
     MatToolbarModule,
@@ -19,6 +20,7 @@ const components = [
     MatCardModule,
     MatAutocompleteModule,
     MatMenuModule,
+    MatTableModule,
     MatSnackBarModule
 ];
 

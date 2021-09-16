@@ -1,4 +1,4 @@
-import { ForecastHttpResponse } from './../interfaces/forecast';
+import { HttpResponse } from '../interfaces/geoposition-search';
 import { IApiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -22,209 +22,95 @@ export class ApiService implements IApiService {
     }
   }
 
-  getCurrentConditions(key: string): Observable<CurrentConditions[]> {
-    return of([
+  getCurrentConditions(key: string): Observable<CurrentConditions> {
+    const currentConditions: CurrentConditions = [
       {
-        "LocalObservationDateTime": "2021-03-07T09:30:00+02:00",
-        "EpochTime": 1615102200,
-        "WeatherText": "Partly sunny",
-        "WeatherIcon": 3,
+        "LocalObservationDateTime": "2021-09-15T17:21:00+03:00",
+        "EpochTime": 1631715660,
+        "WeatherText": "Clouds and sun",
+        "WeatherIcon": 4,
         "HasPrecipitation": false,
         "PrecipitationType": null,
         "IsDayTime": true,
         "Temperature": {
           "Metric": {
-            "Value": 15.4,
+            "Value": 29.4,
             "Unit": "C",
             "UnitType": 17
           },
           "Imperial": {
-            "Value": 60,
+            "Value": 85,
             "Unit": "F",
             "UnitType": 18
           }
         },
-        "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us",
-        "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us"
+        "MobileLink": "http://www.accuweather.com/en/il/yanuh/214356/current-weather/214356?lang=en-us",
+        "Link": "http://www.accuweather.com/en/il/yanuh/214356/current-weather/214356?lang=en-us"
       }
-    ]);
+    ];
+    return of(currentConditions);
   }
 
-  getForecasts(key: string): Observable<ForecastHttpResponse[]> {
-    const forcastHttpResponse = {
-      "Headline": {
-        "EffectiveDate": "2021-03-11T07:00:00+02:00",
-        "EffectiveEpochDate": 1615438800,
-        "Severity": 5,
-        "Text": "Expect showery weather Thursday morning through late Thursday night",
-        "Category": "rain",
-        "EndDate": "2021-03-12T07:00:00+02:00",
-        "EndEpochDate": 1615525200,
-        "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/extended-weather-forecast/215854?unit=c&lang=en-us",
-        "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?unit=c&lang=en-us"
+  getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
+    const ans: HttpResponse.GeopositionSearch = {
+      "Version": 1,
+      "Key": "214356",
+      "Type": "City",
+      "Rank": 75,
+      "LocalizedName": "Yanuh",
+      "EnglishName": "Yanuh",
+      "PrimaryPostalCode": "",
+      "Region": {
+        "ID": "MEA",
+        "LocalizedName": "Middle East",
+        "EnglishName": "Middle East"
       },
-      "DailyForecasts": [
-        {
-          "Date": "2021-03-07T07:00:00+02:00",
-          "EpochDate": 1615093200,
-          "Temperature": {
-            "Minimum": {
-              "Value": 12.4,
-              "Unit": "C",
-              "UnitType": 17
-            },
-            "Maximum": {
-              "Value": 18.2,
-              "Unit": "C",
-              "UnitType": 17
-            }
+      "Country": {
+        "ID": "IL",
+        "LocalizedName": "Israel",
+        "EnglishName": "Israel"
+      },
+      "AdministrativeArea": {
+        "ID": "Z",
+        "LocalizedName": "Northern District",
+        "EnglishName": "Northern District",
+        "Level": 1,
+        "LocalizedType": "District",
+        "EnglishType": "District",
+        "CountryID": "IL"
+      },
+      "TimeZone": {
+        "Code": "IDT",
+        "Name": "Asia/Jerusalem",
+        "GmtOffset": 3,
+        "IsDaylightSaving": true,
+        "NextOffsetChange": "2021-10-30T23:00:00Z"
+      },
+      "GeoPosition": {
+        "Latitude": 32.985,
+        "Longitude": 35.251,
+        "Elevation": {
+          "Metric": {
+            "Value": 462,
+            "Unit": "m",
+            "UnitType": 5
           },
-          "Day": {
-            "Icon": 2,
-            "IconPhrase": "Mostly sunny",
-            "HasPrecipitation": false
-          },
-          "Night": {
-            "Icon": 35,
-            "IconPhrase": "Partly cloudy",
-            "HasPrecipitation": false
-          },
-          "Sources": [
-            "AccuWeather"
-          ],
-          "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=1&unit=c&lang=en-us",
-          "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=1&unit=c&lang=en-us"
-        },
-        {
-          "Date": "2021-03-08T07:00:00+02:00",
-          "EpochDate": 1615179600,
-          "Temperature": {
-            "Minimum": {
-              "Value": 11.5,
-              "Unit": "C",
-              "UnitType": 17
-            },
-            "Maximum": {
-              "Value": 19.3,
-              "Unit": "C",
-              "UnitType": 17
-            }
-          },
-          "Day": {
-            "Icon": 3,
-            "IconPhrase": "Partly sunny",
-            "HasPrecipitation": false
-          },
-          "Night": {
-            "Icon": 34,
-            "IconPhrase": "Mostly clear",
-            "HasPrecipitation": false
-          },
-          "Sources": [
-            "AccuWeather"
-          ],
-          "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=2&unit=c&lang=en-us",
-          "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=2&unit=c&lang=en-us"
-        },
-        {
-          "Date": "2021-03-09T07:00:00+02:00",
-          "EpochDate": 1615266000,
-          "Temperature": {
-            "Minimum": {
-              "Value": 15.5,
-              "Unit": "C",
-              "UnitType": 17
-            },
-            "Maximum": {
-              "Value": 23.4,
-              "Unit": "C",
-              "UnitType": 17
-            }
-          },
-          "Day": {
-            "Icon": 3,
-            "IconPhrase": "Partly sunny",
-            "HasPrecipitation": false
-          },
-          "Night": {
-            "Icon": 34,
-            "IconPhrase": "Mostly clear",
-            "HasPrecipitation": false
-          },
-          "Sources": [
-            "AccuWeather"
-          ],
-          "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=3&unit=c&lang=en-us",
-          "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=3&unit=c&lang=en-us"
-        },
-        {
-          "Date": "2021-03-10T07:00:00+02:00",
-          "EpochDate": 1615352400,
-          "Temperature": {
-            "Minimum": {
-              "Value": 16.4,
-              "Unit": "C",
-              "UnitType": 17
-            },
-            "Maximum": {
-              "Value": 25.9,
-              "Unit": "C",
-              "UnitType": 17
-            }
-          },
-          "Day": {
-            "Icon": 2,
-            "IconPhrase": "Mostly sunny",
-            "HasPrecipitation": false
-          },
-          "Night": {
-            "Icon": 34,
-            "IconPhrase": "Mostly clear",
-            "HasPrecipitation": false
-          },
-          "Sources": [
-            "AccuWeather"
-          ],
-          "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=4&unit=c&lang=en-us",
-          "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=4&unit=c&lang=en-us"
-        },
-        {
-          "Date": "2021-03-11T07:00:00+02:00",
-          "EpochDate": 1615438800,
-          "Temperature": {
-            "Minimum": {
-              "Value": 16,
-              "Unit": "C",
-              "UnitType": 17
-            },
-            "Maximum": {
-              "Value": 19.8,
-              "Unit": "C",
-              "UnitType": 17
-            }
-          },
-          "Day": {
-            "Icon": 14,
-            "IconPhrase": "Partly sunny w/ showers",
-            "HasPrecipitation": true,
-            "PrecipitationType": "Rain",
-            "PrecipitationIntensity": "Light"
-          },
-          "Night": {
-            "Icon": 39,
-            "IconPhrase": "Partly cloudy w/ showers",
-            "HasPrecipitation": true,
-            "PrecipitationType": "Rain",
-            "PrecipitationIntensity": "Light"
-          },
-          "Sources": [
-            "AccuWeather"
-          ],
-          "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=5&unit=c&lang=en-us",
-          "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=5&unit=c&lang=en-us"
+          "Imperial": {
+            "Value": 1515,
+            "Unit": "ft",
+            "UnitType": 0
+          }
         }
+      },
+      "IsAlias": false,
+      "SupplementalAdminAreas": [],
+      "DataSets": [
+        "AirQualityCurrentConditions",
+        "AirQualityForecasts",
+        "Alerts",
+        "ForecastConfidence"
       ]
-    }
-    return of(forcastHttpResponse.DailyForecasts);
+    };
+    return of(ans);
   }
 }

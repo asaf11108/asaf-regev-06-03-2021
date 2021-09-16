@@ -22,6 +22,9 @@
     }
 
     &__actions {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
         @include vendors.media('<=xs') {
             display: none;
         }
@@ -32,9 +35,19 @@
             }
         }
     }
+
+    &__menu-spacer {
+        @include vendors.spread(width, 20px, 40px);
+        @include vendors.spread(height, 20px, 40px);
+    }
     
     &__menu {
         display: flex;
         flex-direction: column;
+    }
+
+    &__temprature {
+        display: flex;
+        justify-content: center;
     }
 }

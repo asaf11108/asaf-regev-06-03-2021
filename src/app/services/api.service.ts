@@ -1,14 +1,13 @@
 import { ApiService as ApiMockService } from './api.mock.service';
-import { FavoriteLocationsStore } from './../store/favorite-locations/state/favorite-locations.store';
 import { IApiService } from './api,interface';
-import { EMPTY, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LocationHttpResponse } from "../interfaces/location";
 import { CurrentConditions } from "../interfaces/current-conditions";
-import { catchError, map } from 'rxjs/operators';
-import { ForecastHttpResponse, ForecastsHttpResponse } from '../interfaces/forecast';
+import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpResponse } from '../interfaces/geoposition-search';
 
 
 @Injectable()
@@ -23,13 +22,18 @@ export class ApiService implements IApiService {
   constructor(
     private http: HttpClient,
     private _snackBar: MatSnackBar,
-    private favoriteLocationsStore: FavoriteLocationsStore
   ) {
     this.apiMockService = new ApiMockService();
   }
 
   getLocations(query: string): Observable<LocationHttpResponse[]> {
-    return this.http.get<LocationHttpResponse[]>(`${this.HTTP_PREFIX}${this.ENDPOINT}locations/v1/cities/autocomplete?apikey=${this.API_KEY}&q=${encodeURIComponent(query)}`).pipe(
+    return this.http.get<LocationHttpResponse[]>(
+      `${this.HTTP_PREFIX}${this.ENDPOINT}locations/v1/cities/autocomplete`, {
+        params: {
+          apikey: this.API_KEY,
+          q: encodeURIComponent(query)
+        }
+      }).pipe(
       catchError(() => {
         this.handleError();
         return this.apiMockService.getLocations(query);
@@ -37,8 +41,13 @@ export class ApiService implements IApiService {
     )
   }
 
-  getCurrentConditions(key: string): Observable<CurrentConditions[]> {
-    return this.http.get<CurrentConditions[]>(`${this.HTTP_PREFIX}${this.ENDPOINT}currentconditions/v1/${key}?apikey=${this.API_KEY}`).pipe(
+  getCurrentConditions(key: string): Observable<CurrentConditions> {
+    return this.http.get<CurrentConditions>(
+      `${this.HTTP_PREFIX}${this.ENDPOINT}currentconditions/v1/${key}`, {
+        params: {
+          apikey: this.API_KEY
+        }
+      }).pipe(
       catchError(() => {
         this.handleError();
         return this.apiMockService.getCurrentConditions(key);
@@ -46,12 +55,16 @@ export class ApiService implements IApiService {
     )
   }
 
-  getForecasts(key: string): Observable<ForecastHttpResponse[]> {
-    return this.http.get<ForecastsHttpResponse>(`${this.HTTP_PREFIX}${this.ENDPOINT}forecasts/v1/daily/5day/${key}?apikey=${this.API_KEY}&metric=true`).pipe(
-      map(res => res.DailyForecasts),
+  getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
+    return this.http.get<HttpResponse.GeopositionSearch>(`${this.HTTP_PREFIX}${this.ENDPOINT}/locations/v1/cities/geoposition/search`, {
+      params: {
+        apikey: this.API_KEY,
+        q: encodeURIComponent([latitude, longitude].join(','))
+      }
+    }).pipe(
       catchError(() => {
         this.handleError();
-        return this.apiMockService.getForecasts(key);
+        return this.apiMockService.getGeopositionSearch(latitude, longitude);
       })
     )
   }

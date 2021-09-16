@@ -1,10 +1,10 @@
 import { Observable } from "rxjs";
 import { CurrentConditions } from "../interfaces/current-conditions";
-import { ForecastHttpResponse } from "../interfaces/forecast";
+import { HttpResponse } from "../interfaces/geoposition-search";
 import { LocationHttpResponse } from "../interfaces/location";
 
 export interface IApiService {
+    getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch>;
     getLocations(query: string): Observable<LocationHttpResponse[]>;
-    getCurrentConditions(key: string) : Observable<CurrentConditions[]>;
-    getForecasts(key: string): Observable<ForecastHttpResponse[]>;
+    getCurrentConditions(key: string) : Observable<CurrentConditions>;
 }
