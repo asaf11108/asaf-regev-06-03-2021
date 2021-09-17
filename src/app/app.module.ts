@@ -13,13 +13,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { InterceptorService } from './services/interceptor.service';
+import { TemperaturePipe } from './pipes/temperature.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ToolbarComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    TemperaturePipe
   ],
   imports: [
     BrowserModule,
