@@ -1,1 +1,8 @@
+<form [formGroup]="form">
+    <mat-form-field>
+        <mat-label>Filter by Location</mat-label>
+        <input matInput [formControl]="controls.query" autocomplete="off" type="search" #input>
+    </mat-form-field>
+</form>
+
 <app-table></app-table>

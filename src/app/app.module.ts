@@ -1,3 +1,4 @@
+import { HistoryComponent } from './components/history/history.component';
 import { TableComponent } from './components/table/table.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialModule } from './material.module';
@@ -20,6 +21,7 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
   declarations: [
     AppComponent,
     HomeComponent,
+    HistoryComponent,
     ToolbarComponent,
     AutocompleteComponent,
     TemperaturePipe,

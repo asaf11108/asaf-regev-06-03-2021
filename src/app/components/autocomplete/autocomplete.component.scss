@@ -1,14 +1,11 @@
 @use 'vendors';
 
-.search-form {
-    @include vendors.spread(margin-bottom, 10px, 20px);
+.app-autocomplete {
+    display: block;
     text-align: center;
-    .mat-form-field {
-        background-color: rgba(255, 255, 255, 0.6);
-        padding: 0 10px;
-    }
+    @include vendors.spread(margin-bottom, 10px, 20px);
 
-    ::ng-deep .mat-form-field-prefix .mat-icon {
+    .mat-form-field-prefix .mat-icon {
         vertical-align: bottom;
     }
 }
