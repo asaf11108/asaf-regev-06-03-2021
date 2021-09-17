@@ -1,3 +1,4 @@
+import { TableComponent } from './components/table/table.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialModule } from './material.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,7 +22,8 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
     HomeComponent,
     ToolbarComponent,
     AutocompleteComponent,
-    TemperaturePipe
+    TemperaturePipe,
+    TableComponent
   ],
   imports: [
     BrowserModule,
