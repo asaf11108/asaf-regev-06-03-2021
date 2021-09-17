@@ -9,7 +9,7 @@
             <mat-card-title class="home__title">
                 <span class="left">
                     <span>{{weatherLocation.localizedName}}</span>
-                    <span>{{weatherLocation.temperature | temperature:(globalQuery.temperatureType$ | async)}}</span>
+                    <span>{{weatherLocation.temperature | temperature }}</span>
                 </span>
                 <span class="right">
                     <span *ngFor="let coordinate of weatherLocation.coordinates | keyvalue">

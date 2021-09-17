@@ -12,7 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
-import { InterceptorService } from './services/interceptor.service';
+import { ApiInterceptor } from './services/api.interceptor';
 import { TemperaturePipe } from './pipes/temperature.pipe';
 
 @NgModule({
@@ -34,7 +34,7 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
   ],
   providers: [
     ...environment.providers,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

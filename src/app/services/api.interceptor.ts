@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class InterceptorService implements HttpInterceptor {
+export class ApiInterceptor implements HttpInterceptor {
   private readonly API_KEY = 'gRf4KNnswLuVm8mG3puAI1GUOGeJTu1v';
   private readonly HTTP_PREFIX = 'https://cors-anywhere.herokuapp.com/';
   private readonly ENDPOINT = 'http://dataservice.accuweather.com/';
