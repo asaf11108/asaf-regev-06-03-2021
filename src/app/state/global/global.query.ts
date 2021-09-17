@@ -9,5 +9,5 @@ export class GlobalQuery extends Query<GlobalState> {
     super(store);
   }
 
-  temperatureType$ = this.select('temperature');
+  temperatureType$ = this.select('temperatureType');
 }

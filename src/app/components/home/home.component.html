@@ -1,7 +1,7 @@
 <app-autocomplete [selectedOption]="selectedOption$ | async" (select)="onSelectionChange($event)"></app-autocomplete>
 
 <mat-card class="home__card">
-    <h1 *ngIf="error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
+    <h1 *ngIf="weatherLocationsQuery.error$ | async as error; else contentAvailable" class="home__unavailable">{{error}}</h1>
 
     <ng-template #contentAvailable>
         <ng-container *ngIf="weatherLocation$ | async as weatherLocation">
@@ -9,7 +9,7 @@
             <mat-card-title class="home__title">
                 <span class="left">
                     <span>{{weatherLocation.localizedName}}</span>
-                    <span>{{weatherLocation.temperature}}&#176;C</span>
+                    <span>{{weatherLocation.temperature | temperature:(globalQuery.temperatureType$ | async)}}</span>
                 </span>
                 <span class="right">
                     <span *ngFor="let coordinate of weatherLocation.coordinates | keyvalue">

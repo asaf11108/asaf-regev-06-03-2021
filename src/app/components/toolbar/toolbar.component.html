@@ -29,14 +29,11 @@
           History
         </button>
         <span class="toolbar__menu-spacer"></span>
-        <div class="toolbar__temprature">
-          <button mat-mini-fab [color]="'primary'">
-            &#176;C
-          </button>
-          <button mat-mini-fab [color]="''">
-            &#176;F
-          </button>
-        </div>
+        <mat-button-toggle-group class="toolbar__temprature-types" (change)="onButtonToggleChange($event)">
+          <mat-button-toggle *ngFor="let temperatureType of TemperatureType | keyvalue; let first = first" [value]="temperatureType.value" [checked]="first">
+            &#176;{{ TemperatureTypeSymbol[temperatureType.value] }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
     </ng-template>
   

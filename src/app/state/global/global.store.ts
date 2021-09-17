@@ -3,12 +3,12 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { TemperatureType } from '../../interfaces/temperature-type';
 
 export interface GlobalState {
-  temperature: TemperatureType;
+  temperatureType: TemperatureType;
 }
 
 export function createInitialState(): GlobalState {
   return {
-    temperature: TemperatureType.CELSIUS
+    temperatureType: TemperatureType.Celsius
   };
 }
 

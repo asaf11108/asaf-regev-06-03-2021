@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@use './button-toggle.scss';
+
+.app-theme {
+    @include button-toggle.custom();
+}

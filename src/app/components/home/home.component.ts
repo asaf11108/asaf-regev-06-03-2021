@@ -1,3 +1,4 @@
+import { GlobalQuery } from './../../state/global/global.query';
 import { ApiService } from './../../services/api.mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
@@ -17,11 +18,10 @@ import { Location } from "../../state/weather-locations/weather-location.model";
 export class HomeComponent implements OnInit {
   selectedOption$ = new Subject<Location>();
   weatherLocation$ = new Subject<WeatherLocation>();
-  isLoading$: Observable<boolean>;
-  error$: Observable<string>;
 
   constructor(
-    private weatherLocationsQuery: WeatherLocationsQuery,
+    public globalQuery: GlobalQuery,
+    public weatherLocationsQuery: WeatherLocationsQuery,
     private weatherLocationsService: WeatherLocationsService,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
@@ -32,9 +32,6 @@ export class HomeComponent implements OnInit {
       this.updateSelectedOption(),
       this.updateWeatherLocation()
     ).subscribe();
-
-    this.isLoading$ = this.weatherLocationsQuery.selectLoading();
-    this.error$ = this.weatherLocationsQuery.selectError();
   }
   
   onSelectionChange(selectedOption: Location): void {

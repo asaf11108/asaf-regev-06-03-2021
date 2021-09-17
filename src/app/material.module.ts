@@ -10,6 +10,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 const components = [
     MatToolbarModule,
@@ -21,7 +22,8 @@ const components = [
     MatAutocompleteModule,
     MatMenuModule,
     MatTableModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonToggleModule
 ];
 
 @NgModule({

@@ -46,9 +46,10 @@
         flex-direction: column;
     }
 
-    &__temprature {
+    &__temprature-types {
         display: flex;
         justify-content: center;
+        align-self: center;
     }
 
     &__menu {

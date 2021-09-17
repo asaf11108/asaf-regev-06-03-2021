@@ -1,7 +1,7 @@
-import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { GlobalStore } from './../../state/global/global.store';
+import { TemperatureType, TemperatureTypeSymbol } from './../../interfaces/temperature-type';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,5 +10,12 @@ import { delay } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToolbarComponent {
+  TemperatureType = TemperatureType;
+  TemperatureTypeSymbol = TemperatureTypeSymbol;
 
+  constructor(private globalStore: GlobalStore) {}
+
+  onButtonToggleChange(event: MatButtonToggleChange): void {
+    this.globalStore.update({ temperatureType: event.value });
+  }
 }

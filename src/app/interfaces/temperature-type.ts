@@ -1,4 +1,9 @@
 export enum TemperatureType {
-    CELSIUS = 'celsius',
-    FAHRENHEIT = 'fahrenheit'
+  Celsius = 'celsius',
+  Fahrenheit = 'fahrenheit',
 }
+
+export const TemperatureTypeSymbol = {
+  [TemperatureType.Celsius]: 'C',
+  [TemperatureType.Fahrenheit]: 'F',
+};
