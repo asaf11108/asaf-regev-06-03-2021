@@ -17,7 +17,6 @@ export class WeatherLocationsService {
   ) {}
 
   getWeather({ key, localizedName, coordinates }: Location): Observable<WeatherLocation> {
-    this.weatherLocationsStore.setLoading(true);
     return forkJoin([
       this.apiService.getCurrentConditions(key),
       coordinates ? undefined : this.apiService.getSearchByLocationKey(key)
@@ -43,7 +42,6 @@ export class WeatherLocationsService {
           favoriteLocation.key,
           favoriteLocation
         );
-        this.weatherLocationsStore.setLoading(false);
       })
     );
   }

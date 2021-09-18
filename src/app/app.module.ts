@@ -18,6 +18,7 @@ import { ApiInterceptor } from './services/api.interceptor';
 import { TemperaturePipe } from './pipes/temperature.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { NgPipesModule } from 'ngx-pipes';
+import { LoaderInterceptor } from './services/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NgPipesModule } from 'ngx-pipes';
   ],
   providers: [
     ...environment.providers,
-    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

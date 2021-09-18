@@ -11,8 +11,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LayoutModule } from '@angular/cdk/layout';
 
-const components = [
+const modules = [
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -23,12 +25,14 @@ const components = [
     MatMenuModule,
     MatTableModule,
     MatSnackBarModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    LayoutModule
 ];
 
 @NgModule({
-  imports: components,
-  exports: components,
+  imports: modules,
+  exports: modules,
   providers: [],
 })
 export class MaterialModule { }

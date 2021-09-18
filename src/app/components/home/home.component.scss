@@ -28,9 +28,16 @@
         margin: 0;
     }
     
-    &__unavailable {
+    &__no-data {
         @include vendors.spread(font-size, 50px, 80px);
         text-align: center;
+    }
+
+    &__loader .mat-spinner {
+        @include vendors.spread(margin-top, 50px, 100px);
+        @include vendors.spread(margin-bottom, 50px, 100px);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     &__content {
