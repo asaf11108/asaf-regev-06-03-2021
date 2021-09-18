@@ -1,3 +1,4 @@
+import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HistoryComponent } from './components/history/history.component';
 import { TableComponent } from './components/table/table.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -28,7 +29,8 @@ import { LoaderInterceptor } from './services/loader.interceptor';
     ToolbarComponent,
     AutocompleteComponent,
     TemperaturePipe,
-    TableComponent
+    TableComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

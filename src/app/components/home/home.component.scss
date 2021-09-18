@@ -33,13 +33,6 @@
         text-align: center;
     }
 
-    &__loader .mat-spinner {
-        @include vendors.spread(margin-top, 50px, 100px);
-        @include vendors.spread(margin-bottom, 50px, 100px);
-        margin-left: auto;
-        margin-right: auto;
-    }
-
     &__content {
         display: flex;
         flex-direction: column;

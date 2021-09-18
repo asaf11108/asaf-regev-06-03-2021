@@ -1,0 +1,12 @@
+@use 'vendors';
+
+:host {
+    display: block;
+
+    .mat-spinner {
+        @include vendors.spread(margin-top, 50px, 100px);
+        @include vendors.spread(margin-bottom, 50px, 100px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

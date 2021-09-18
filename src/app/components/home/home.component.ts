@@ -8,6 +8,7 @@ import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
     public weatherLocationsQuery: WeatherLocationsQuery,
     private weatherLocationsService: WeatherLocationsService,
     private apiService: ApiService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {

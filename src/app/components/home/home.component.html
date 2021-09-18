@@ -1,8 +1,8 @@
 <app-autocomplete [selectedOption]="selectedOption$ | async" (select)="onSelectionChange($event)"></app-autocomplete>
 
 <mat-card class="home__card">
-    <h1 *ngIf="weatherLocationsQuery.loading$ | async; else availableContent" class="home__loader">
-        <mat-spinner [diameter]="200"></mat-spinner>
+    <h1 *ngIf="weatherLocationsQuery.loading$ | async; else availableContent">
+        <app-spinner></app-spinner>
     </h1>
 
     <ng-template #availableContent>
