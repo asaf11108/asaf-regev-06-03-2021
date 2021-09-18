@@ -1,8 +1,10 @@
 @use '@angular/material' as mat;
 @use './button-toggle.scss';
 @use './form-field.scss';
+@use './table.scss';
 
 .app-theme {
     @include button-toggle.custom();
     @include form-field.custom();
+    @include table.custom();
 }

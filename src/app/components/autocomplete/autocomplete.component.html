@@ -1,8 +1,9 @@
 <form [formGroup]="form">
     <mat-form-field [floatLabel]="'never'">
+        <mat-label>Search location</mat-label>
         <mat-icon [inline]="true" matPrefix>search</mat-icon>
-        <input type="text" placeholder="search location" matInput [formControl]="controls.localizedName"
-            [matAutocomplete]="auto" type="search">
+        <input type="search" matInput [formControl]="controls.localizedName"
+            [matAutocomplete]="auto" autocomplete="off">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)"
             [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">

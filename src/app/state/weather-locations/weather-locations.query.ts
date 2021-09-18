@@ -9,6 +9,7 @@ export class WeatherLocationsQuery extends QueryEntity<WeatherLocationsState> {
     super(store);
   }
 
+  weatherLocations$ = this.selectAll();
   loading$ = this.selectLoading();
   error$ = this.selectError()
 

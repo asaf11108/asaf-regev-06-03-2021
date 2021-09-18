@@ -1,11 +1,13 @@
 @mixin custom() {
-    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-        line-height: 20px;
-    }
-
-    // TODO: get more accurate color from material design system
-    .mat-button-toggle-checked {
-        background-color: rgba($color: black, $alpha: 0.8);
-        color: white;
+    .mat-button-toggle {
+        &-appearance-standard .mat-button-toggle-label-content {
+            line-height: 20px;
+        }
+    
+        // TODO: get more accurate color from material design system
+        &-checked {
+            background-color: rgba($color: black, $alpha: 0.8);
+            color: white;
+        }
     }
 }

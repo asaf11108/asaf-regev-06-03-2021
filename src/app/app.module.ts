@@ -16,6 +16,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { ApiInterceptor } from './services/api.interceptor';
 import { TemperaturePipe } from './pipes/temperature.pipe';
+import { MatSortModule } from '@angular/material/sort';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MaterialModule,
+    MatSortModule,
+    NgPipesModule,
     environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
   providers: [

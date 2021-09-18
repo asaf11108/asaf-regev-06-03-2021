@@ -25,6 +25,7 @@
     "date-fns": "^2.19.0",
     "include-media": "^1.4.9",
     "lodash-es": "^4.17.21",
+    "ngx-pipes": "^2.7.5",
     "ngx-take-until-destroy": "^5.4.0",
     "property-watch-decorator": "^1.2.5",
     "rxjs": "~6.6.0",

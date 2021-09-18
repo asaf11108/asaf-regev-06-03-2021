@@ -1,3 +1,4 @@
+import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -15,7 +16,9 @@ export class HistoryComponent implements OnInit {
     query: this.form.get('query'),
   };
 
-  constructor() { }
+  displayedColumns = ['key', 'localizedName', 'coordinates', 'temperature'];
+
+  constructor(public weatherLocationsQuery: WeatherLocationsQuery) { }
 
   ngOnInit(): void {
   }
