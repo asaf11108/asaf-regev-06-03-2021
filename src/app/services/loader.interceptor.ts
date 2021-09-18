@@ -4,10 +4,19 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpContext,
+  HttpContextToken,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
+
+const LOADER = new HttpContextToken<boolean>(() => true);
+
+export function skipLoader() {
+    return new HttpContext().set(LOADER, false);
+  }
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
@@ -19,13 +28,18 @@ export class LoaderInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.pendingRequests++;
-    this.weatherLocationsStore.setLoading(true);
+    const isLoader = req.context.get(LOADER)
+    if (isLoader) {
+        this.pendingRequests++;
+        this.weatherLocationsStore.setLoading(true);
+    }
 
     return next.handle(req).pipe(
         finalize(() => {
-            this.pendingRequests--;
-            !this.pendingRequests && this.weatherLocationsStore.setLoading(false);
+            if (isLoader) {
+                this.pendingRequests--;
+                !this.pendingRequests && this.weatherLocationsStore.setLoading(false);
+            }
         })
     );
   }

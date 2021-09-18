@@ -8,6 +8,7 @@ import { CurrentConditions } from "../interfaces/current-conditions";
 import { catchError } from 'rxjs/operators';
 import { HttpResponse } from '../interfaces/geoposition-search';
 import { SearchByLocationKey } from '../interfaces/search-by-location-key';
+import { skipLoader } from './loader.interceptor';
 
 
 @Injectable()
@@ -24,7 +25,8 @@ export class ApiService implements IApiService {
       `locations/v1/cities/autocomplete`, {
         params: {
           q: encodeURIComponent(query)
-        }
+        },
+        context: skipLoader()
       }).pipe(
       catchError(() => {
         return this.apiMockService.getAutoComplete(query);
