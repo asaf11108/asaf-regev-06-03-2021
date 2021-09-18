@@ -6,7 +6,7 @@
     </h1>
 
     <ng-template #availableContent>
-        <ng-container *ngIf="weatherLocation$ | async as weatherLocation">
+        <ng-container *ngIf="weatherLocation$ | async as weatherLocation; else noData">
 
             <mat-card-title class="home__title">
                 <span class="left">
@@ -26,6 +26,10 @@
             </mat-card-content>
 
         </ng-container>
+
+        <ng-template #noData>
+            <h1 class="home__no-data">NO DATA</h1>
+        </ng-template>
     </ng-template>
     
 </mat-card>
