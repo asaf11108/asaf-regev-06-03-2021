@@ -1,3 +1,18 @@
-table {
-    width: 100%;
+@use 'vendors';
+
+.app-table {
+    display: block;
+    overflow: auto;
+    max-height: calc(100vh - 180px);
+    @include vendors.media('>xs') {
+        max-height: calc(100vh - 250px);
+    }
+
+    .mat-table {
+        width: 100%;
+        min-width: 500px;
+        thead {
+            background: #CACED4;
+        }
+    }
 }

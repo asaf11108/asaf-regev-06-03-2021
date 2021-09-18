@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +15,10 @@ import { displayedColumns } from './table.config';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'app-table mat-elevation-z8'
+  }
 })
 export class TableComponent {
   displayedColumns = displayedColumns;
