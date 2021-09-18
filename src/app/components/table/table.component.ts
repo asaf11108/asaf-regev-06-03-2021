@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { displayedColumns } from './table.config';
 
 @Component({
   selector: 'app-table',
@@ -15,11 +16,12 @@ import { MatSort } from '@angular/material/sort';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
+  displayedColumns = displayedColumns;
   dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatSort) sort: MatSort;
 
-  @Input() displayedColumns: string[] = [];
+  @Input() columns: string[] = [];
   @Input() set data(data: WeatherLocation[]) {
     this.dataSource.data = data;
   }

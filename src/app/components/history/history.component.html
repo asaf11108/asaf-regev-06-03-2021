@@ -1,11 +1,11 @@
 <form [formGroup]="form">
-    <mat-form-field>
+    <mat-form-field [floatLabel]="'never'">
         <mat-label>Filter by Location</mat-label>
         <input #filterInput matInput [formControl]="controls.query" autocomplete="off" type="search" #input>
     </mat-form-field>
 </form>
 
 <app-table
-    [data]="weatherLocationsQuery.weatherLocations$ | async | filterBy:['localizedName']:filterInput.value"
-    [displayedColumns]="displayedColumns">
+    [data]="weatherLocationsQuery.weatherLocations$ | async | filterBy:[FilterByColumn]:filterInput.value"
+    [columns]="columns">
 </app-table>
