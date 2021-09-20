@@ -1,4 +1,4 @@
-import { ApiService as ApiMockService } from 'src/app/services/api.mock.service';
+import { ApiService as ApiMockService } from '../../services/api.mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/services/api.mock.service';
 import { WeatherLocationsQuery } from 'src/app/state/weather-locations/weather-locations.query';
@@ -22,17 +22,19 @@ describe('HomeComponent', () => {
       apiService,
       snackBar
     );
-    console.log(
-      '🚀 ~ file: home.component.spec.ts ~ line 29 ~ describe ~ fixture',
-      fixture
-    );
   });
 
   describe('ngOnInit', () => {
-    console.log(fixture.weatherLocation$.value);
+    it('should create', () => {
+      
+      fixture.ngOnInit();
+
+      expect(fixture.weatherLocation$.value).toBe(null);
+
+    });
   });
 
-  describe('ngOnInit', () => {});
+  // describe('ngOnInit', () => {});
 
-  it('should create', () => {});
+  // it('should create', () => {});
 });
