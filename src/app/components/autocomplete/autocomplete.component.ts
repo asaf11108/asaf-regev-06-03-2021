@@ -48,7 +48,7 @@ export class AutocompleteComponent implements OnInit {
   filteredOptions$: Observable<Location[]>;
 
   @Input() set selectedOption(selectedOption: Location) {
-    this.setSelectedOption(selectedOption);
+    selectedOption && this.form.setValue(omit(selectedOption, 'coordinates'));
   }
   @Output() select = new EventEmitter<Location>();
 
@@ -81,11 +81,5 @@ export class AutocompleteComponent implements OnInit {
     const selectedOption = event.option.value;
     this.form.setValue(selectedOption);
     this.select.emit(selectedOption);
-  }
-
-  private setSelectedOption(selectedOption: Location) {
-    if (selectedOption) {
-      this.form.setValue(omit(selectedOption, 'coordinates'));
-    }
   }
 }

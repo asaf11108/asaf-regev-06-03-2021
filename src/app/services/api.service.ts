@@ -3,11 +3,11 @@ import { IApiService } from './api,interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocationHttpResponse } from "../interfaces/autocomplete";
-import { CurrentConditions } from "../interfaces/current-conditions";
+import { AutocompleteOption } from "../interfaces/api/autocomplete";
+import { CurrentConditions } from "../interfaces/api/current-conditions";
 import { catchError } from 'rxjs/operators';
-import { HttpResponse } from '../interfaces/geoposition-search';
-import { SearchByLocationKey } from '../interfaces/search-by-location-key';
+import { GeopositionSearch } from '../interfaces/api/geoposition-search';
+import { SearchByLocationKey } from '../interfaces/api/search-by-location-key';
 import { skipLoader } from './loader.interceptor';
 
 
@@ -20,8 +20,8 @@ export class ApiService implements IApiService {
     this.apiMockService = new ApiMockService();
   }
 
-  getAutoComplete(query: string): Observable<LocationHttpResponse[]> {
-    return this.http.get<LocationHttpResponse[]>(
+  getAutoComplete(query: string): Observable<AutocompleteOption[]> {
+    return this.http.get<AutocompleteOption[]>(
       `locations/v1/cities/autocomplete`, {
         params: {
           q: encodeURIComponent(query)
@@ -42,8 +42,8 @@ export class ApiService implements IApiService {
     )
   }
 
-  getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
-    return this.http.get<HttpResponse.GeopositionSearch>(`locations/v1/cities/geoposition/search`, {
+  getGeopositionSearch(latitude: number, longitude: number): Observable<GeopositionSearch> {
+    return this.http.get<GeopositionSearch>(`locations/v1/cities/geoposition/search`, {
       params: {
         q: [latitude, longitude].join(',')
       }
@@ -55,7 +55,7 @@ export class ApiService implements IApiService {
   }
   
   getSearchByLocationKey(key: string): Observable<SearchByLocationKey> {
-    return this.http.get<HttpResponse.GeopositionSearch>(`locations/v1/${key}`).pipe(
+    return this.http.get<SearchByLocationKey>(`locations/v1/${key}`).pipe(
       catchError(() => {
         return this.apiMockService.getSearchByLocationKey(key);
       })

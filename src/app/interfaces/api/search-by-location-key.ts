@@ -1,15 +1,13 @@
-import { ISOString } from './general';
-export interface Region {
-  ID: string;
-  LocalizedName: string;
-  EnglishName: string;
-}
+import { ISOString } from '../general';
 
-export interface Country {
+export interface Area {
   ID: string;
   LocalizedName: string;
   EnglishName: string;
 }
+export type Region = Area;
+
+export type Country = Area;
 
 export interface AdministrativeArea {
   ID: string;
@@ -29,17 +27,15 @@ export interface TimeZone {
   NextOffsetChange: ISOString;
 }
 
-export interface Metric {
+export interface TemperatureType {
   Value: number;
   Unit: string;
   UnitType: number;
 }
 
-export interface Imperial {
-  Value: number;
-  Unit: string;
-  UnitType: number;
-}
+export type Metric = TemperatureType;
+
+export type Imperial = TemperatureType;
 
 export interface Elevation {
   Metric: Metric;

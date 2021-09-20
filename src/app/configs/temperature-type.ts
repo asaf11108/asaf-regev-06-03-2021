@@ -1,7 +1,4 @@
-export enum TemperatureType {
-  Celsius = 'celsius',
-  Fahrenheit = 'fahrenheit',
-}
+import { TemperatureType } from "../state/global/global.model";
 
 export const TemperatureTypeSymbol = {
   [TemperatureType.Celsius]: 'C',

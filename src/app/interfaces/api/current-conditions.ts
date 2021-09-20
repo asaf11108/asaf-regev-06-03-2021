@@ -1,16 +1,14 @@
-import { ISOString } from "./general";
+import { ISOString } from "../general";
 
-export interface Metric {
+export interface TemperatureType {
   Value: number;
   Unit: string;
   UnitType: number;
 }
 
-export interface Imperial {
-  Value: number;
-  Unit: string;
-  UnitType: number;
-}
+export type Metric = TemperatureType;
+
+export type Imperial = TemperatureType;
 
 export interface Temperature {
   Metric: Metric;

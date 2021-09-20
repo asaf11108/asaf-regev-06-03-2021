@@ -1,4 +1,3 @@
-import { GlobalQuery } from './../../state/global/global.query';
 import { ApiService } from './../../services/api.mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
@@ -6,9 +5,8 @@ import { WeatherLocationsQuery } from './../../state/weather-locations/weather-l
 import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
+import { BehaviorSubject, EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +16,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class HomeComponent implements OnInit {
   selectedOption$ = new Subject<Location>();
-  weatherLocation$ = new Subject<WeatherLocation>();
+  weatherLocation$ = new BehaviorSubject<WeatherLocation>(null);
 
   constructor(
-    public globalQuery: GlobalQuery,
     public weatherLocationsQuery: WeatherLocationsQuery,
     private weatherLocationsService: WeatherLocationsService,
     private apiService: ApiService,

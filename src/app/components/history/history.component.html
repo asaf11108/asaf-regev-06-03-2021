@@ -6,6 +6,6 @@
 </form>
 
 <app-table
-    [data]="weatherLocationsQuery.weatherLocations$ | async | filterBy:[FilterByColumn]:filterInput.value"
-    [columns]="columns">
+    [rows]="weatherLocationsQuery.weatherLocations$ | async | filterBy:[FILTER_BY_COLUMN]:filterInput.value"
+    [columns]="COLUMNS">
 </app-table>

@@ -1,13 +1,12 @@
-import { CurrentConditions } from './../../interfaces/current-conditions';
+import { CurrentConditions } from './../../interfaces/api/current-conditions';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { WeatherLocation } from './weather-location.model';
 import { WeatherLocationsStore } from './weather-locations.store';
 import { ApiService } from './../../services/api.mock.service';
 import { Location } from './weather-location.model';
-import { withTransaction } from '@datorama/akita';
 import { forkJoin, Observable } from 'rxjs';
-import { SearchByLocationKey } from 'src/app/interfaces/search-by-location-key';
+import { SearchByLocationKey } from '../../interfaces/api/search-by-location-key';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherLocationsService {
@@ -31,13 +30,12 @@ export class WeatherLocationsService {
           key,
           localizedName,
           coordinates,
-          localObservationDateTime: currentCondition.LocalObservationDateTime,
           temperature: currentCondition.Temperature.Metric.Value,
           weatherText: currentCondition.WeatherText,
           weatherIcon: currentCondition.WeatherIcon,
         };
       }),
-      withTransaction<WeatherLocation>((favoriteLocation) => {
+      tap((favoriteLocation) => {
         this.weatherLocationsStore.upsert(
           favoriteLocation.key,
           favoriteLocation

@@ -1,7 +1,7 @@
 import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { columns, FilterByColumn } from './history.config';
+import { COLUMNS, FILTER_BY_COLUMN } from './history.config';
 
 @Component({
   selector: 'app-history',
@@ -17,8 +17,8 @@ export class HistoryComponent implements OnInit {
     query: this.form.get('query'),
   };
 
-  FilterByColumn = FilterByColumn;
-  columns = columns;
+  FILTER_BY_COLUMN = FILTER_BY_COLUMN;
+  COLUMNS = COLUMNS;
 
   constructor(public weatherLocationsQuery: WeatherLocationsQuery) { }
 

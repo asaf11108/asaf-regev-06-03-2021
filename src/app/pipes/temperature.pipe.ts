@@ -1,5 +1,6 @@
 import { GlobalQuery } from './../state/global/global.query';
-import { TemperatureType, TemperatureTypeSymbol } from './../interfaces/temperature-type';
+import { TemperatureType } from '../state/global/global.model';
+import { TemperatureTypeSymbol } from '../configs/temperature-type';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { round } from "lodash-es";
 import { Subscription } from 'rxjs';

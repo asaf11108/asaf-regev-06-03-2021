@@ -1,17 +1,17 @@
-import { HttpResponse } from '../interfaces/geoposition-search';
+import { GeopositionSearch } from '../interfaces/api/geoposition-search';
 import { IApiService } from './api,interface';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { LocationHttpResponse } from "../interfaces/autocomplete";
+import { AutocompleteOption } from "../interfaces/api/autocomplete";
 import { tap } from 'rxjs/operators';
-import { CurrentConditions } from '../interfaces/current-conditions';
-import { SearchByLocationKey } from '../interfaces/search-by-location-key';
+import { CurrentConditions } from '../interfaces/api/current-conditions';
+import { SearchByLocationKey } from '../interfaces/api/search-by-location-key';
 
 
 @Injectable()
 export class ApiService implements IApiService {
 
-  getAutoComplete(query: string): Observable<LocationHttpResponse[]> {
+  getAutoComplete(query: string): Observable<AutocompleteOption[]> {
     if ('tel aviv'.toLowerCase().includes(query.toLowerCase())) {
       return of([{ "Version": 1, "Key": "215854", "Type": "City", "Rank": 31, "LocalizedName": "Tel Aviv", "Country": { "ID": "IL", "LocalizedName": "Israel" }, "AdministrativeArea": { "ID": "TA", "LocalizedName": "Tel Aviv" } }]);
     } else if ('paris'.toLowerCase().includes(query.toLowerCase())) {
@@ -50,8 +50,8 @@ export class ApiService implements IApiService {
     return of(res);
   }
 
-  getGeopositionSearch(latitude: number, longitude: number): Observable<HttpResponse.GeopositionSearch> {
-    const res: HttpResponse.GeopositionSearch = {
+  getGeopositionSearch(latitude: number, longitude: number): Observable<GeopositionSearch> {
+    const res: GeopositionSearch = {
       "Version": 1,
       "Key": "214356",
       "Type": "City",

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { TemperatureType } from '../../interfaces/temperature-type';
+import { TemperatureType } from './global.model';
 
 export interface GlobalState {
   temperatureType: TemperatureType;

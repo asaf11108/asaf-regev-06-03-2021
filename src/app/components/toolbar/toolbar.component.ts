@@ -1,5 +1,6 @@
 import { GlobalStore } from './../../state/global/global.store';
-import { TemperatureType, TemperatureTypeSymbol } from './../../interfaces/temperature-type';
+import { TemperatureType } from 'src/app/state/global/global.model';
+import { TemperatureTypeSymbol } from '../../configs/temperature-type';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 

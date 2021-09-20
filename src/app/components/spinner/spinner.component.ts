@@ -18,7 +18,7 @@ export class SpinnerComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinnerDiameter$ = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(
-      map(obs => obs.matches ? 75/100 * this.diameter : this.diameter),
+      map(obs => obs.matches ? (75/100 * this.diameter) : this.diameter),
     );
   }
 
