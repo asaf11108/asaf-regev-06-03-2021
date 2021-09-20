@@ -1,10 +1,17 @@
 import { ApiService as ApiMockService } from '../../services/api.mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from 'src/app/services/api.mock.service';
-import { WeatherLocationsQuery } from 'src/app/state/weather-locations/weather-locations.query';
-import { WeatherLocationsService } from 'src/app/state/weather-locations/weather-locations.service';
+import { ApiService } from '../../services/api.mock.service';
+import { WeatherLocationsQuery } from '../../state/weather-locations/weather-locations.query';
+import { WeatherLocationsService } from '../../state/weather-locations/weather-locations.service';
 
 import { HomeComponent } from './home.component';
+import { of } from 'rxjs';
+import {
+  blockGeolocation,
+  notSupportedGeolocation,
+  setCoordsGeolocation,
+} from '../../testing/geolocation.mock';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 describe('HomeComponent', () => {
   let fixture: HomeComponent;
@@ -14,6 +21,10 @@ describe('HomeComponent', () => {
   let snackBar: MatSnackBar;
 
   beforeEach(() => {
+    snackBar = {
+      open: jest.fn(),
+    } as any;
+
     apiService = new ApiMockService();
 
     fixture = new HomeComponent(
@@ -25,13 +36,45 @@ describe('HomeComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should create', () => {
-      
-      fixture.ngOnInit();
+    describe('getCoordinates', () => {
+      it('should fetch coordinates', (done) => {
+        const ans = {
+          latitude: 51.1,
+          longitude: 45.3,
+        };
+        setCoordsGeolocation(ans);
+        fixture['getCoordinates']().subscribe((res) => {
+          expect(res).toEqual(ans);
+          done();
+        });
+      });
 
-      expect(fixture.weatherLocation$.value).toBe(null);
+      const handleGeolocationError = (done) => {
+        fixture['getCoordinates']().subscribe(
+          () => {
+            done.fail(new Error('Should have been failed'));
+          },
+          () => {
+            done.fail(new Error('Should have been failed'));
+          },
+          () => {
+            done();
+          }
+        );
+      };
 
+      it('should block fetch of geolocation', (done) => {
+        blockGeolocation();
+        handleGeolocationError(done);
+      });
+
+      it('should not be supported geolocation', (done) => {
+        notSupportedGeolocation();
+        handleGeolocationError(done);
+      });
     });
+
+    
   });
 
   // describe('ngOnInit', () => {});
