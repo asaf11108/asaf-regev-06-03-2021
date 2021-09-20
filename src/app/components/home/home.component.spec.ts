@@ -5,13 +5,14 @@ import { WeatherLocationsQuery } from '../../state/weather-locations/weather-loc
 import { WeatherLocationsService } from '../../state/weather-locations/weather-locations.service';
 
 import { HomeComponent } from './home.component';
-import { of } from 'rxjs';
 import {
   blockGeolocation,
   notSupportedGeolocation,
   setCoordsGeolocation,
 } from '../../testing/geolocation.mock';
-import { not } from '@angular/compiler/src/output/output_ast';
+import { take } from 'rxjs/operators';
+import { WeatherLocationsStore } from '../../state/weather-locations/weather-locations.store';
+import { combineLatest, of, pipe } from 'rxjs';
 
 describe('HomeComponent', () => {
   let fixture: HomeComponent;
@@ -24,8 +25,15 @@ describe('HomeComponent', () => {
     snackBar = {
       open: jest.fn(),
     } as any;
+    let weatherLocationsStore: WeatherLocationsStore = {
+      upsert: jest.fn(),
+    } as any;
 
     apiService = new ApiMockService();
+    weatherLocationsService = new WeatherLocationsService(
+      weatherLocationsStore,
+      apiService
+    );
 
     fixture = new HomeComponent(
       weatherLocationsQuery,
@@ -37,18 +45,6 @@ describe('HomeComponent', () => {
 
   describe('ngOnInit', () => {
     describe('getCoordinates', () => {
-      it('should fetch coordinates', (done) => {
-        const ans = {
-          latitude: 51.1,
-          longitude: 45.3,
-        };
-        setCoordsGeolocation(ans);
-        fixture['getCoordinates']().subscribe((res) => {
-          expect(res).toEqual(ans);
-          done();
-        });
-      });
-
       const handleGeolocationError = (done) => {
         fixture['getCoordinates']().subscribe(
           () => {
@@ -74,7 +70,45 @@ describe('HomeComponent', () => {
       });
     });
 
-    
+    describe('updateSelectedOption', () => {
+      it('should not update selected option', (done) => {
+        const coordinates = {
+          latitude: 0,
+          longitude: 0,
+        };
+        of(coordinates).pipe(fixture['updateSelectedOption']()).subscribe(
+          () => {
+            done.fail(new Error('Should have been failed'));
+          },
+          () => {
+            done.fail(new Error('Should have been failed'));
+          },
+          () => {
+            done();
+          }
+        );
+      });
+    });
+
+    it('should update', (done) => {
+      combineLatest([
+        fixture.selectedOption$.pipe(take(1)),
+        fixture.weatherLocation$.pipe(take(1)),
+      ]).subscribe((res) => {
+        expect(res[1].key).not.toBeNull();
+        done();
+      });
+
+      const ans = {
+        latitude: 32.985,
+        longitude: 35.251,
+      };
+      setCoordsGeolocation(ans);
+
+      fixture.ngOnInit();
+    });
+
+
   });
 
   // describe('ngOnInit', () => {});

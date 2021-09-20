@@ -3,9 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
 import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
 import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
-import { map, switchMap, catchError, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, tap, filter } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, EMPTY, from, Observable, of, OperatorFunction, pipe, Subject } from 'rxjs';
+import { EMPTY, from, Observable, of, OperatorFunction, pipe, ReplaySubject, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
 
 @Component({
@@ -16,7 +16,7 @@ import { Location } from "../../state/weather-locations/weather-location.model";
 })
 export class HomeComponent implements OnInit {
   selectedOption$ = new Subject<Location>();
-  weatherLocation$ = new BehaviorSubject<WeatherLocation>(null);
+  weatherLocation$ = new ReplaySubject<WeatherLocation>(1);
 
   constructor(
     public weatherLocationsQuery: WeatherLocationsQuery,
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
   private updateSelectedOption(): OperatorFunction<Coordinates, Location> {
     return pipe(
       switchMap(({ latitude, longitude }) => this.apiService.getGeopositionSearch(latitude, longitude)),
+      filter(Boolean),
       map(({ Key, LocalizedName, GeoPosition }) => ({
         key: Key,
         localizedName: LocalizedName,

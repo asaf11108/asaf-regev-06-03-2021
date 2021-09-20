@@ -51,6 +51,9 @@ export class ApiService implements IApiService {
   }
 
   getGeopositionSearch(latitude: number, longitude: number): Observable<GeopositionSearch> {
+    if (!latitude && !longitude) {
+      return of(null);
+    }
     const res: GeopositionSearch = {
       "Version": 1,
       "Key": "214356",
