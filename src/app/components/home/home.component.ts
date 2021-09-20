@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getCoordinates().pipe(
+    this.getCoordinates({maximumAge:10000, timeout:5000, enableHighAccuracy: true}).pipe(
       this.updateSelectedOption(),
       this.updateWeatherLocation()
     ).subscribe();
