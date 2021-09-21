@@ -1,36 +1,22 @@
-# HeroloWeather
+# Weather App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
+This project presents the weather of different locations around the world and cache the history of locations serach.<br/>
+The initial location is being fetched by the Web Geolocation API, [link](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API).<br/>
+[Deployed App](https://master.dgskas777y5a5.amplifyapp.com/)
 
-## Development server
+## API notes
+1. I used the following API to fetch data: https://developer.accuweather.com/.
+2. Please note that you'll need to [enable cors](https://cors-anywhere.herokuapp.com/corsdemo).
+3. This free API enables `50 requests` per day for some API key, if a request failed the app we'll fetch `mock data`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Code notes
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-
-ng build --configuration production --base-href "https://asaf11108.github.io/asaf-regev-06-03-2021/"
-npx angular-cli-ghpages — dir=dist
-
-https://asaf11108.github.io/asaf-regev-06-03-2021/
-https://github.com/asaf11108/asaf-regev-06-03-2021/
-
-https://cors-anywhere.herokuapp.com/corsdemo
+1. All `components` are in `onPush` mode.
+2. The code of `temperature type` toggle is related to language change. [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/pipes/temperature.pipe.ts)
+3. The loading is being done by `HTTP interceptor` and a new feature in Angular 12 (context). [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/services/loader.interceptor.ts)
+4. The `structure of the project` is simple. Usually, I like to divide each page into modules and use nrwl nx but for an overly simple project, it seems unnecessary. BTW in Angular 13 NgModules might be optional.
+5. The `table` component is flexible, so it could fit to different inputs of data. [link](https://github.com/asaf11108/asaf-regev-06-03-2021/tree/master/src/app/components/table).
+6. `Advance TS` example, [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/state/weather-locations/weather-location.model.ts).
+7. `Media breakpoints`: 'xs': 600px, 'sm': 960px, 'md': 1280px, 'lg': 1920px.
+8. The `Home component` contains `unit tests`.
+9. The `toolbar` supports desktop and mobile devices, [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/components/toolbar/toolbar.component.html)
