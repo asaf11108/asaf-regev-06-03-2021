@@ -45,34 +45,6 @@ describe('HomeComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    describe('getCoordinates', () => {
-      const handleGeolocationError = (done) => {
-        fixture['getCoordinates']().pipe(take(1)).subscribe(...handaleSubscribeComplete(done));
-      };
-
-      it('should block fetch of geolocation', (done) => {
-        blockGeolocation();
-        handleGeolocationError(done);
-      });
-
-      it('should not be supported geolocation', (done) => {
-        notSupportedGeolocation();
-        handleGeolocationError(done);
-      });
-    });
-
-    describe('updateSelectedOption', () => {
-      it('should not update selected option', (done) => {
-        const coordinates = {
-          latitude: 0,
-          longitude: 0,
-        };
-        of(coordinates)
-          .pipe(fixture['updateSelectedOption']())
-          .subscribe(...handaleSubscribeComplete(done));
-      });
-    });
-
     it('should update selected option and weather location', (done) => {
       combineLatest([
         fixture.selectedOption$.pipe(take(1)),
@@ -105,6 +77,49 @@ describe('HomeComponent', () => {
       };
 
       fixture.onSelectionChange(location);
+    });
+  });
+
+  describe('private functions edge cases', () => {
+    describe('getCoordinates', () => {
+      const handleGeolocationError = (done) => {
+        fixture['getCoordinates']()
+          .pipe(take(1))
+          .subscribe(...handaleSubscribeComplete(done));
+      };
+
+      it('should block fetch of geolocation', (done) => {
+        blockGeolocation();
+        handleGeolocationError(done);
+      });
+
+      it('should not be supported geolocation', (done) => {
+        notSupportedGeolocation();
+        handleGeolocationError(done);
+      });
+    });
+
+    describe('updateSelectedOption', () => {
+      it('should not update selected option', (done) => {
+        const coordinates = {
+          latitude: 0,
+          longitude: 0,
+        };
+        of(coordinates)
+          .pipe(fixture['updateSelectedOption']())
+          .subscribe(...handaleSubscribeComplete(done));
+      });
+    });
+
+    describe('updateWeatherLocation', () => {
+      it('should not update weather location', (done) => {
+        const location = {
+          key: '999999',
+        };
+        of(location)
+          .pipe(fixture['updateWeatherLocation']())
+          .subscribe(...handaleSubscribeComplete(done));
+      });
     });
   });
 });

@@ -22,6 +22,9 @@ export class ApiService implements IApiService {
   }
 
   getCurrentConditions(key: string): Observable<CurrentConditions> {
+    if (key === '999999') {
+      return of([]);
+    }
     const res: CurrentConditions = [
       {
         "LocalObservationDateTime": "2021-09-15T17:21:00+03:00",
