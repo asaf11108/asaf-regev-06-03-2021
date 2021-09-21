@@ -1,12 +1,6 @@
-export interface Country {
-  ID: string;
-  LocalizedName: string;
-}
+import { AreaPick, Country } from './shared';
+import { AdministrativeArea } from './shared';
 
-export interface AdministrativeArea {
-  ID: string;
-  LocalizedName: string;
-}
 
 export interface AutocompleteOption {
   Version: number;
@@ -14,6 +8,6 @@ export interface AutocompleteOption {
   Type: string;
   Rank: number;
   LocalizedName: string;
-  Country: Country;
-  AdministrativeArea: AdministrativeArea;
+  Country: AreaPick<Country>;
+  AdministrativeArea: AreaPick<AdministrativeArea>;
 }

@@ -1,19 +1,5 @@
 import { ISOString } from "../general";
-
-export interface TemperatureType {
-  Value: number;
-  Unit: string;
-  UnitType: number;
-}
-
-export type Metric = TemperatureType;
-
-export type Imperial = TemperatureType;
-
-export interface Temperature {
-  Metric: Metric;
-  Imperial: Imperial;
-}
+import { Temperature } from "./shared";
 
 export interface CurrentCondition {
   LocalObservationDateTime: ISOString;
