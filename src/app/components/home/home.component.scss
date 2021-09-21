@@ -42,7 +42,7 @@
         @include vendors.spread(min-height, 400px, 500px);
 
         img {
-            @include vendors.spread(width, 400px, 600px);
+            @include vendors.spread(width, 300px, 600px);
         }
     }
     
