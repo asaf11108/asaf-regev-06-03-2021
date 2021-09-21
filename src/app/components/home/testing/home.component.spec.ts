@@ -13,6 +13,7 @@ import {
 import { take } from 'rxjs/operators';
 import { WeatherLocationsStore } from '../../../state/weather-locations/weather-locations.store';
 import { combineLatest, of, pipe } from 'rxjs';
+import { handaleSubscribeComplete } from '../../../testing/helpers';
 
 describe('HomeComponent', () => {
   let fixture: HomeComponent;
@@ -46,17 +47,7 @@ describe('HomeComponent', () => {
   describe('ngOnInit', () => {
     describe('getCoordinates', () => {
       const handleGeolocationError = (done) => {
-        fixture['getCoordinates']().subscribe(
-          () => {
-            done.fail(new Error('Should have been failed'));
-          },
-          () => {
-            done.fail(new Error('Should have been failed'));
-          },
-          () => {
-            done();
-          }
-        );
+        fixture['getCoordinates']().pipe(take(1)).subscribe(...handaleSubscribeComplete(done));
       };
 
       it('should block fetch of geolocation', (done) => {
@@ -78,17 +69,7 @@ describe('HomeComponent', () => {
         };
         of(coordinates)
           .pipe(fixture['updateSelectedOption']())
-          .subscribe(
-            () => {
-              done.fail(new Error('Should have been failed'));
-            },
-            () => {
-              done.fail(new Error('Should have been failed'));
-            },
-            () => {
-              done();
-            }
-          );
+          .subscribe(...handaleSubscribeComplete(done));
       });
     });
 
