@@ -1,17 +1,17 @@
-import { ApiService as ApiMockService } from '../../services/api.mock.service';
+import { ApiService as ApiMockService } from '../../../services/api.mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from '../../services/api.mock.service';
-import { WeatherLocationsQuery } from '../../state/weather-locations/weather-locations.query';
-import { WeatherLocationsService } from '../../state/weather-locations/weather-locations.service';
+import { ApiService } from '../../../services/api.mock.service';
+import { WeatherLocationsQuery } from '../../../state/weather-locations/weather-locations.query';
+import { WeatherLocationsService } from '../../../state/weather-locations/weather-locations.service';
 
-import { HomeComponent } from './home.component';
+import { HomeComponent } from '../home.component';
 import {
   blockGeolocation,
   notSupportedGeolocation,
   setCoordsGeolocation,
-} from '../../testing/geolocation.mock';
+} from './geolocation.mock';
 import { take } from 'rxjs/operators';
-import { WeatherLocationsStore } from '../../state/weather-locations/weather-locations.store';
+import { WeatherLocationsStore } from '../../../state/weather-locations/weather-locations.store';
 import { combineLatest, of, pipe } from 'rxjs';
 
 describe('HomeComponent', () => {
@@ -126,8 +126,4 @@ describe('HomeComponent', () => {
       fixture.onSelectionChange(location);
     });
   });
-
-  // describe('ngOnInit', () => {});
-
-  // it('should create', () => {});
 });
