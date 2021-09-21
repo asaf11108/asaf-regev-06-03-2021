@@ -76,21 +76,23 @@ describe('HomeComponent', () => {
           latitude: 0,
           longitude: 0,
         };
-        of(coordinates).pipe(fixture['updateSelectedOption']()).subscribe(
-          () => {
-            done.fail(new Error('Should have been failed'));
-          },
-          () => {
-            done.fail(new Error('Should have been failed'));
-          },
-          () => {
-            done();
-          }
-        );
+        of(coordinates)
+          .pipe(fixture['updateSelectedOption']())
+          .subscribe(
+            () => {
+              done.fail(new Error('Should have been failed'));
+            },
+            () => {
+              done.fail(new Error('Should have been failed'));
+            },
+            () => {
+              done();
+            }
+          );
       });
     });
 
-    it('should update', (done) => {
+    it('should update selected option and weather location', (done) => {
       combineLatest([
         fixture.selectedOption$.pipe(take(1)),
         fixture.weatherLocation$.pipe(take(1)),
@@ -99,16 +101,30 @@ describe('HomeComponent', () => {
         done();
       });
 
-      const ans = {
+      const coordinates = {
         latitude: 32.985,
         longitude: 35.251,
       };
-      setCoordsGeolocation(ans);
+      setCoordsGeolocation(coordinates);
 
       fixture.ngOnInit();
     });
+  });
 
+  describe('onSelectionChange', () => {
+    it('should update weather location', (done) => {
+      fixture.weatherLocation$.pipe(take(1)).subscribe((res) => {
+        expect(res.key).not.toBeNull();
+        done();
+      });
 
+      const location = {
+        key: '214356',
+        localizedName: 'Yanuh',
+      };
+
+      fixture.onSelectionChange(location);
+    });
   });
 
   // describe('ngOnInit', () => {});
