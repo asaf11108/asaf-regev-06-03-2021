@@ -17,7 +17,7 @@ import {
   map,
   tap,
 } from 'rxjs/operators';
-import { ApiService } from './../../services/api.mock.service';
+import { ApiService } from '../../services/api-mock.service';
 import { Location } from '../../state/weather-locations/weather-location.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { omit } from "lodash-es";

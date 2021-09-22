@@ -1,4 +1,4 @@
-import { ApiService } from './../../services/api.mock.service';
+import { ApiService } from '../../services/api-mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WeatherLocationsService } from './../../state/weather-locations/weather-locations.service';
 import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';

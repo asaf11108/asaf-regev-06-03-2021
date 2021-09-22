@@ -15,11 +15,11 @@ import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
-import { ApiInterceptor } from './services/api.interceptor';
+import { ApiInterceptor } from './interceptors/api.interceptor';
 import { TemperaturePipe } from './pipes/temperature.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { NgPipesModule } from 'ngx-pipes';
-import { LoaderInterceptor } from './services/loader.interceptor';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 
 @NgModule({
   declarations: [

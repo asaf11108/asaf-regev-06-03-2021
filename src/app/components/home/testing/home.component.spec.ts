@@ -1,6 +1,6 @@
-import { ApiService as ApiMockService } from '../../../services/api.mock.service';
+import { ApiService as ApiMockService } from '../../../services/api-mock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from '../../../services/api.mock.service';
+import { ApiService } from '../../../services/api-mock.service';
 import { WeatherLocationsQuery } from '../../../state/weather-locations/weather-locations.query';
 import { WeatherLocationsService } from '../../../state/weather-locations/weather-locations.service';
 

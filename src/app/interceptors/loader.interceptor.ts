@@ -1,4 +1,4 @@
-import { WeatherLocationsStore } from './../state/weather-locations/weather-locations.store';
+import { WeatherLocationsStore } from '../state/weather-locations/weather-locations.store';
 import {
   HttpInterceptor,
   HttpRequest,

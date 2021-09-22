@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, tap, filter } from 'rxjs/operators';
 import { WeatherLocation, Coordinates } from './weather-location.model';
 import { WeatherLocationsStore } from './weather-locations.store';
-import { ApiService } from './../../services/api.mock.service';
+import { ApiService } from '../../services/api-mock.service';
 import { Location } from './weather-location.model';
 import { forkJoin, Observable, of } from 'rxjs';
 

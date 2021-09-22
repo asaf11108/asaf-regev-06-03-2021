@@ -1,4 +1,4 @@
-import { ApiService as ApiMockService } from './api.mock.service';
+import { ApiService as ApiMockService } from './api-mock.service';
 import { IApiService } from './api,interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -8,7 +8,7 @@ import { CurrentConditions } from "../interfaces/api/current-conditions";
 import { catchError } from 'rxjs/operators';
 import { GeopositionSearch } from '../interfaces/api/geoposition-search';
 import { SearchByLocationKey } from '../interfaces/api/search-by-location-key';
-import { skipLoader } from './loader.interceptor';
+import { skipLoader } from '../interceptors/loader.interceptor';
 
 
 @Injectable()
