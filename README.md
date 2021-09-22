@@ -13,7 +13,7 @@ The initial location is being fetched by the Web Geolocation API, [link](https:/
 
 1. All `components` are in `onPush` mode.
 2. The code of `temperature type` toggle is related to language change. [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/pipes/temperature.pipe.ts)
-3. The loading is being done by `HTTP interceptor` and a new feature in Angular 12 (context). [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/services/loader.interceptor.ts)
+3. The loading is being done by `HTTP interceptor` and a new feature in Angular 12 (context). [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/interceptors/loader.interceptor.ts)
 4. The `structure of the project` is simple. Usually, I like to divide each page into modules and use nrwl nx but for an overly simple project, it seems unnecessary. BTW in Angular 13 NgModules might be optional.
 5. The `table` component is flexible, so it could fit to different inputs of data. [link](https://github.com/asaf11108/asaf-regev-06-03-2021/tree/master/src/app/components/table).
 6. `Advance TS` example, [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/state/weather-locations/weather-location.model.ts).
