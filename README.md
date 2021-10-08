@@ -20,3 +20,4 @@ The initial location is being fetched by the Web Geolocation API, [link](https:/
 7. `Media breakpoints`: 'xs': 600px, 'sm': 960px, 'md': 1280px, 'lg': 1920px.
 8. The `Home component` contains `unit tests`.
 9. The `toolbar` supports desktop and mobile devices, [link](https://github.com/asaf11108/asaf-regev-06-03-2021/blob/master/src/app/components/toolbar/toolbar.component.html)
+10. `Improvements` to be done: add OpenAPI to the project, add animations.
