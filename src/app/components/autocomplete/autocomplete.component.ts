@@ -15,12 +15,10 @@ import {
   filter,
   switchMap,
   map,
-  tap,
 } from 'rxjs/operators';
 import { ApiService } from '../../services/api-mock.service';
 import { Location } from '../../state/weather-locations/weather-location.model';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { omit } from "lodash-es";
 
 @Component({
   selector: 'app-autocomplete',
@@ -34,31 +32,29 @@ import { omit } from "lodash-es";
 })
 export class AutocompleteComponent implements OnInit {
   form: FormGroup = new FormGroup({
-    key: new FormControl(''),
-    localizedName: new FormControl('', [
+    query: new FormControl('', [
       Validators.required,
       Validators.pattern(/^[a-zA-Z ]+$/),
     ]),
   });
   controls = {
-    key: this.form.get('key'),
-    localizedName: this.form.get('localizedName'),
+    query: this.form.get('query'),
   };
 
   filteredOptions$: Observable<Location[]>;
 
   @Input() set selectedOption(selectedOption: Location) {
-    selectedOption && this.form.setValue(omit(selectedOption, 'coordinates'));
+    selectedOption && this.controls.query.setValue(selectedOption.localizedName);
   }
   @Output() select = new EventEmitter<Location>();
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.filteredOptions$ = this.controls.localizedName.valueChanges.pipe(
+    this.filteredOptions$ = this.controls.query.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
-      filter(() => this.controls.localizedName.valid),
+      filter(() => this.controls.query.valid),
       switchMap((query) => this.apiService.getAutoComplete(query)),
       map((locations) =>
         locations.map((location) => ({
@@ -69,17 +65,9 @@ export class AutocompleteComponent implements OnInit {
     );
   }
 
-  displayFn(location: Location | string): string {
-    if (typeof location === 'object') {
-      return location.localizedName;
-    } else {
-      return location;
-    }
-  }
-
   onSelectionChange(event: MatAutocompleteSelectedEvent): void {
-    const selectedOption = event.option.value;
-    this.form.setValue(selectedOption);
+    const selectedOption: Location = event.option.value;
+    this.controls.query.setValue(selectedOption.localizedName);
     this.select.emit(selectedOption);
   }
 }
