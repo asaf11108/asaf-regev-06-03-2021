@@ -1,4 +1,4 @@
-export function handaleSubscribeComplete(done) {
+export function handleSubscribeComplete(done) {
   return [
     () => {
       done.fail(new Error('Should have been failed'));

@@ -13,7 +13,7 @@ import {
 import { take } from 'rxjs/operators';
 import { WeatherLocationsStore } from '../../../state/weather-locations/weather-locations.store';
 import { combineLatest, of, pipe } from 'rxjs';
-import { handaleSubscribeComplete } from '../../../testing/helpers';
+import { handleSubscribeComplete } from '../../../testing/helpers';
 
 describe('HomeComponent', () => {
   let fixture: HomeComponent;
@@ -85,7 +85,7 @@ describe('HomeComponent', () => {
       const handleGeolocationError = (done) => {
         fixture['getCoordinates']()
           .pipe(take(1))
-          .subscribe(...handaleSubscribeComplete(done));
+          .subscribe(...handleSubscribeComplete(done));
       };
 
       it('should block fetch of geolocation', (done) => {
@@ -107,7 +107,7 @@ describe('HomeComponent', () => {
         };
         of(coordinates)
           .pipe(fixture['updateSelectedOption']())
-          .subscribe(...handaleSubscribeComplete(done));
+          .subscribe(...handleSubscribeComplete(done));
       });
     });
 
@@ -118,7 +118,7 @@ describe('HomeComponent', () => {
         };
         of(location)
           .pipe(fixture['updateWeatherLocation']())
-          .subscribe(...handaleSubscribeComplete(done));
+          .subscribe(...handleSubscribeComplete(done));
       });
     });
   });
