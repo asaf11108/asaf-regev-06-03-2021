@@ -7,6 +7,7 @@ import { map, switchMap, catchError, tap, filter } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { EMPTY, from, Observable, of, OperatorFunction, pipe, ReplaySubject, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,16 @@ import { Location } from "../../state/weather-locations/weather-location.model";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
+  form = new FormGroup({
+    query: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z ]+$/),
+    ]),
+  });
+  controls = {
+    query: this.form.get('query'),
+  };
+  
   selectedOption$ = new Subject<Location>();
   weatherLocation$ = new ReplaySubject<WeatherLocation>(1);
 

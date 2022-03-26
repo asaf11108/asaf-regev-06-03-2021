@@ -1,4 +1,11 @@
-<app-autocomplete [selectedOption]="selectedOption$ | async" (select)="onSelectionChange($event)"></app-autocomplete>
+<form [formGroup]="form">
+    <mat-form-field>
+        <mat-label>Search location</mat-label>
+        <mat-icon [inline]="true" matPrefix>search</mat-icon>
+        <app-autocomplete [control]="controls.query" [selectedOption]="selectedOption$ | async" (select)="onSelectionChange($event)"></app-autocomplete>
+        <mat-error>Invalid Input</mat-error>
+    </mat-form-field>
+</form>
 
 <mat-card class="home__card">
     <h1 *ngIf="weatherLocationsQuery.loading$ | async; else availableContent">
