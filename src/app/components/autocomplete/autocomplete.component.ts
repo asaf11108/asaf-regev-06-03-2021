@@ -51,7 +51,7 @@ export class AutocompleteComponent implements MatFormFieldControl<string>, Contr
     @Optional() @Self() public ngControl: NgControl,
     private focusMonitor: FocusMonitor,
   ) {
-    this.ngControl && (this.ngControl.valueAccessor = this);
+    ngControl && (this.ngControl.valueAccessor = this);
   }
 
   filteredOptions$: Observable<Location[]>;
@@ -64,9 +64,9 @@ export class AutocompleteComponent implements MatFormFieldControl<string>, Contr
   static nextId = 0;
   @ViewChild(MatInput, { read: ElementRef, static: true }) inputEl: ElementRef;
   @Input() set formControlName(formControlName: string) {
-    this.control = this.controlContainer.control.get(formControlName);
+    this.formControl = this.controlContainer.control.get(formControlName);
   }
-  @Input() control: AbstractControl;
+  @Input() formControl: AbstractControl;
 
   @Output() input = new EventEmitter<string>();
   @Output() blur = new EventEmitter<void>();
