@@ -157,18 +157,18 @@ export class AutocompleteComponent implements MatFormFieldControl<string>, Contr
   }
 
   ngOnInit(): void {
-    // this.filteredOptions$ = this.controls.query.valueChanges.pipe(
-    //   debounceTime(1000),
-    //   distinctUntilChanged(),
-    //   filter(() => this.controls.query.valid),
-    //   switchMap((query) => this.apiService.getAutoComplete(query)),
-    //   map((locations) =>
-    //     locations.map((location) => ({
-    //       key: location.Key,
-    //       localizedName: location.LocalizedName,
-    //     }))
-    //   )
-    // );
+    this.filteredOptions$ = this.formControl.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      filter(() => this.formControl.valid),
+      switchMap((query) => this.apiService.getAutoComplete(query)),
+      map((locations) =>
+        locations.map((location) => ({
+          key: location.Key,
+          localizedName: location.LocalizedName,
+        }))
+      )
+    );
   }
 
   onInput(value: string): void {
