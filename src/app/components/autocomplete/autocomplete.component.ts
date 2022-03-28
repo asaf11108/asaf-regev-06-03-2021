@@ -171,13 +171,13 @@ export class AutocompleteComponent implements MatFormFieldControl<string>, Contr
     );
   }
 
-  onInput(value: string): void {
+  onInput(): void {
     if (this.disabled) {
       return;
     }
-    this.onChanged(value);
+    this.onChanged(this.value);
     this.onTouched();
-    this.input.emit(value);
+    this.input.emit(this.value);
   }
 
   onBlur(): void {

@@ -1,11 +1,4 @@
-@use 'vendors';
 
 .app-autocomplete {
-    display: block;
-    text-align: center;
-    @include vendors.spread(margin-bottom, 10px, 20px);
-
-    .mat-form-field-prefix .mat-icon {
-        vertical-align: bottom;
-    }
+    display: contents;
 }

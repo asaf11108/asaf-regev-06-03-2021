@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form class="app-home__autocomplete" [formGroup]="form">
     <mat-form-field>
         <mat-label>Search location</mat-label>
         <mat-icon [inline]="true" matPrefix>search</mat-icon>
@@ -7,7 +7,7 @@
     </mat-form-field>
 </form>
 
-<mat-card class="home__card">
+<mat-card class="app-home__card">
     <h1 *ngIf="weatherLocationsQuery.loading$ | async; else availableContent">
         <app-spinner></app-spinner>
     </h1>
@@ -15,7 +15,7 @@
     <ng-template #availableContent>
         <ng-container *ngIf="weatherLocation$ | async as weatherLocation; else noData">
 
-            <mat-card-title class="home__title">
+            <mat-card-title class="app-home__title">
                 <span class="left">
                     <span>{{weatherLocation.localizedName}}</span>
                     <span>{{weatherLocation.temperature | temperature }}</span>
@@ -27,15 +27,15 @@
                 </span>
             </mat-card-title>
 
-            <mat-card-content class="home__content">
+            <mat-card-content class="app-home__content">
                 <img [src]="'/assets/weather-icons/' + weatherLocation.weatherIcon + '.png'">
-                <h2 class="home__content-header">{{weatherLocation.weatherText}}</h2>
+                <h2 class="app-home__content-header">{{weatherLocation.weatherText}}</h2>
             </mat-card-content>
 
         </ng-container>
 
         <ng-template #noData>
-            <h1 class="home__no-data">NO DATA</h1>
+            <h1 class="app-home__no-data">NO DATA</h1>
         </ng-template>
     </ng-template>
     

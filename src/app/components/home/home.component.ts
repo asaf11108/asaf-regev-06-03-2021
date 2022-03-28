@@ -4,7 +4,7 @@ import { WeatherLocationsService } from './../../state/weather-locations/weather
 import { WeatherLocationsQuery } from './../../state/weather-locations/weather-locations.query';
 import { WeatherLocation, Coordinates } from './../../state/weather-locations/weather-location.model';
 import { map, switchMap, catchError, tap, filter } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { EMPTY, from, Observable, of, OperatorFunction, pipe, ReplaySubject, Subject } from 'rxjs';
 import { Location } from "../../state/weather-locations/weather-location.model";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -13,7 +13,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'app-home'
+  }
 })
 export class HomeComponent implements OnInit {
   form = new FormGroup({

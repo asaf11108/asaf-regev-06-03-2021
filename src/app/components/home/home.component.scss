@@ -1,7 +1,18 @@
 
 @use 'vendors';
 
-.home {
+.app-home {
+    &__autocomplete {
+        display: block;
+        text-align: center;
+        @include vendors.spread(margin-bottom, 10px, 20px);
+        font-size: 1.2em;
+    
+        .mat-form-field-prefix .mat-icon {
+            vertical-align: bottom;
+        }
+    }
+
     &__card {
         background-color: rgba(255, 255, 255, 0.6);
         width: 100%;
@@ -9,7 +20,9 @@
     }
 
     &__title {
-        display: flex;
+        &.mat-card-title {
+            display: flex;
+        }
         justify-content: space-between;
         gap: 20px;
         align-items: center;
@@ -36,7 +49,9 @@
     }
 
     &__content {
-        display: flex;
+        &.mat-card-content {
+            display: flex;
+        }
         flex-direction: column;
         justify-content: space-around;
         align-items: center;

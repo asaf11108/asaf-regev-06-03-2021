@@ -3,8 +3,8 @@
     autocomplete="off"
     matInput
     [matAutocomplete]="auto"
-    [value]="value"
-    (input)="onInput($event.target.value)"
+    [(ngModel)]="value"
+    (ngModelChange)="onInput()"
     (blur)="onBlur()">
 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
     <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
