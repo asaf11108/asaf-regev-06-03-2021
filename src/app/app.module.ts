@@ -20,6 +20,7 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { NgPipesModule } from 'ngx-pipes';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
+import { InputDirective } from './directives/input.directive';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoaderInterceptor } from './interceptors/loader.interceptor';
     AutocompleteComponent,
     TemperaturePipe,
     TableComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    InputDirective
   ],
   imports: [
     BrowserModule,
